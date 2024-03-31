@@ -5,9 +5,9 @@ USE CareerConnect
 CREATE TABLE Company(
 CompanyID int IDENTITY(1,1) primary key,
 Name varchar(50),
+Email varchar(50),
 Adresa varchar(100),
 Phone varchar(50),
-Email varchar(50),
 Password varchar(50),
 Openning_year int,
 Description varchar(100)

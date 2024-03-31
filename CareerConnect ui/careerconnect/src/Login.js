@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import backgroundImage from './login-test2.avif'
+import backgroundImage from './login-test2.avif';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import './styles.css';
 
 function Login() {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleSignUpClick = (event) => {
+    event.preventDefault(); 
+    handleShowModal(); 
+  };
+
   return (
-    <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white'style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>
+    <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>
       <div className='d-flex flex-column align-items-center'>
         <h1 className="custom-margin"><b>CareerConnect</b></h1>
         <p className='w-50 mt-3'>
@@ -37,11 +49,28 @@ function Login() {
               <button className='btn btn-primary'>Sign in</button>
             </div>
             <p className='text-end mt-2'>
-              Forgot <a href="">Password?</a><Link to='/signup' className='ms-2' >Sign up</Link>
+              Forgot <a href="">Password?</a>
+              <a href="" className='ms-2' onClick={handleSignUpClick}>Sign up</a> 
             </p>
           </form>
         </div>
       </div>
+
+      
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Body className='text-center custom-font'>
+          <h5 className='mt-3'>What do you want to signup as?</h5>
+          <div className='mt-4 mb-4'>
+          <Link to='/signup' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Company</Link> 
+            <Button variant="primary">Worker</Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+
+
+
+
     </div>
   );
 }
