@@ -1,10 +1,10 @@
-package com.example.CareerConnectapi;
+package com.example.EmoloyerSystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CareerConnectApiApplicationTests {
+class EmoloyerSystemApplicationTests {
 
 	@Test
 	void contextLoads() {
