@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { createCompany } from './Services/CompanyService';
+import { useNavigate } from 'react-router-dom';
 import {
   MDBBtn,
   MDBContainer,
@@ -19,6 +21,8 @@ function Signup() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [openingYear, setOpeningYear] = useState('');
   const [description, setDescription] = useState('');
+
+  const navigator=useNavigate();
 
 
   const [nameTouched, setNameTouched] = useState(false);
@@ -65,11 +69,12 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log('Form submitted successfully!');
-    } else {
-      console.log('Form submission failed. Please check your inputs.');
-    }
+    const company={name, email, address, phone, password, openingYear, description}
+    console.log(company)
+    createCompany(company).then((response)=>{
+      console.log(response.data);
+      navigator('/CompanyList')
+    })
   };
 
   return (
@@ -218,7 +223,7 @@ function Signup() {
                                 padding: '0', 
                             }}
                             >
-                            Sign up
+                            Sign up 
                         </MDBBtn>
 
                     </div>

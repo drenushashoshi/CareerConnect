@@ -26,7 +26,7 @@ public class Company {
     private long phone_number;
     @Column(name="password", nullable = false)
     private String password;
-    @Column(name="opening)", nullable = false)
+    @Column(name="opening_year", nullable = false)
     private int opening_year;
     @Column(name="description", nullable = false)
     private String description;
