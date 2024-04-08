@@ -16,10 +16,10 @@ function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone_number, setphone_number] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [openingYear, setOpeningYear] = useState('');
+  const [opening_year, setopening_year] = useState('');
   const [description, setDescription] = useState('');
 
   const navigator=useNavigate();
@@ -28,10 +28,10 @@ function Signup() {
   const [nameTouched, setNameTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
   const [addressTouched, setAddressTouched] = useState(false);
-  const [phoneTouched, setPhoneTouched] = useState(false);
+  const [phone_numberTouched, setphone_numberTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [repeatPasswordTouched, setRepeatPasswordTouched] = useState(false);
-  const [openingYearTouched, setOpeningYearTouched] = useState(false);
+  const [opening_yearTouched, setopening_yearTouched] = useState(false);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
 
 
@@ -39,42 +39,46 @@ function Signup() {
     const isNameValid = name.trim() !== '';
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const isAddressValid = address.trim() !== '';
-    const isPhoneValid = phone.trim() !== '';
+    const isphone_numberValid = phone_number.trim() !== '';
     const isPasswordValid = password.trim() !== '';
     const isRepeatPasswordValid = repeatPassword === password;
-    const isOpeningYearValid = openingYear.trim() !== '';
+    const isopening_yearValid = opening_year.trim() !== '';
     const isDescriptionValid = description.trim() !== '';
-
-    setNameTouched(true);
-    setEmailTouched(true);
-    setAddressTouched(true);
-    setPhoneTouched(true);
-    setPasswordTouched(true);
-    setRepeatPasswordTouched(true);
-    setOpeningYearTouched(true);
-    setDescriptionTouched(true);
-
+  
+    setNameTouched(!isNameValid);
+    setEmailTouched(!isEmailValid);
+    setAddressTouched(!isAddressValid);
+    setphone_numberTouched(!isphone_numberValid);
+    setPasswordTouched(!isPasswordValid);
+    setRepeatPasswordTouched(!isRepeatPasswordValid);
+    setopening_yearTouched(!isopening_yearValid);
+    setDescriptionTouched(!isDescriptionValid);
   
     return (
       isNameValid &&
       isEmailValid &&
       isAddressValid &&
-      isPhoneValid &&
+      isphone_numberValid &&
       isPasswordValid &&
       isRepeatPasswordValid &&
-      isOpeningYearValid &&
+      isopening_yearValid &&
       isDescriptionValid
     );
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    const company={name, email, address, phone, password, openingYear, description}
-    console.log(company)
-    createCompany(company).then((response)=>{
-      console.log(response.data);
-      navigator('/CompanyList')
-    })
+    
+    const isFormValid = validateForm(); 
+  
+    if (isFormValid) {
+      const company = { name, email, address, phone_number, password, opening_year, description };
+      console.log(company);
+      createCompany(company).then((response) => {
+        console.log(response.data);
+        navigator('/CompanyList');
+      });
+    }
   };
 
   return (
@@ -136,15 +140,15 @@ function Signup() {
                     <MDBCol md='6'>
                       <MDBInput
                         wrapperClass='mt-4'
-                        placeholder='Phone'
-                        id='phone'
+                        placeholder='Phone Number'
+                        id='phone_number'
                         type='text'
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        onBlur={() => setPhoneTouched(true)}
-                        invalid={phoneTouched && !phone.trim()}
+                        value={phone_number}
+                        onChange={(e) => setphone_number(e.target.value)}
+                        onBlur={() => setphone_numberTouched(true)}
+                        invalid={phone_numberTouched && !phone_number.trim()}
                       />
-                      {phoneTouched && !phone.trim() && <div className="text-danger">Phone is required</div>}
+                      {phone_numberTouched && !phone_number.trim() && <div className="text-danger">phone_number is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -180,14 +184,14 @@ function Signup() {
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Opening year'
-                        id='openingYear'
+                        id='opening_year'
                         type='text'
-                        value={openingYear}
-                        onChange={(e) => setOpeningYear(e.target.value)}
-                        onBlur={() => setOpeningYearTouched(true)}
-                        invalid={openingYearTouched && !openingYear.trim()}
+                        value={opening_year}
+                        onChange={(e) => setopening_year(e.target.value)}
+                        onBlur={() => setopening_yearTouched(true)}
+                        invalid={opening_yearTouched && !opening_year.trim()}
                       />
-                      {openingYearTouched && !openingYear.trim() && <div className="text-danger">Opening year is required</div>}
+                      {opening_yearTouched && !opening_year.trim() && <div className="text-danger">Opening year is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <div className="mt-4 mb-4">

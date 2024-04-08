@@ -18,16 +18,22 @@ public class Company {
     private int id;
     @Column(name="name", nullable = false)
     private String name;
+
     @Column(name="email", nullable = false)
     private String email;
+
     @Column(name="address", nullable = false)
     private String address;
+
     @Column(name="phone_number", nullable = false)
-    private long phone_number;
+    private String phone_number;
+
     @Column(name="password", nullable = false)
     private String password;
+
     @Column(name="opening_year", nullable = false)
     private int opening_year;
+
     @Column(name="description", nullable = false)
     private String description;
 

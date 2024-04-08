@@ -15,7 +15,7 @@ public class CompanyDto {
     private String name;
     private String email;
     private String address;
-    private long phone_number;
+    private String phone_number;
     private String password;
     private int opening_year;
     private String description;
