@@ -33,11 +33,7 @@ function CostumNavbar() {
                         <NavDropdown.Item href="#">Praktike</NavDropdown.Item>
                         <NavDropdown.Item href="#">Kurse</NavDropdown.Item>
                     </NavDropdown>
-                    <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
-                        <NavDropdown.Item href="./PostJob">Posto Pune</NavDropdown.Item>
-                        <NavDropdown.Item href="#">Posto Praktike</NavDropdown.Item>
-                        <NavDropdown.Item href="#">Posto Kurse</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link href="#" className="nav-item nav-link">Posto shpallje</Nav.Link>
                 </Nav>
                 <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Your Profile<i className="fa fa-arrow-right ms-3"></i></Button>
             </Navbar.Collapse>
