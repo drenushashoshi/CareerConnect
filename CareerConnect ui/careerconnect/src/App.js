@@ -5,6 +5,7 @@ import Login from './Login';
 import Signup from './Signup';
 import JobListing from './JobListing';
 import CompanyList from './CompanyList';
+import PostJob from "./PostJob";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -16,6 +17,7 @@ function App() {
           <Route path='/signup' element={<Signup/>}></Route>
           <Route path='/jobListing' element={<JobListing/>}></Route>
           <Route path='/CompanyList' element={<CompanyList/>}></Route>
+          <Route path='/postJob' element={<PostJob/>}></Route>
       </Routes>
     </BrowserRouter>
   );

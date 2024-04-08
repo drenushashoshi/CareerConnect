@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Modal, Form } from 'react-bootstrap';
-import backgroundImage from './login-test2.avif';
-import CostumNavbar from "./CostumNavbar"; // Importing the Navbar component
+import CostumNavbar from "./CostumNavbar";
 
 function JobListing() {
     const [showModal, setShowModal] = useState(false);
