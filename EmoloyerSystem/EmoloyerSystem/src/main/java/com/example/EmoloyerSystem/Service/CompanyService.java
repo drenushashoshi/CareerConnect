@@ -13,4 +13,7 @@ public interface CompanyService {
     CompanyDto updateCompany(Integer companyId, CompanyDto updatedCompany);
 
     void deleteCompany(Integer companyId);
+
+    boolean authenticateCompany(String email, String password);
+
 }

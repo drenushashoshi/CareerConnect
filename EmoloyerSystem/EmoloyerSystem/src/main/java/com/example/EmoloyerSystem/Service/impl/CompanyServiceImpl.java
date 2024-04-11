@@ -65,4 +65,10 @@ public class CompanyServiceImpl implements CompanyService {
         );
         companyRepository.deleteById(companyId);
     }
+
+    @Override
+    public boolean authenticateCompany(String email, String password) {
+        Company company = companyRepository.findByEmail(email);
+        return company != null && company.getPassword().equals(password);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.EmoloyerSystem.Controller;
 
 import com.example.EmoloyerSystem.Service.CompanyService;
 import com.example.EmoloyerSystem.dto.CompanyDto;
+import com.example.EmoloyerSystem.dto.CompanyLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,15 @@ public class CompanyController {
         companyService.deleteCompany(companyId);
         return ResponseEntity.ok("Company Deleted");
     }
-
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody CompanyLogin loginDto) {
+        boolean isAuthenticated = companyService.authenticateCompany(loginDto.getEmail(), loginDto.getPassword());
+        if (isAuthenticated) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
+    }
 
 }
