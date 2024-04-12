@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MDBCol,
   MDBContainer,
@@ -9,8 +9,35 @@ import {
   MDBBtn
 } from 'mdb-react-ui-kit';
 import CostumNavbar from "./CostumNavbar";
+import { useParams } from 'react-router-dom';
+import { getCompany } from './Services/CompanyService';
 
-export function CompanyPage() {
+const CompanyPage=()=> {
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone_number, setphone_number] = useState('');
+  const [opening_year, setopening_year] = useState('');
+  const [description, setDescription] = useState('');
+
+  const {id}=useParams();
+
+  useEffect(()=>{
+    if(id){
+      getCompany(id).then((response)=>{
+        setName(response.data.name);
+        setEmail(response.data.email);
+        setAddress(response.data.address);
+        setphone_number(response.data.phone_number);
+        setopening_year(response.data.opening_year);
+        setDescription(response.data.description);
+      }).catch(error=>{
+        console.error(error);
+      })
+    }
+  },[id])
+
   return (
       <><CostumNavbar /><MDBContainer className="py-5">
 
@@ -23,8 +50,8 @@ export function CompanyPage() {
                 className="rounded-circle"
                 style={{ width: '100px' }}
                 fluid />
-              <p className="text-muted mb-1">Name</p>
-              <p className="text-muted mb-4">Address</p>
+              <p className="text-muted mb-1">{name}</p>
+              <p className="text-muted mb-4">{address}</p>
               <div className="d-flex justify-content-center mb-2">
                 <MDBBtn>Edit Profile</MDBBtn>
               </div>
@@ -39,7 +66,7 @@ export function CompanyPage() {
                   <MDBCardText>Email</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">x@gmail.com</MDBCardText>
+                  <MDBCardText className="text-muted">{email}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -48,7 +75,7 @@ export function CompanyPage() {
                   <MDBCardText>Phone Number</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">00000000</MDBCardText>
+                  <MDBCardText className="text-muted">{phone_number}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -57,7 +84,7 @@ export function CompanyPage() {
                   <MDBCardText>Opening Year</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">2018</MDBCardText>
+                  <MDBCardText className="text-muted">{opening_year}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -66,7 +93,7 @@ export function CompanyPage() {
                   <MDBCardText>Description</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">............</MDBCardText>
+                  <MDBCardText className="text-muted">{description}</MDBCardText>
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>

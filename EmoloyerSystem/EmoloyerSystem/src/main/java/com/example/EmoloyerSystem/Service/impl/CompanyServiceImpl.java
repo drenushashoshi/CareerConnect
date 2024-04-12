@@ -67,8 +67,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean authenticateCompany(String email, String password) {
+    public Integer authenticateCompany(String email, String password) {
         Company company = companyRepository.findByEmail(email);
-        return company != null && company.getPassword().equals(password);
+        if (company != null && company.getPassword().equals(password)) {
+            return company.getId();
+        }
+        return null; // Authentication failed
     }
 }

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { listCompanies } from './Services/CompanyService'
+import { useNavigate } from 'react-router-dom';
 
 const CompanyList = () => {
 
@@ -13,6 +14,13 @@ const CompanyList = () => {
         })
 
     }, [])
+
+    const navigator=useNavigate();
+
+    function updateCompany(id){
+        navigator(`/CompanyPage/${id}`);
+        console.log(id);
+    }
 
   return (
     <div className='container'>
@@ -28,6 +36,7 @@ const CompanyList = () => {
                     <th>Password</th>
                     <th>Opening_year</th>
                     <th>Description</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +51,9 @@ const CompanyList = () => {
                             <td>{company.password}</td>
                             <td>{company.opening_year}</td>
                             <td>{company.description}</td>
+                            <td>
+                                <button className='btn btn-info' onClick={()=>updateCompany(company.id)}>Update</button>
+                            </td>
 
                         </tr>
                     )

@@ -20,6 +20,7 @@ function App() {
           <Route path='/CompanyList' element={<CompanyList/>}></Route>
           <Route path='/CompanyPage' element={<CompanyPage/>}></Route>
           <Route path='/postJob' element={<PostJob/>}></Route>
+          <Route path='/CompanyPage/:id' element={<CompanyPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );

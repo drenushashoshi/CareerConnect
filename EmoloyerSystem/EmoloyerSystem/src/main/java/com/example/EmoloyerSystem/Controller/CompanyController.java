@@ -53,10 +53,10 @@ public class CompanyController {
     }
     // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody CompanyLogin loginDto) {
-        boolean isAuthenticated = companyService.authenticateCompany(loginDto.getEmail(), loginDto.getPassword());
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
+    public ResponseEntity<?> login(@RequestBody CompanyLogin loginDto) {
+        Integer companyId = companyService.authenticateCompany(loginDto.getEmail(), loginDto.getPassword());
+        if (companyId != null) {
+            return ResponseEntity.ok(companyId); // Return company ID upon successful login
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }

@@ -28,7 +28,9 @@ function Login() {
     authenticateCompany(data)
       .then((response) => {
         console.log("Successful login!");
-        navigator('/CompanyPage');
+        const id=response.data;
+        localStorage.setItem('id', id);
+        navigator(`/CompanyPage/${id}`);
       })
       .catch((error) => {
         console.error("Login failed:", error);

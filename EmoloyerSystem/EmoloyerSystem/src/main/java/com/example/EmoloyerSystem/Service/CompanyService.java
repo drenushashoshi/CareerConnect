@@ -14,6 +14,6 @@ public interface CompanyService {
 
     void deleteCompany(Integer companyId);
 
-    boolean authenticateCompany(String email, String password);
+    Integer authenticateCompany(String email, String password);
 
 }
