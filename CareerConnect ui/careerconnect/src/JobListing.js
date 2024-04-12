@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Card, Button, Modal, Form } from 'react-bootstrap';
-import backgroundImage from './login-test2.avif';
-import CostumNavbar from "./CostumNavbar"; // Importing the Navbar component
+import React, { useState, useEffect } from 'react';
+import { Button, Card } from 'react-bootstrap';
+import CustomNavbar from './CostumNavbar';
+import { listJobs } from './Services/JobService';
 
 function JobListing() {
-    const [showModal, setShowModal] = useState(false);
+    const [jobs, setJobs] = useState([]);
     const locations = [
         'Deçan', 'Dragash', 'Drenas', 'Ferizaj', 'Fushë Kosovë', 'Gjakovë', 'Gjilan', 'Burim',
         'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
@@ -12,9 +12,22 @@ function JobListing() {
         'Viti', 'Vushtrri'
     ];
 
+    useEffect(() => {
+        fetchJobs();
+    }, []);
+
+    const fetchJobs = async () => {
+        try {
+            const response = await listJobs();
+            setJobs(response.data);
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+        }
+    };
+
     const handleApplyClick = () => {
         // Logic for applying to the job
-        console.log('Applied to the job');
+        console.log('Job page');
     };
 
     const handleWebpageLink = (url) => {
@@ -23,7 +36,7 @@ function JobListing() {
 
     return (
         <>
-            <CostumNavbar />
+            <CustomNavbar />
             {/* Search Start */}
             <div className="container-fluid bg-primary py-5">
                 <div className="container">
@@ -33,38 +46,8 @@ function JobListing() {
                         </div>
                         <div className="col-md-3">
                             <select className="form-select">
-                                    <option value="">Industria</option>
-                                    <option value="administrata">Administratë</option>
-                                    <option value="arkitekture">Arkitekturë</option>
-                                    <option value="art_dhe_kulture">Art dhe Kulturë</option>
-                                    <option value="banka">Banka</option>
-                                    <option value="industria_automobilistike">Industria Automobilistike</option>
-                                    <option value="retail_dhe_distribuim">Retail dhe Distribuim</option>
-                                    <option value="ndertimtari_patundshmeri">Ndërtimtari & Patundshmëri</option>
-                                    <option value="mbeshtetje_konsumatoreve_call_center">Mbështetje e Konsumatorëve, Call Center</option>
-                                    <option value="ekonomi_financ_kontabilitet">Ekonomi, Financë, Kontabilitet</option>
-                                    <option value="edukim_shkence_hulumtim">Edukim, Shkencë & Hulumtim</option>
-                                    <option value="pune_te_pergjithshme">Punë të Përgjithshme</option>
-                                    <option value="burime_njerzore">Burime Njerëzore</option>
-                                    <option value="teknologji_informacionit">Teknologji e Informacionit</option>
-                                    <option value="gazetari_shtyp_media">Gazetari, Shtyp & Media</option>
-                                    <option value="ligj_legjislacion">Ligj & Legjislacion</option>
-                                    <option value="menaxhment">Menaxhment</option>
-                                    <option value="marketing_reklamim_pr">Marketing, Reklamim & PR</option>
-                                    <option value="inxhinieri">Inxhinieri</option>
-                                    <option value="shendetesi_medicin">Shëndetësi, Medicinë</option>
-                                    <option value="industri_farmaceutike">Industri Farmaceutike</option>
-                                    <option value="prodhim">Prodhim</option>
-                                    <option value="sherbime_publike_qeveritare">Shërbime Publike, Qeveritare</option>
-                                    <option value="siguri_mbrojtje">Siguri & Mbrojtje</option>
-                                    <option value="industri_sherbimit">Industri të Shërbimit</option>
-                                    <option value="telekomunikim">Telekomunikim</option>
-                                    <option value="tekstil_lekure_veshembathje">Tekstil, Lëkurë, Industri Veshëmbathjeje</option>
-                                    <option value="menaxhment_ekzekutiv">Menaxhment Ekzekutiv</option>
-                                    <option value="gastronomi_hoteleri_turizem">Gastronomi, Hoteleri, Turizëm</option>
-                                    <option value="perkthim_interpretim">Përkthim, Interpretim</option>
-                                    <option value="transport_logjistike">Transport, Logjistikë</option>
-                                    <option value="industri_perpunimit_drurit">Industri e Përpunimit të Drurit</option>
+                                <option value="">Industria</option>
+                                {/* Options for industries */}
                             </select>
                         </div>
                         <div className="col-md-3">
@@ -82,6 +65,25 @@ function JobListing() {
                 </div>
             </div>
             {/* Search End */}
+
+            {/* Job Listing Start */}
+            <div className="container mt-5">
+                <div className="row">
+                    {jobs.map(job => (
+                        <div key={job.id} className="col-md-4 mb-4">
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>{job.title}</Card.Title>
+                                    <Card.Text>{job.description}</Card.Text>
+                                    <Button variant="primary" onClick={handleApplyClick}>Apply</Button>
+                                    <Button variant="link" onClick={() => handleWebpageLink(job.url)}>More Info</Button>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {/* Job Listing End */}
         </>
     );
 }
