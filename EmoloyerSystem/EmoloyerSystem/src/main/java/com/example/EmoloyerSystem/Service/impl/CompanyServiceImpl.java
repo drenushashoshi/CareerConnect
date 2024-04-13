@@ -49,7 +49,6 @@ public class CompanyServiceImpl implements CompanyService {
         company.setEmail(updatedCompany.getEmail());
         company.setAddress(updatedCompany.getAddress());
         company.setPhone_number(updatedCompany.getPhone_number());
-        company.setPassword(updatedCompany.getPassword());
         company.setOpening_year(updatedCompany.getOpening_year());
         company.setDescription(updatedCompany.getDescription());
 

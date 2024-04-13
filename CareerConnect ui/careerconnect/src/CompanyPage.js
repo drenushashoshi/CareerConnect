@@ -11,6 +11,7 @@ import {
 import CostumNavbar from "./CostumNavbar";
 import { useParams } from 'react-router-dom';
 import { getCompany } from './Services/CompanyService';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyPage=()=> {
 
@@ -38,6 +39,13 @@ const CompanyPage=()=> {
     }
   },[id])
 
+  const navigator=useNavigate();
+
+  function updateCompany(id){
+    navigator(`/EditCompanyProfile/${id}`);
+    console.log(id);
+  }
+
   return (
       <><CostumNavbar /><MDBContainer className="py-5">
 
@@ -53,7 +61,7 @@ const CompanyPage=()=> {
               <p className="text-muted mb-1">{name}</p>
               <p className="text-muted mb-4">{address}</p>
               <div className="d-flex justify-content-center mb-2">
-                <MDBBtn>Edit Profile</MDBBtn>
+                <MDBBtn onClick={()=>updateCompany(id)}>Edit Profile</MDBBtn>
               </div>
             </MDBCardBody>
           </MDBCard>
