@@ -57,15 +57,6 @@ public class ApplicationService {
         applicationRepository.save(application);
         return Resume;
     }
-    public List<Application> getApplicationsByCompanyID(int ID)
-    {
-        return applicationRepository.findByCompanyID(ID);
-    }
-    public List<Application> getApplicationsByWorkerID(int ID)
-    {
-        return applicationRepository.findByWorkerID(ID);
-    }
-
 
     private final Function<String,String> fileExtension = filename-> Optional.of(filename).filter(name-> name.contains("."))
             .map(name-> "."+name.substring(filename.lastIndexOf(".")+1)).orElse(".pdf");

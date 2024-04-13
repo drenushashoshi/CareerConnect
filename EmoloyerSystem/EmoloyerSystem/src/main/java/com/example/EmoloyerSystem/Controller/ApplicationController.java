@@ -38,16 +38,6 @@ public class ApplicationController {
     {
         return ResponseEntity.ok().body(applicationService.getApplication(ID));
     }
-    @GetMapping("/Company{ID}/Applications")
-    public ResponseEntity<List<Application>> getApplicationsByCompanyID(@PathVariable(value = "ID")int CompanyID)
-    {
-        return ResponseEntity.ok().body(applicationService.getApplicationsByCompanyID(CompanyID));
-    }
-    @GetMapping("/Worker{ID}/Application")
-    public ResponseEntity<List<Application>> getApplicationsByWorkerID(@PathVariable(value = "ID")int WorkerID)
-    {
-        return ResponseEntity.ok().body(applicationService.getApplicationsByWorkerID(WorkerID));
-    }
     @PutMapping("/resume")
     public ResponseEntity<String> uploadResume(@RequestParam("ID")Long ID, @RequestParam("file")MultipartFile file)
     {

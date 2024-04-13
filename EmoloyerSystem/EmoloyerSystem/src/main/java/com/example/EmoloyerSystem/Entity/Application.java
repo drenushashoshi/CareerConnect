@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
+
 import org.hibernate.annotations.NaturalId;
 
 
@@ -30,10 +33,4 @@ public class Application {
     @Column(name="Age", nullable = false)
     private int age;
     private String Document;
-    @ManyToOne
-    @JoinColumn(name = "WorkerID", nullable = false)
-    private int WorkerID;
-    @ManyToMany
-    @JoinColumn(name = "CompanyID", nullable = false)
-    private int CompanyID;
 }

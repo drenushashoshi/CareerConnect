@@ -9,8 +9,4 @@ import java.util.Optional;
 public interface ApplicationRepository extends JpaRepository<Application,Long> {
 
     Optional<Application>findByID(Long ID);
-
-    List<Application> findByCompanyID(int id);
-
-    List<Application> findByWorkerID(int id);
 }
