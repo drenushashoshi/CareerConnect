@@ -31,16 +31,12 @@ public class Job {
     private String location;
 
     @Column(name="salary")
-    private Double salary;
+    private String salary;
 
     @Column(name="jobType", nullable = false)
     private String jobType;
 
     @Column(name="deadline", nullable = false)
-    private Date deadline;
-
-    public Double getSalary() {
-        return this.salary != null ? this.salary : 0.0;
-    }
+    private String deadline;
 
 }

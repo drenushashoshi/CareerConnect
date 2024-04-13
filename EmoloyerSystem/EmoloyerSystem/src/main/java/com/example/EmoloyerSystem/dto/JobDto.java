@@ -17,8 +17,8 @@ public class JobDto {
     private String description;
     private String requirements;
     private String location;
-    private double salary;
+    private String salary;
     private String jobType;
-    private Date deadline;
+    private String deadline;
 
 }

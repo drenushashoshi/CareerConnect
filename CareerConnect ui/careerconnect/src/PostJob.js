@@ -17,14 +17,14 @@ function PostJob() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        console.log(`Value changed for ${name}: ${value}`);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await createJob(formData);
-            if (response.status === 200) {
+            console.log(response);
+            if (response.status === 201) {
                 // Job posting successfully created
                 console.log('Job posting created successfully');
                 // Reset form
@@ -42,7 +42,7 @@ function PostJob() {
                 console.error('Failed to create job posting');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:', error);
         }
     };
 
