@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Applications")
+@RequestMapping("/api/Applications")
 @RequiredArgsConstructor
 public class ApplicationController {
 
@@ -38,12 +38,12 @@ public class ApplicationController {
     {
         return ResponseEntity.ok().body(applicationService.getApplication(ID));
     }
-    @GetMapping("/Company/Applications")
+    @GetMapping("/Company{ID}/Applications")
     public ResponseEntity<List<Application>> getApplicationsByCompanyID(@PathVariable(value = "ID")int CompanyID)
     {
         return ResponseEntity.ok().body(applicationService.getApplicationsByCompanyID(CompanyID));
     }
-    @GetMapping("/Worker/Application")
+    @GetMapping("/Worker{ID}/Application")
     public ResponseEntity<List<Application>> getApplicationsByWorkerID(@PathVariable(value = "ID")int WorkerID)
     {
         return ResponseEntity.ok().body(applicationService.getApplicationsByWorkerID(WorkerID));
