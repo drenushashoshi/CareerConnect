@@ -32,5 +32,11 @@ public class Application {
     private String PhoneNr;
     @Column(name="Age", nullable = false)
     private int age;
+    @Column(name="Country", nullable = false)
+    private String City;
+    @Column(name="Description", nullable = false)
+    private String Description;
+    @Column(name="Gender", nullable = false)
+    private char Gender;
     private String Document;
 }

@@ -12,7 +12,7 @@ export async function getApplications(page = 0, size = 10)
 }
 export async function getApplication(id)
 {
-    return await axios.post(`${API_URL}/${id}`); 
+    return await axios.get(`${API_URL}/${id}`); 
 }
 export async function updateApplication(Application)
 {
@@ -20,7 +20,7 @@ export async function updateApplication(Application)
 }
 export async function updateResume(formData)
 {
-    return await axios.put(`${API_URL}/photo`,formData); 
+    return await axios.put(`${API_URL}/CV`,formData); 
 }
 export async function deleteApplication(id)
 {

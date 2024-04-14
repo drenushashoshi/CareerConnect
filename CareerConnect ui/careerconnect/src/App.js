@@ -9,6 +9,9 @@ import CompanyPage from './CompanyPage';
 import EditCompanyProfile from './EditCompanyProfile';
 import PostJob from "./PostJob";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Application from './Applications/Application';
+import ApplicationList from './Applications/ApplicationList';
+import ApplicationDetail from './Applications/ApplicationDetail';
 
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
           <Route path='/CompanyPage/:id' element={<CompanyPage/>}></Route>
           <Route path='/EditCompanyProfile' element={<EditCompanyProfile/>}></Route>
           <Route path='/EditCompanyProfile/:id' element={<EditCompanyProfile/>}></Route>
+          <Route path='/ApplicationForm' element={<Application/>}></Route>
+          <Route path='/ApplicationList' element={<ApplicationList/>}></Route>
+          <Route path='/Application/:id' element={<ApplicationDetail/>}></Route>
       </Routes>
     </BrowserRouter>
   );
