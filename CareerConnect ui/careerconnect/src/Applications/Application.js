@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { getApplications, saveApplication, updateResume } from '../Services/ApplicationService';
+import { getApplications, createApplication, updateResume } from '../Services/ApplicationService';
 
 const Application = () => {
-
+    
     const fileRef = useRef();
     const [file, setFile] =useState(undefined);
     const [values,setValues] = useState({
@@ -16,14 +16,10 @@ const Application = () => {
     const onChange = (event) => {
         setValues({...values,[event.target.name]:event.target.value})
     }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Selected gender:', values.Gender);
-      };
     const handleNewApplication = async (event) => {
         event.preventDefault();
         try{
-            const {data} = await saveApplication(values);
+            const {data} = await createApplication(values);
             const formData = new formData();
             formData.append('file',file,file.name);
             formData.append('id',data.id);
@@ -43,97 +39,94 @@ const Application = () => {
         {
             console.log(error);
         }
-
-        const updateResume = async (formData) =>{
-            try{
-                const {data:Resume} = await updateResume(formData);
-            }
-            catch(error)
-            {
-                console.log(error);
-            }
-        };
-        const updateApplication = async (Application) =>
+    }
+    const updateResume = async (formData) => {
+        try {
+            const { data: Resume } = await updateResume(formData);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const updateApplication = async (Application) =>
     {
         try{
-            const {data} =await saveApplication(Application);
+            const {data} =await createApplication(Application);
 
         }
         catch(error)
         {
             console.log(error);
         }
-    }
-
-    }
-    return (
-            <div class="container">
+    };
+  return (
+    <>
+        <div className="container">
                 <div className='modal__header'>
                 </div>
-                <div class="row mx-0 justify-content-center">
-                    <div class="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
+                <div className="row mx-0 justify-content-center">
+                    <div className="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
                         <form onSubmit={handleNewApplication}
                             method="POST"
-                            class="w-100 rounded-1 p-4 border bg-white"
+                            className="w-100 rounded-1 p-4 border bg-white"
                             action="https://herotofu.com/start"
-                            enctype="multipart/form-data"
+                            encType="multipart/form-data"
                         >
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">Your name</span>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Your name</span>
                                 <input
                                     required
                                     name="name"
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     placeholder="Filan Fisteku"
                                     value={values.name}
                                     onChange={onChange}
                                 />
                             </label>
 
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">Email address</span>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Email address</span>
                                 <input
                                     required
                                     name="email"
                                     type="email"
-                                    class="form-control"
+                                    className="form-control"
                                     placeholder="Filan.Fisteku@example.com"
                                     value={values.email}
                                     onChange={onChange}
                                 />
                             </label>
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">City</span>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">City</span>
                                 <input
                                     required
                                     name="City"
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     placeholder="Prishtine"
                                     value={values.city}
                                     onChange={onChange}
                                 />
                             </label>
 
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">Age</span>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Age</span>
                                 <input
                                     required
                                     name="Age"
                                     type="number"
-                                    class="form-control"
+                                    className="form-control"
                                     placeholder=""
                                     value={values.Age}
                                     onChange={onChange}
                                 />
                             </label>
 
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">Tell us more about yourself</span>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Tell us more about yourself</span>
                                 <textarea
                                     name="Description"
-                                    class="form-control"
+                                    className="form-control"
                                     rows="3"
                                     placeholder="What motivates you?"
                                     value={values.Description}
@@ -141,49 +134,49 @@ const Application = () => {
                                 ></textarea>
                             </label>
 
-                            <label class="d-block mb-4">
-                                <span class="form-label d-block">Your CV (Must be a PDF file)</span>
-                                <input required name="cv" type="file" onChange={(event)=>setFile(event.target.files[0])} ref={fileRef} class="form-control" />
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Your CV (Must be a PDF file)</span>
+                                <input required name="cv" type="file" onChange={(event)=>setFile(event.target.files[0])} ref={fileRef} className="form-control" />
                             </label>
 
-                            <div class="mb-4">
-                                <span class="form-label d-block">Gender</span>
+                            <div className="mb-4">
+                                <span className="form-label d-block">Gender</span>
                                 <div>
-                                    <div class="form-check">
-                                        <label class="d-block">
+                                    <div className="form-check">
+                                        <label className="d-block">
                                             <input
                                             id='male'
                                                 type="radio"
-                                                class="form-check-input"
+                                                className="form-check-input"
                                                 name="Gender"
                                                 value="male"
                                                 checked={values.Gender === 'male'}
                                                 onChange={onChange}
                                             />
-                                            <span class="form-check-label"
+                                            <span className="form-check-label"
                                             >Male</span
                                             >
                                         </label>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="form-check">
+                                    <label className="form-check">
                                         <input
                                             id='female'
                                             type="radio"
-                                            class="form-check-input"
+                                            className="form-check-input"
                                             name="Gender"
                                             value="female"
                                             checked={values.Gender === 'female'}
                                             onChange={onChange}
                                         />
-                                        <span class="form-check-label">Female</span>
+                                        <span className="form-check-label">Female</span>
                                     </label>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary px-3 rounded-3">
+                            <div className="mb-3">
+                                <button type="submit" className="btn btn-primary px-3 rounded-3">
                                     Upload
                                 </button>
                             </div>
@@ -191,6 +184,7 @@ const Application = () => {
                     </div>
                 </div>
             </div>
+    </>
   )
 }
 

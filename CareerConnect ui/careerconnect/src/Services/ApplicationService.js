@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/Applications';
 
-export async function saveApplication(Application)
+export async function createApplication(Application)
 {
     return await axios.post(API_URL,Application);
-}
+}   
 export async function getApplications(page = 0, size = 10)
 {
     return await axios.get(`${API_URL}?page=${page}&size=${size}`); 

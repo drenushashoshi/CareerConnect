@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/Applications")
 @RequiredArgsConstructor
 public class ApplicationController {
@@ -25,7 +26,8 @@ public class ApplicationController {
     @PostMapping
     public ResponseEntity<Application> createApplication(@RequestBody Application Application)
     {
-        return ResponseEntity.created(URI.create("/applications/<application ID>")).body(applicationService.createApplication(Application));
+        return ResponseEntity.ok().body(applicationService.createApplication(Application));
+        //return ResponseEntity.created(URI.create("api/Applications/ApplicationID")).body(applicationService.createApplication(Application));
     }
     @GetMapping
     public ResponseEntity<Page<Application>> getAllApplications(@RequestParam(value = "page",defaultValue = "0") int page,

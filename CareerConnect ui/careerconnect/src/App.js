@@ -27,7 +27,7 @@ function App() {
           <Route path='/CompanyPage/:id' element={<CompanyPage/>}></Route>
           <Route path='/EditCompanyProfile' element={<EditCompanyProfile/>}></Route>
           <Route path='/EditCompanyProfile/:id' element={<EditCompanyProfile/>}></Route>
-          <Route path='/ApplicationForm' element={<Application/>}></Route>
+          <Route path='/Applications' element={<Application/>}></Route>
           <Route path='/ApplicationList' element={<ApplicationList/>}></Route>
           <Route path='/Application/:id' element={<ApplicationDetail/>}></Route>
       </Routes>
