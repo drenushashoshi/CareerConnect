@@ -6,55 +6,38 @@ const Application = () => {
     const fileRef = useRef();
     const [file, setFile] =useState(undefined);
     const [values,setValues] = useState({
-        name: '',
+        city: '',
+        description:'',
         email:'',
-        City: '',
-        Age: '',
-        Description: '',
-        Gender: '',
+        gender: '',
+        name: '',
+        phone_nr: '',
+        age: 0,
     });
     const onChange = (event) => {
         setValues({...values,[event.target.name]:event.target.value})
     }
     const handleNewApplication = async (event) => {
         event.preventDefault();
-        try{
-            const {data} = await createApplication(values);
-            const formData = new formData();
-            formData.append('file',file,file.name);
-            formData.append('id',data.id);
-            const {data:Resume} = await updateResume(formData);
+        try {
+            console.log(values);
+            const { data } = await createApplication(values);
+            const formData = new FormData();
+            formData.append('CV', file, file.name);
+            formData.append('id', data.id);
+            const { data: Resume } = await updateResume(formData);
+            console.log(Resume);
             setFile(undefined);
             fileRef.current.value = null;
-            setValues({
-                name: '',
-                email:'',
-                City: '',
-                Age: '',
-                Description: '',
-                Gender: '',
-            })
-        }
-        catch(error)
-        {
+        } catch (error) {
             console.log(error);
         }
+        
     }
     const updateResume = async (formData) => {
         try {
             const { data: Resume } = await updateResume(formData);
         } catch (error) {
-            console.log(error);
-        }
-    };
-    const updateApplication = async (Application) =>
-    {
-        try{
-            const {data} =await createApplication(Application);
-
-        }
-        catch(error)
-        {
             console.log(error);
         }
     };
@@ -100,11 +83,23 @@ const Application = () => {
                                 <span className="form-label d-block">City</span>
                                 <input
                                     required
-                                    name="City"
+                                    name="city"
                                     type="text"
                                     className="form-control"
                                     placeholder="Prishtine"
                                     value={values.city}
+                                    onChange={onChange}
+                                />
+                            </label>
+                            <label className="d-block mb-4">
+                                <span className="form-label d-block">Phone Number</span>
+                                <input
+                                    required
+                                    name="phone_nr"
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="xxx-xxx-xxx"
+                                    value={values.phone_nr}
                                     onChange={onChange}
                                 />
                             </label>
@@ -113,11 +108,11 @@ const Application = () => {
                                 <span className="form-label d-block">Age</span>
                                 <input
                                     required
-                                    name="Age"
+                                    name="age"
                                     type="number"
                                     className="form-control"
                                     placeholder=""
-                                    value={values.Age}
+                                    value={values.age}
                                     onChange={onChange}
                                 />
                             </label>
@@ -125,11 +120,11 @@ const Application = () => {
                             <label className="d-block mb-4">
                                 <span className="form-label d-block">Tell us more about yourself</span>
                                 <textarea
-                                    name="Description"
+                                    name="description"
                                     className="form-control"
                                     rows="3"
                                     placeholder="What motivates you?"
-                                    value={values.Description}
+                                    value={values.description}
                                     onChange={onChange}
                                 ></textarea>
                             </label>
@@ -148,9 +143,9 @@ const Application = () => {
                                             id='male'
                                                 type="radio"
                                                 className="form-check-input"
-                                                name="Gender"
+                                                name="gender"
                                                 value="male"
-                                                checked={values.Gender === 'male'}
+                                                checked={values.gender === 'male'}
                                                 onChange={onChange}
                                             />
                                             <span className="form-check-label"
@@ -165,9 +160,9 @@ const Application = () => {
                                             id='female'
                                             type="radio"
                                             className="form-check-input"
-                                            name="Gender"
+                                            name="gender"
                                             value="female"
-                                            checked={values.Gender === 'female'}
+                                            checked={values.gender === 'female'}
                                             onChange={onChange}
                                         />
                                         <span className="form-check-label">Female</span>

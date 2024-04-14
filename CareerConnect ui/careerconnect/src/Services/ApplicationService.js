@@ -1,28 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:8080/api/Applications';
+const REST_API_BASE_URL='http://localhost:8080/api/applications';
 
-export async function createApplication(Application)
-{
-    return await axios.post(API_URL,Application);
-}   
-export async function getApplications(page = 0, size = 10)
-{
-    return await axios.get(`${API_URL}?page=${page}&size=${size}`); 
-}
-export async function getApplication(id)
-{
-    return await axios.get(`${API_URL}/${id}`); 
-}
-export async function updateApplication(Application)
-{
-    return await axios.post(API_URL,Application); 
-}
-export async function updateResume(formData)
-{
-    return await axios.put(`${API_URL}/CV`,formData); 
-}
-export async function deleteApplication(id)
-{
-    return await axios.delete(`${API_URL}/${id}`); 
-}
+export const getApplications=()=>axios.get(REST_API_BASE_URL);
+export const createApplication=(Application)=> axios.post(REST_API_BASE_URL, Application);
+export const getApplication=(ApplicationID)=>axios.get(REST_API_BASE_URL+'/'+ApplicationID);
+export const updateApplication=(ApplicationID, Application)=>axios.put(REST_API_BASE_URL +'/'+ApplicationID, Application);
+export const uploadResume=(file)=>axios.put(REST_API_BASE_URL+'/CV',file);
+export const getResume=(file)=>axios.get(REST_API_BASE_URL+'/resume/'+file);
+export const deleteApplication=(ApplicationID)=>axios.delete(REST_API_BASE_URL+'/'+ApplicationID);
