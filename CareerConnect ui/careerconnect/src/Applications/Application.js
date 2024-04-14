@@ -16,6 +16,10 @@ const Application = () => {
     const onChange = (event) => {
         setValues({...values,[event.target.name]:event.target.value})
     }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('Selected gender:', values.Gender);
+      };
     const handleNewApplication = async (event) => {
         event.preventDefault();
         try{
@@ -49,7 +53,17 @@ const Application = () => {
                 console.log(error);
             }
         };
-        const updateApplication = async () =>{};
+        const updateApplication = async (Application) =>
+    {
+        try{
+            const {data} =await saveApplication(Application);
+
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    }
 
     }
     return (
@@ -138,11 +152,13 @@ const Application = () => {
                                     <div class="form-check">
                                         <label class="d-block">
                                             <input
+                                            id='male'
                                                 type="radio"
                                                 class="form-check-input"
                                                 name="Gender"
                                                 value="male"
-                                                checked={values.Gender === 'M'}
+                                                checked={values.Gender === 'male'}
+                                                onChange={onChange}
                                             />
                                             <span class="form-check-label"
                                             >Male</span
@@ -153,11 +169,13 @@ const Application = () => {
                                 <div>
                                     <label class="form-check">
                                         <input
+                                            id='female'
                                             type="radio"
                                             class="form-check-input"
                                             name="Gender"
                                             value="female"
-                                            checked={values.Gender === 'F'}
+                                            checked={values.Gender === 'female'}
+                                            onChange={onChange}
                                         />
                                         <span class="form-check-label">Female</span>
                                     </label>
@@ -166,7 +184,7 @@ const Application = () => {
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary px-3 rounded-3">
-                                    Save
+                                    Upload
                                 </button>
                             </div>
                         </form>

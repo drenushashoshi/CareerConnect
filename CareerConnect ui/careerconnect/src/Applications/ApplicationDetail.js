@@ -18,18 +18,6 @@ const ApplicationDetail = (updateApplication,updateResume) => {
     });
     const {id} = useParams();
 
-    const updateApplication = async (Application) =>
-    {
-        try{
-            const {data} =await saveApplication(Application);
-
-        }
-        catch(error)
-        {
-            console.log(error);
-        }
-    }
-
     const fetchApplication = async (id) =>
     {
         try{

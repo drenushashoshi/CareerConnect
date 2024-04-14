@@ -37,6 +37,6 @@ public class Application {
     @Column(name="Description", nullable = false)
     private String Description;
     @Column(name="Gender", nullable = false)
-    private char Gender;
+    private String Gender;
     private String Document;
 }
