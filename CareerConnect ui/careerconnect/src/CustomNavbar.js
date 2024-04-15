@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function CostumNavbar() {
+function CustomNavbar() {
     const navigate = useNavigate();
 
     const handleProfileButtonClick = () => {
@@ -19,7 +19,7 @@ function CostumNavbar() {
     };
 
     return (
-        <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0">
+        <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0" style={{ marginBottom: '20px' }}>
             <Navbar.Brand href="#" className="d-flex align-items-center text-center py-0 px-4 px-lg-5">
                 <h1 className="m-0 text-primary">CareerConnect</h1>
             </Navbar.Brand>
@@ -29,12 +29,12 @@ function CostumNavbar() {
                     <Nav.Link href="#" className="nav-item nav-link active">Home</Nav.Link>
                     <Nav.Link href="#" className="nav-item nav-link">About</Nav.Link>
                     <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown">
-                        <NavDropdown.Item href="./JobListing">Pune</NavDropdown.Item>
+                        <NavDropdown.Item href="../JobListing">Pune</NavDropdown.Item>
                         <NavDropdown.Item href="#">Praktike</NavDropdown.Item>
                         <NavDropdown.Item href="#">Kurse</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
-                        <NavDropdown.Item href="./PostJob">Posto Pune</NavDropdown.Item>
+                        <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
                         <NavDropdown.Item href="#">Posto Praktike</NavDropdown.Item>
                         <NavDropdown.Item href="#">Posto Kurse</NavDropdown.Item>
                     </NavDropdown>
@@ -45,4 +45,4 @@ function CostumNavbar() {
     );
 }
 
-export default CostumNavbar;
+export default CustomNavbar;

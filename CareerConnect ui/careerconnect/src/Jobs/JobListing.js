@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
-import CustomNavbar from './CostumNavbar';
-import { listJobs } from './Services/JobService';
+import { Link } from 'react-router-dom';
+import CustomNavbar from '../CustomNavbar';
+import { listJobs } from '../Services/JobService';
 
 function JobListing() {
     const [jobs, setJobs] = useState([]);
@@ -10,6 +11,38 @@ function JobListing() {
         'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
         'Besianë', 'Prishtinë', 'Prizren', 'Rahovec', 'Skenderaj', 'Suharekë', 'Shtërpcë', 'Shtime',
         'Viti', 'Vushtrri'
+    ];
+    const categories = [
+        'Administratë',
+        'Arkitekturë',
+        'Art dhe Kulturë',
+        'Banka',
+        'Industria Automobilistike',
+        'Retail dhe Distribuim',
+        'Ndërtimtari & Patundshmëri',
+        'Mbështetje e Konsumatorëve, Call Center',
+        'Ekonomi, Financë, Kontabilitet',
+        'Edukim, Shkencë & Hulumtim',
+        'Punë të Përgjithshme',
+        'Burime Njerëzore',
+        'Teknologji e Informacionit',
+        'Gazetari, Shtyp & Media',
+        'Ligj & Legjislacion',
+        'Menaxhment',
+        'Marketing, Reklamim & PR',
+        'Inxhinieri',
+        'Shëndetësi, Medicinë',
+        'Industri Farmaceutike',
+        'Prodhim',
+        'Siguri & Mbrojtje',
+        'Industri të Shërbimit',
+        'Telekomunikim',
+        'Tekstil, Lëkurë, Industri Veshëmbathjeje',
+        'Menaxhment Ekzekutiv',
+        'Gastronomi, Hoteleri, Turizëm',
+        'Përkthim, Interpretim',
+        'Transport, Logjistikë',
+        'Industri e Përpunimit të Drurit'
     ];
 
     useEffect(() => {
@@ -25,15 +58,6 @@ function JobListing() {
         }
     };
 
-    const handleApplyClick = () => {
-        // Logic for applying to the job
-        console.log('Job page');
-    };
-
-    const handleWebpageLink = (url) => {
-        window.open(url, '_blank');
-    };
-
     return (
         <>
             <CustomNavbar />
@@ -47,8 +71,11 @@ function JobListing() {
                         <div className="col-md-3">
                             <select className="form-select">
                                 <option value="">Industria</option>
-                                {/* Options for industries */}
+                                {categories.map((category, index) => (
+                                    <option key={index} value={category}>{category}</option>
+                                ))}
                             </select>
+
                         </div>
                         <div className="col-md-3">
                             <select className="form-select">
@@ -59,7 +86,7 @@ function JobListing() {
                             </select>
                         </div>
                         <div className="col-md-3">
-                            <Button variant="dark" className="w-100" onClick={() => handleApplyClick()}>Search</Button>
+                            <Button variant="dark" className="w-100">Search</Button>
                         </div>
                     </div>
                 </div>
@@ -74,9 +101,12 @@ function JobListing() {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>{job.title}</Card.Title>
-                                    <Card.Text>{job.description}</Card.Text>
-                                    <Button variant="primary" onClick={handleApplyClick}>Apply</Button>
-                                    <Button variant="link" onClick={() => handleWebpageLink(job.url)}>More Info</Button>
+                                    <Card.Text>
+                                        📍 {job.location}<br />
+                                        🕒 {job.deadline}
+                                    </Card.Text>
+                                    <Link to="/applications" className="btn btn-primary me-2">Apply</Link>
+                                    <Link to={`/job/${job.id}`} className="btn btn-secondary">More Info</Link>
                                 </Card.Body>
                             </Card>
                         </div>

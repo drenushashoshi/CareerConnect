@@ -8,10 +8,10 @@ import {
   MDBCardBody,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import CostumNavbar from "./CostumNavbar";
 import { useParams } from 'react-router-dom';
 import { getCompany, deleteCompany } from './Services/CompanyService';
 import { useNavigate } from 'react-router-dom';
+import CustomNavbar from "./CustomNavbar";
 
 const CompanyPage=()=> {
 
@@ -62,7 +62,7 @@ const CompanyPage=()=> {
 
   return (
       <>
-        <CostumNavbar />
+        <CustomNavbar />
         <MDBContainer className="py-5">
 
 

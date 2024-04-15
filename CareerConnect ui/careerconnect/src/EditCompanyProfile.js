@@ -12,7 +12,7 @@ import {
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCompany, updateCompany } from './Services/CompanyService';
-import CostumNavbar from "./CostumNavbar";
+import CustomNavbar from "./CustomNavbar";
 
 const EditCompanyProfile=()=> {
 
@@ -60,7 +60,7 @@ const EditCompanyProfile=()=> {
 
     return (
         <>
-        <CostumNavbar /><MDBContainer className="py-5"></MDBContainer>
+        <CustomNavbar /><MDBContainer className="py-5"></MDBContainer>
         <MDBContainer className="py-5">
 
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './PostJob.css';
-import CostumNavbar from "./CostumNavbar";
-import { createJob } from './Services/JobService';
+import CostumNavbar from "../CustomNavbar";
+import { createJob } from '../Services/JobService';
+import { Link } from "react-router-dom";
 
 function PostJob() {
     const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function PostJob() {
     });
 
     const [formErrors, setFormErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,6 +51,8 @@ function PostJob() {
                         jobType: '',
                         deadline: ''
                     });
+                    // Display success message
+                    setSuccessMessage('Job posting created successfully!');
                 } else {
                     // Handle error
                     console.error('Failed to create job posting');
@@ -100,18 +104,15 @@ function PostJob() {
 
     return (
         <>
-            <CostumNavbar />
+            <CostumNavbar/>
             <div className="post-job-container">
                 <h1 className="post-job-title">Posto Pune</h1>
                 <form className="post-job-form" onSubmit={handleSubmit}>
-                    <input type="text" name="title" value={formData.title} onChange={handleChange}
-                           placeholder="Titulli"/>
+                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Titulli" />
                     {formErrors.title && <span className="error">{formErrors.title}</span>}
-                    <textarea name="description" value={formData.description} onChange={handleChange}
-                              placeholder="Pershkrimi"></textarea>
+                    <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Pershkrimi" rows="6" />
                     {formErrors.description && <span className="error">{formErrors.description}</span>}
-                    <input type="text" name="requirements" value={formData.requirements} onChange={handleChange}
-                           placeholder="Kerkesat"/>
+                    <textarea name="requirements" value={formData.requirements} onChange={handleChange} placeholder="Kerkesat" rows="6" />
                     {formErrors.requirements && <span className="error">{formErrors.requirements}</span>}
                     <select name="location" value={formData.location} onChange={handleChange}>
                         <option value="">Select Location</option>
@@ -120,8 +121,7 @@ function PostJob() {
                         ))}
                     </select>
                     {formErrors.location && <span className="error">{formErrors.location}</span>}
-                    <input type="text" name="salary" value={formData.salary} onChange={handleChange}
-                           placeholder="Paga"/>
+                    <input type="text" name="salary" value={formData.salary} onChange={handleChange} placeholder="Paga" />
                     {formErrors.salary && <span className="error">{formErrors.salary}</span>}
                     <select name="jobType" value={formData.jobType} onChange={handleChange}>
                         <option value="">Select Category</option>
@@ -130,11 +130,17 @@ function PostJob() {
                         ))}
                     </select>
                     {formErrors.jobType && <span className="error">{formErrors.jobType}</span>}
-                    <input type="date" name="deadline" value={formData.deadline} onChange={handleChange}
-                           placeholder="Deadline"/>
+                    <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} placeholder="Deadline" />
                     {formErrors.deadline && <span className="error">{formErrors.deadline}</span>}
                     <button type="submit" className="post-job-button">Posto</button>
                 </form>
+                {successMessage && (
+                    <div className="success-message">
+                        {successMessage}
+                        <br />
+                        <Link to="/alljobs">Click here to see all your jobs</Link>
+                    </div>
+                )}
             </div>
         </>
     );
