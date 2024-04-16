@@ -2,10 +2,10 @@
 import React from 'react'
 import { BrowserRouter,Routes,Route }from 'react-router-dom'
 import Login from './Login';
-import Signup from './Signup';
-import CompanyList from './CompanyList';
-import CompanyPage from './CompanyPage';
-import EditCompanyProfile from './EditCompanyProfile';
+import Signup from './Company/Signup';
+import CompanyList from './Company/CompanyList';
+import CompanyPage from './Company/CompanyPage';
+import EditCompanyProfile from './Company/EditCompanyProfile';
 import PostJob from "./Jobs/PostJob";
 import JobListing from './Jobs/JobListing';
 import AllJobs from "./Jobs/AllJobs";

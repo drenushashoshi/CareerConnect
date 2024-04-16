@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createCompany } from './Services/CompanyService';
+import { createCompany } from '../Services/CompanyService';
 import { useNavigate } from 'react-router-dom';
 import {
   MDBBtn,
@@ -10,7 +10,7 @@ import {
   MDBCardBody,
   MDBInput
 } from 'mdb-react-ui-kit';
-import './styles.css';
+
 
 function Signup() {
   const [name, setName] = useState('');
@@ -21,6 +21,7 @@ function Signup() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [opening_year, setopening_year] = useState('');
   const [description, setDescription] = useState('');
+  
 
   const navigator=useNavigate();
 
@@ -33,6 +34,7 @@ function Signup() {
   const [repeatPasswordTouched, setRepeatPasswordTouched] = useState(false);
   const [opening_yearTouched, setopening_yearTouched] = useState(false);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
+ 
 
 
   const validateForm = () => {
@@ -72,14 +74,16 @@ function Signup() {
     const isFormValid = validateForm(); 
   
     if (isFormValid) {
-      const company = { name, email, address, phone_number, password, opening_year, description };
+      const company = { name, email, address, phone_number, password, opening_year, description};
       console.log(company);
       createCompany(company).then((response) => {
         console.log(response.data);
         navigator('/CompanyList');
       });
     }
+    
   };
+  
 
   return (
     <div>
@@ -148,7 +152,7 @@ function Signup() {
                         onBlur={() => setphone_numberTouched(true)}
                         invalid={phone_numberTouched && !phone_number.trim()}
                       />
-                      {phone_numberTouched && !phone_number.trim() && <div className="text-danger">phone_number is required</div>}
+                      {phone_numberTouched && !phone_number.trim() && <div className="text-danger">phone number is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -214,7 +218,9 @@ function Signup() {
                     />
                     {descriptionTouched && !description.trim() && <div className="text-danger">Description is required</div>}
                   </div>
-                    <div className="d-flex justify-content-center">
+                  
+                  <br/>
+                  <div className="d-flex justify-content-center">
                         <MDBBtn
                             className='w-50 mb-3'
                             size='md'
@@ -230,7 +236,7 @@ function Signup() {
                             Sign up 
                         </MDBBtn>
 
-                    </div>
+                  </div>
                 </form>
               </MDBCardBody>
             </MDBCard>

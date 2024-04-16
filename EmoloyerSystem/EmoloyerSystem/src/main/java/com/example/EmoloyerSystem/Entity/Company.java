@@ -37,4 +37,6 @@ public class Company {
     @Column(name="description", nullable = false)
     private String description;
 
+
+
 }

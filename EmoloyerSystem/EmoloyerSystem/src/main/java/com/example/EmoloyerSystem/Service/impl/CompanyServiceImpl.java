@@ -52,6 +52,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setOpening_year(updatedCompany.getOpening_year());
         company.setDescription(updatedCompany.getDescription());
 
+
         Company updatedCompanyObj=companyRepository.save(company);
 
         return CompanyMapper.mapToCompanyDto(updatedCompanyObj);

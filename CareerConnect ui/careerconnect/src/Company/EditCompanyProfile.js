@@ -11,8 +11,8 @@ import {
 } from 'mdb-react-ui-kit';
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { getCompany, updateCompany } from './Services/CompanyService';
-import CustomNavbar from "./CustomNavbar";
+import { getCompany, updateCompany } from '../Services/CompanyService';
+import CustomNavbar from "../CustomNavbar";
 
 const EditCompanyProfile=()=> {
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { listCompanies } from './Services/CompanyService'
+import { listCompanies } from '../Services/CompanyService'
 
 const CompanyList = () => {
 
@@ -30,6 +30,7 @@ const CompanyList = () => {
                     <th>Password</th>
                     <th>Opening_year</th>
                     <th>Description</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +45,7 @@ const CompanyList = () => {
                             <td>{company.password}</td>
                             <td>{company.opening_year}</td>
                             <td>{company.description}</td>
-                            
+                           
 
                         </tr>
                     )

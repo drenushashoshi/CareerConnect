@@ -14,6 +14,7 @@ public class CompanyMapper {
                 company.getPassword(),
                 company.getOpening_year(),
                 company.getDescription()
+
         );
     }
     public static Company mapToCompany(CompanyDto companyDto){
