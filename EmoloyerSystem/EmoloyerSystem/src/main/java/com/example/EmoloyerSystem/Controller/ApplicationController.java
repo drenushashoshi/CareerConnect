@@ -7,7 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import static com.example.EmoloyerSystem.Constant.Constant.Resume_Directiory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -32,7 +38,7 @@ public class ApplicationController {
         return ResponseEntity.ok(Applications);    
     }
 
-    @GetMapping("/{ID}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApplicationDto> getApplicationById(@PathVariable(value = "ID") Integer ID)
     {
         ApplicationDto Application= applicationService.getApplicationById(ID);
@@ -45,12 +51,23 @@ public class ApplicationController {
         return ResponseEntity.ok(Application);
 
     }
-
-    //Delete Company REST API
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteApplication(@PathVariable("id") Integer ApplicationID){
         applicationService.deleteApplication(ApplicationID);
         return ResponseEntity.ok("Application Deleted");
     }
-
+    @PutMapping("/CV")
+    public ResponseEntity<String> uploadResume(@PathVariable("id") Integer id, @RequestBody MultipartFile resume) {
+        try {
+            applicationService.uploadResume(id, resume);
+            return ResponseEntity.ok("Resume uploaded successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to upload resume: " + e.getMessage());
+        }
+    }
+    @GetMapping("/resume/{filename}")
+    public byte[] getResume(@PathVariable("filename") String filename) throws IOException
+    {
+        return Files.readAllBytes(Paths.get(Resume_Directiory+filename));
+    }
 }

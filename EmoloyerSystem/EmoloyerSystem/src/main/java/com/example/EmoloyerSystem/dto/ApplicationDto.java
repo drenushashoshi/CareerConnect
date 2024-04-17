@@ -13,10 +13,10 @@ public class ApplicationDto {
     private int ID;
     private String name;
     private String email;
-    private String phoneNr;
+    private String phone_nr;
     private int age;
     private String City;
     private String Description;
     private String Gender;
-    private String CV;
+    private String file;
 }

@@ -9,12 +9,12 @@ public class ApplicationMapper {
             Application.getID(),
             Application.getName(),
             Application.getEmail(),
-            Application.getPhoneNr(),
+            Application.getPhone_nr(),
             Application.getAge(),
             Application.getCity(),
             Application.getDescription(),
             Application.getGender(),
-            Application.getCV()
+            Application.getFile()
         );
     }
     public static Application mapToApplication(ApplicationDto Application){
@@ -22,12 +22,12 @@ public class ApplicationMapper {
                 Application.getID(),
                 Application.getName(),
                 Application.getEmail(),
-                Application.getPhoneNr(),
+                Application.getPhone_nr(),
                 Application.getAge(),
                 Application.getCity(),
                 Application.getDescription(),
                 Application.getGender(),
-                Application.getCV()
+                Application.getFile()
         );
     }
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { getApplications, createApplication, updateResume } from '../Services/ApplicationService';
+import { getApplications, createApplication, updateResume, uploadResume } from '../Services/ApplicationService';
 
 const Application = () => {
     
@@ -12,7 +12,7 @@ const Application = () => {
         gender: '',
         name: '',
         phone_nr: '',
-        age: 0,
+        age: '',
     });
     const onChange = (event) => {
         setValues({...values,[event.target.name]:event.target.value})
@@ -23,9 +23,9 @@ const Application = () => {
             console.log(values);
             const { data } = await createApplication(values);
             const formData = new FormData();
-            formData.append('CV', file, file.name);
+            formData.append('file', file, file.name);
             formData.append('id', data.id);
-            const { data: Resume } = await updateResume(formData);
+            const { data: Resume } = await uploadResume(formData);
             console.log(Resume);
             setFile(undefined);
             fileRef.current.value = null;
@@ -34,9 +34,9 @@ const Application = () => {
         }
         
     }
-    const updateResume = async (formData) => {
+    const uploadResume = async (formData) => {
         try {
-            const { data: Resume } = await updateResume(formData);
+            const { data: Resume } = await uploadResume(formData);
         } catch (error) {
             console.log(error);
         }
@@ -131,7 +131,7 @@ const Application = () => {
 
                             <label className="d-block mb-4">
                                 <span className="form-label d-block">Your CV (Must be a PDF file)</span>
-                                <input required name="cv" type="file" onChange={(event)=>setFile(event.target.files[0])} ref={fileRef} className="form-control" />
+                                <input name="file" type="file" onChange={(event)=>setFile(event.target.files[0])} ref={fileRef} className="form-control" />
                             </label>
 
                             <div className="mb-4">

@@ -19,27 +19,27 @@ public class Application {
     @Column(name = "ApplicationID",unique = true,updatable = false)
     private int ID;
 
-    @Column(name="Name", nullable = false)
+    @Column(name="Name")
     private String Name;
 
-    @Column(name="Email", nullable = false, unique = true)
+    @Column(name="Email")
     private String Email;
 
-    @Column(name="PhoneNr", nullable = false, unique = true)
-    private String PhoneNr;
+    @Column(name="phone_nr")
+    private String phone_nr;
 
-    @Column(name="Age", nullable = false)
+    @Column(name="Age")
     private int age;
 
-    @Column(name="City", nullable = false)
+    @Column(name="City")
     private String City;
 
-    @Column(name="Description", nullable = false)
+    @Column(name="Description")
     private String Description;
 
-    @Column(name="Gender", nullable = false)
+    @Column(name="Gender")
     private String Gender;
 
-    @Column(name="CV",nullable = true)
-    private String CV;
+    @Column(name="file",nullable = true)
+    private String file;
 }

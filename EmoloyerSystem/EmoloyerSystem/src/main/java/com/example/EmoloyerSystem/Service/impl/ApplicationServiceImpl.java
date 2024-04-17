@@ -63,7 +63,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         );
         Application.setName(updatedApplication.getName());
         Application.setEmail(updatedApplication.getEmail());
-        Application.setPhoneNr(updatedApplication.getPhoneNr());
+        Application.setPhone_nr(updatedApplication.getPhone_nr());
         Application.setAge(updatedApplication.getAge());
         Application.setCity(updatedApplication.getCity());
         Application.setDescription(updatedApplication.getDescription());
@@ -87,7 +87,7 @@ public class ApplicationServiceImpl implements ApplicationService{
     
         try {
             String resumeContent = new String(resume.getBytes()); // Convert MultipartFile to string
-            application.setCV(resumeContent); // Set the document content to the string
+            application.setFile(resumeContent); // Set the document content to the string
             applicationRepository.save(application); // Save the updated Application entity
         } catch (IOException e) {
             throw new RuntimeException("Unable to read resume content", e);
