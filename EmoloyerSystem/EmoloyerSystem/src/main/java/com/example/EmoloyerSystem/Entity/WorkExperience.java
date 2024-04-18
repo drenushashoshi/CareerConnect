@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "work_experience")
@@ -37,6 +37,6 @@ public class WorkExperience {
     @Column(name="jobposition", nullable = false)
     private String jobposition;
 
-    @Column(name="description",nullable = false, length 1000)
+    @Column(name="description",nullable = false)
     private String description;
 }

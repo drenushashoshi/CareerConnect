@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.EmoloyerSystem.Entity.Reference;
-import com.example.EmoloyerSystem.Entity.WorkExperience;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cv")
@@ -52,7 +50,7 @@ public class CV{
     @Column(name="college", nullable = true)
     private String college;
 
-    @Column(name="highschool",nullable true)
+    @Column(name="highschool",nullable = true)
     private String highschool;
 
     @ManyToOne(fetch = FetchType.LAZY)
