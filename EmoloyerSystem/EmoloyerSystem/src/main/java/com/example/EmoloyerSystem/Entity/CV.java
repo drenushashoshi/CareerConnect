@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.example.EmoloyerSystem.Entity.Reference;
+import com.example.EmoloyerSystem.Entity.WorkExperience;
 
 @Entity
 @Setter
@@ -12,12 +14,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cv")
-public class Application {
+public class CV{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cvid",unique = true,updatable = false)
-    private int cvid;
+    private int cv_id;
 
     @Column(name="profilepic", nullable = false)
     private String profilepic;
@@ -25,14 +27,17 @@ public class Application {
     @Column(name="name",nullable = false)
     private String name;
 
-    @Column(name="email", unique = true)
-    private String Email;
+    @Column(name="surname",nullable = false)
+    private String surname;
 
-    @Column(name="phone_nr",unique = true)
+    @Column(name="email", unique = true,nullable = false)
+    private String email;
+
+    @Column(name="phone_nr",unique = true,nullable = false)
     private String phone_nr;
 
     @Column(name="street",nullable = false)
-    private int street;
+    private String street;
 
     @Column(name="city",nullable = false)
     private String city;
@@ -41,16 +46,16 @@ public class Application {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="experience",nullable = false)
-    private WorkExperience experience;
+    @JoinColumn(name="experience_id",nullable = true)
+    private WorkExperience experience_id;
 
-    @Column(name="college", nullable = false)
+    @Column(name="college", nullable = true)
     private String college;
 
-    @Column(name="highschool",nullable false)
+    @Column(name="highschool",nullable true)
     private String highschool;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="reference_id",nullable = false)
-    private Reference reference;
+    @JoinColumn(name="reference_id",nullable = true)
+    private Reference reference_id;
 }
