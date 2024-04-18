@@ -15,6 +15,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Application from './Applications/Application';
 import ApplicationList from './Applications/ApplicationList';
 import ApplicationDetail from './Applications/ApplicationDetail';
+import EditEmployee from './Employee/EditEmployee';
+import EmployeePage from "./Employee/EmployeePage";
+import EmployeeList from "./Employee/EmployeeList";
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
           <Route path='/Applications' element={<Application/>}></Route>
           <Route path='/ApplicationList' element={<ApplicationList/>}></Route>
           <Route path='/Application/:id' element={<ApplicationDetail/>}></Route>
+          <Route path='/EmployeePage' element={<EmployeePage/>}></Route>
+          <Route path='/EmployeeList' element={<EmployeeList/>}></Route>
+          <Route path='/EditEmployee' element={<EditEmployee/>}></Route>
       </Routes>
     </BrowserRouter>
   );
