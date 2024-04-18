@@ -38,7 +38,7 @@ useEffect(()=>{
             setName(response.data.Name);
             setSurname(response.data.Surname);
             setAge(response.data.Age);
-            setAdress(response.data.Adress);
+            setAddress(response.data.Address);
             setEmail(response.data.Email);
             setPassword(response.data.password);
             setPhoto(response.data.Photo);
@@ -116,7 +116,7 @@ return (
                       <MDBCardText>Address</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{Adress}</MDBCardText>
+                      <MDBCardText className="text-muted">{Address}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                   <hr />

@@ -18,6 +18,7 @@ import ApplicationDetail from './Applications/ApplicationDetail';
 import EditEmployee from './Employee/EditEmployee';
 import EmployeePage from "./Employee/EmployeePage";
 import EmployeeList from "./Employee/EmployeeList";
+import EmployeeSignUp from './Employee/EmployeeSignUp';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Routes>
           <Route path='/' element={<Login/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
+          <Route path='/EmployeeSignUp' element={<EmployeeSignUp/>}></Route>
           <Route path='/CompanyList' element={<CompanyList/>}></Route>
           <Route path='/CompanyPage' element={<CompanyPage/>}></Route>
           <Route path='/postJob' element={<PostJob/>}></Route>
