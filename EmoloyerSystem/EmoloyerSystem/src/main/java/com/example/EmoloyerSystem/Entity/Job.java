@@ -21,10 +21,10 @@ public class Job {
     @Column(name="title", nullable = false)
     private String title;
 
-    @Column(name="description", nullable = false)
+    @Column(name="description", nullable = false, length = 1000)
     private String description;
 
-    @Column(name="requirements", nullable = false)
+    @Column(name="requirements", nullable = false, length = 500)
     private String requirements;
 
     @Column(name="location", nullable = false)
