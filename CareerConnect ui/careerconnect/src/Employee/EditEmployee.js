@@ -16,16 +16,16 @@ import { getEmployee,updateEmployee } from '../Services/EmployeeService';
 import CustomNavbar from "../CustomNavbar";
 
 const EditEmployee=()=>{
-    const[Name,setName]=useState('');
-    const[Surname,setSurname]=useState('');
-    const[Age,setAge]=useState('');
-    const[Adress,setAdress]=useState('');
-    const[Email,setEmail]=useState('');
+    const[name,setName]=useState('');
+    const[surname,setSurname]=useState('');
+    const[age,setAge]=useState('');
+    const[address,setAdress]=useState('');
+    const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
-    const[Photo,setPhoto]=useState('');
-    const[Phone,setPhone]=useState('');
-    const[JobPreferences,setJobPreferences]=useState('');
-    const[Skills,setSkills]=useState('');
+    const[photo,setPhoto]=useState('');
+    const[phone,setPhone]=useState('');
+    const[jobPreferences,setJobPreferences]=useState('');
+    const[skills,setSkills]=useState('');
 
 
 
@@ -35,7 +35,7 @@ const navigator = useNavigate();
 
 function saveEmployee(e){
     e.preventDefault();
-    const employee ={Name,Surname,Age,Adress,Email,password,Photo,Phone,JobPreferences,Skills};
+    const employee ={name,surname,age,address,email,password,photo,phone,jobPreferences,skills};
     if(id){
         updateEmployee(id,employee).then((response) => {
             console.log(response.data);
@@ -50,16 +50,16 @@ function saveEmployee(e){
 useEffect(()=>{
     if(id){
         getEmployee(id).then((response)=>{
-            setName(response.data.Name);
-            setSurname(response.data.Surname);
-            setAge(response.data.Age);
-            setAdress(response.data.Adress);
-            setEmail(response.data.Email);
+            setName(response.data.name);
+            setSurname(response.data.surname);
+            setAge(response.data.age);
+            setAdress(response.data.address);
+            setEmail(response.data.email);
             setPassword(response.data.password);
-            setPhoto(response.data.Photo);
-            setPhone(response.data.Phone);
-            setJobPreferences(response.data.JobPreferences);
-            setSkills(response.data.Skills);
+            setPhoto(response.data.photo);
+            setPhone(response.data.phone);
+            setJobPreferences(response.data.jobPreferences);
+            setSkills(response.data.skills);
         }).catch(error=>{
             console.error(error);
         })
@@ -87,13 +87,13 @@ useEffect(()=>{
 
                         <MDBInput
                                  type="text"
-                                 value={Name}
+                                 value={name}
                                  onChange={(e)=> setName(e.target.value)}
                             />
                             <br/>
                          <MDBInput
                                  type="text"
-                                 value={Surname}
+                                 value={surname}
                                  onChange={(e)=> setSurname(e.target.value)}
                                  />
                                 
@@ -110,7 +110,7 @@ useEffect(()=>{
                         <MDBCol sm="9">
                         <MDBInput
                             type="text"
-                            value={Email}
+                            value={email}
                             onChange={(e)=> setAge(e.target.value)}
                             />
                          </MDBCol>
@@ -123,7 +123,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={Adress}
+                                value={address}
                                 onChange={(e)=> setAdress(e.target.value)}
                                 />
                             </MDBCol>
@@ -136,7 +136,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={Email}
+                                value={email}
                                 onChange={(e)=> setEmail(e.target.value)}
                                 />
                             </MDBCol>
@@ -162,7 +162,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={Photo}
+                                value={photo}
                                 onChange={(e)=> setPhoto(e.target.value)}
                                 />
                             </MDBCol>
@@ -175,7 +175,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={Phone}
+                                value={phone}
                                 onChange={(e)=> setPhone(e.target.value)}
                                 />
                             </MDBCol>
@@ -188,7 +188,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={JobPreferences}
+                                value={jobPreferences}
                                 onChange={(e)=> setJobPreferences(e.target.value)}
                                 />
                             </MDBCol>
@@ -201,7 +201,7 @@ useEffect(()=>{
                                 <MDBCol sm="9">
                                 <MDBInput
                                 type="text"
-                                value={Skills}
+                                value={skills}
                                 onChange={(e)=> setSkills(e.target.value)}
                                 />
                             </MDBCol>

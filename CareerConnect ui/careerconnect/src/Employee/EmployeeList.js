@@ -42,17 +42,17 @@ return(
                 {
                     employee.map(employee=>
                     <tr key={employee.id}> 
-                        <td>{employee.Workerd}</td>
-                        <td>{employee.Name}</td>
-                        <td>{employee.Surname}</td>
-                        <td>{employee.Age}</td>
-                        <td>{employee.Adress}</td>
-                        <td>{employee.Email}</td>
+                        <td>{employee.id}</td>
+                        <td>{employee.name}</td>
+                        <td>{employee.surname}</td>
+                        <td>{employee.age}</td>
+                        <td>{employee.adress}</td>
+                        <td>{employee.email}</td>
                         <td>{employee.password}</td>
-                        <td>{employee.Photo}</td>
-                        <td>{employee.Phone}</td>
-                        <td>{employee.JobPreferences}</td>
-                        <td>{employee.Skills}</td>
+                        <td>{employee.photo}</td>
+                        <td>{employee.phone}</td>
+                        <td>{employee.jobPreferences}</td>
+                        <td>{employee.skills}</td>
 
                      </tr>
                     

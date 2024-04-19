@@ -40,9 +40,11 @@ function App() {
           <Route path='/Applications' element={<Application/>}></Route>
           <Route path='/ApplicationList' element={<ApplicationList/>}></Route>
           <Route path='/Application/:id' element={<ApplicationDetail/>}></Route>
+          <Route path='/EmployeePage/:id' element={<EmployeePage/>}></Route>
           <Route path='/EmployeePage' element={<EmployeePage/>}></Route>
           <Route path='/EmployeeList' element={<EmployeeList/>}></Route>
           <Route path='/EditEmployee' element={<EditEmployee/>}></Route>
+          <Route path='/EditEmployee/:id' element={<EditEmployee/>}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -20,34 +20,34 @@ public class Employee {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Name")
-    private String Name;
+    @Column(name="name", nullable = false)
+    private String name;
 
-    @Column(name = "SurName")
-    private String Surname;
+    @Column(name = "surname", nullable = false)
+    private String surname;
 
-    @Column(name = "Age")
-    private String Age;
+    @Column(name = "age", nullable = false)
+    private String age;
 
-    @Column(name = "Address")
-    private String Address;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    @Column(name = "Email")
-    private String Email;
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "Photo")
-    private String Photo;
+    @Column(name = "photo", nullable = false)
+    private String photo;
 
-    @Column(name = "Phone")
-    private String Phone;
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
-    @Column(name = "JobPreferences")
-    private String JobPreferences;
+    @Column(name = "jobPreferences", nullable = false)
+    private String jobPreferences;
 
-    @Column(name = "Skills")
-    private String Skills;
+    @Column(name = "skills", nullable = false)
+    private String skills;
 
 }

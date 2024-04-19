@@ -13,16 +13,16 @@ import {
 
 
 function EmployeeSignUp() {
-    const[Name,setName]=useState('');
-    const[Surname,setSurname]=useState('');
-    const[Age,setAge]=useState('');
-    const[Address,setAddress]=useState('');
-    const[Email,setEmail]=useState('');
+    const[name,setName]=useState('');
+    const[surname,setSurname]=useState('');
+    const[age,setAge]=useState('');
+    const[address,setAddress]=useState('');
+    const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
-    const[Photo,setPhoto]=useState('');
-    const[Phone,setPhone]=useState('');
-    const[JobPreferences,setJobPreferences]=useState('');
-    const[Skills,setSkills]=useState('');
+    const[photo,setPhoto]=useState('');
+    const[phone,setPhone]=useState('');
+    const[jobPreferences,setJobPreferences]=useState('');
+    const[skills,setSkills]=useState('');
   
 
   const navigator=useNavigate();
@@ -42,16 +42,16 @@ function EmployeeSignUp() {
 
 
   const validateForm = () => {
-    const isNameValid = Name.trim() !== '';
-    const isSurnameValid=Surname.trim()!=='';
-    const isAgeValid=Age.trim()!=='';
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email);
-    const isAddressValid = Address.trim() !== '';
+    const isNameValid = name.trim() !== '';
+    const isSurnameValid=surname.trim()!=='';
+    const isAgeValid=age.trim()!=='';
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isAddressValid = address.trim() !== '';
     const ispasswordValid = password.trim() !== '';
-    const isPhoneValid = Phone.trim() !== '';
-    const isPhotoValid=Photo.trim()!=='';
-    const isJobPreferencesValid=JobPreferences.trim()!=='';
-    const isSkillsValid=Skills.trim()!=='';
+    const isPhoneValid = phone.trim() !== '';
+    const isPhotoValid=photo.trim()!=='';
+    const isJobPreferencesValid=jobPreferences.trim()!=='';
+    const isSkillsValid=skills.trim()!=='';
 
 
   
@@ -87,7 +87,7 @@ function EmployeeSignUp() {
     const isFormValid = validateForm(); 
   
     if (isFormValid) {
-      const employee = { Name,Surname, Email, Address,Age, Phone, password,Photo, JobPreferences,Skills};
+      const employee = { name,surname, email, address,age, phone, password,photo, jobPreferences,skills};
       console.log(employee);
       createEmployee(employee).then((response) => {
         console.log(response.data);
@@ -117,27 +117,27 @@ function EmployeeSignUp() {
                       <MDBInput
                         wrapperClass=''
                         placeholder='Name'
-                        id='Name'
+                        id='name'
                         type='text'
-                        value={Name}
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                         onBlur={() => setNameTouched(true)}
-                        invalid={NameTouched && !Name.trim()}
+                        invalid={NameTouched && !name.trim()}
                       />
-                      {NameTouched && !Name.trim() && <div className="text-danger">Name is required</div>}
+                      {NameTouched && !name.trim() && <div className="text-danger">Name is required</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
                         wrapperClass=''
                         placeholder='Surname'
-                        id='Surname'
+                        id='surname'
                         type='text'
-                        value={Surname}
+                        value={surname}
                         onChange={(e) => setSurname(e.target.value)}
                         onBlur={() => setSurnameTouched(true)}
-                        invalid={SurnameTouched && !Surname.trim()}
+                        invalid={SurnameTouched && !surname.trim()}
                       />
-                      {SurnameTouched && !Surname.trim() && <div className="text-danger">Surname is required</div>}
+                      {SurnameTouched && !surname.trim() && <div className="text-danger">Surname is required</div>}
                     </MDBCol>
                     
                   </MDBRow>
@@ -146,27 +146,27 @@ function EmployeeSignUp() {
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Email'
-                        id='Email'
+                        id='email'
                         type='Email'
-                        value={Email}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={() => setEmailTouched(true)}
-                        invalid={EmailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email)}
+                        invalid={EmailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
                       />
-                      {EmailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email) && <div className="text-danger">Invalid email</div>}
+                      {EmailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && <div className="text-danger">Invalid email</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Address'
-                        id='Address'
+                        id='address'
                         type='text'
-                        value={Address}
+                        value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         onBlur={() => setAddressTouched(true)}
-                        invalid={AddressTouched && !Address.trim()}
+                        invalid={AddressTouched && !address.trim()}
                       />
-                      {AddressTouched && !Address.trim() && <div className="text-danger">Address is required</div>}
+                      {AddressTouched && !address.trim() && <div className="text-danger">Address is required</div>}
                     </MDBCol>
     
                   </MDBRow>
@@ -175,14 +175,14 @@ function EmployeeSignUp() {
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Phone Number'
-                        id='Phone'
+                        id='phone'
                         type='text'
-                        value={Phone}
+                        value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         onBlur={() => setPhoneTouched(true)}
-                        invalid={PhoneTouched && !Phone.trim()}
+                        invalid={PhoneTouched && !phone.trim()}
                       />
-                      {PhoneTouched && !Phone.trim() && <div className="text-danger">phone number is required</div>}
+                      {PhoneTouched && !phone.trim() && <div className="text-danger">phone number is required</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
@@ -190,12 +190,12 @@ function EmployeeSignUp() {
                         placeholder='Age'
                         id='Age'
                         type='text'
-                        value={Age}
+                        value={age}
                         onChange={(e) => setAge(e.target.value)}
                         onBlur={() => setAgeTouched(true)}
-                        invalid={AgeTouched && !Age.trim()}
+                        invalid={AgeTouched && !age.trim()}
                       />
-                      {AgeTouched && !Age.trim() && <div className="text-danger">Age is required</div>}
+                      {AgeTouched && !age.trim() && <div className="text-danger">Age is required</div>}
                     </MDBCol>
     
                   </MDBRow>
@@ -204,14 +204,14 @@ function EmployeeSignUp() {
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Photo'
-                        id='Photo'
+                        id='photo'
                         type='text'
-                        value={Photo}
+                        value={photo}
                         onChange={(e) => setPhoto(e.target.value)}
                         onBlur={() => setPhotoTouched(true)}
-                        invalid={PhotoTouched && !Photo.trim()}
+                        invalid={PhotoTouched && !photo.trim()}
                       />
-                      {PhotoTouched && !Photo.trim() && <div className="text-danger">photo is required</div>}
+                      {PhotoTouched && !photo.trim() && <div className="text-danger">photo is required</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
@@ -233,27 +233,27 @@ function EmployeeSignUp() {
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Job Preferences'
-                        id='JobPreferences'
+                        id='jobPreferences'
                         type='text'
-                        value={JobPreferences}
+                        value={jobPreferences}
                         onChange={(e) => setJobPreferences(e.target.value)}
                         onBlur={() => setJobPreferencesTouched(true)}
-                        invalid={JobPreferencesTouched && !JobPreferences.trim()}
+                        invalid={JobPreferencesTouched && !jobPreferences.trim()}
                       />
-                      {JobPreferencesTouched && !JobPreferences.trim() && <div className="text-danger">Job preferences is required</div>}
+                      {JobPreferencesTouched && !jobPreferences.trim() && <div className="text-danger">Job preferences is required</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
                         wrapperClass='mt-4'
                         placeholder='Skills'
-                        id='Skills'
+                        id='skills'
                         type='text'
-                        value={Skills}
+                        value={skills}
                         onChange={(e) => setSkills(e.target.value)}
                         onBlur={() => setSkillsTouched(true)}
-                        invalid={SkillsTouched && !Skills.trim()}
+                        invalid={SkillsTouched && !skills.trim()}
                       />
-                      {SkillsTouched && !Skills.trim() && <div className="text-danger">Skills is required</div>}
+                      {SkillsTouched && !skills.trim() && <div className="text-danger">Skills is required</div>}
                     </MDBCol>
     
                   </MDBRow>

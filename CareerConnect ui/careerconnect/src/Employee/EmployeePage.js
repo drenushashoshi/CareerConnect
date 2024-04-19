@@ -17,16 +17,16 @@ import { useNavigate } from 'react-router-dom';
 
 
 const EmployeePage=()=>{
-    const[Name,setName]=useState('');
-    const[Surname,setSurname]=useState('');
-    const[Age,setAge]=useState('');
-    const[Address,setAddress]=useState('');
-    const[Email,setEmail]=useState('');
+    const[name,setName]=useState('');
+    const[surname,setSurname]=useState('');
+    const[age,setAge]=useState('');
+    const[address,setAddress]=useState('');
+    const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
-    const[Photo,setPhoto]=useState('');
-    const[Phone,setPhone]=useState('');
-    const[JobPreferences,setJobPreferences]=useState('');
-    const[Skills,setSkills]=useState('');
+    const[photo,setPhoto]=useState('');
+    const[phone,setPhone]=useState('');
+    const[jobPreferences,setJobPreferences]=useState('');
+    const[skills,setSkills]=useState('');
 
 
 
@@ -35,16 +35,16 @@ const {id}=useParams();
 useEffect(()=>{
     if(id){
         getEmployee(id).then((response)=>{
-            setName(response.data.Name);
-            setSurname(response.data.Surname);
-            setAge(response.data.Age);
-            setAddress(response.data.Address);
-            setEmail(response.data.Email);
+            setName(response.data.name);
+            setSurname(response.data.surname);
+            setAge(response.data.age);
+            setAddress(response.data.address);
+            setEmail(response.data.email);
             setPassword(response.data.password);
-            setPhoto(response.data.Photo);
-            setPhone(response.data.Phone);
-            setJobPreferences(response.data.JobPreferences);
-            setSkills(response.data.Skills);
+            setPhoto(response.data.photo);
+            setPhone(response.data.phone);
+            setJobPreferences(response.data.jobPreferences);
+            setSkills(response.data.skills);
         }).catch(error=>{
             console.error(error);
         })
@@ -87,8 +87,8 @@ return (
                      className="rounded-circle"
                      style={{ width: '100px' }}
                      fluid />
-                <p className="text-muted mb-1">{Name}</p>
-                <p className="text-muted mb-4">{Surname}</p>
+                <p className="text-muted mb-1">{name}</p>
+                <p className="text-muted mb-4">{surname}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <MDBBtn onClick={()=>updateEmployee(id)}>Edit Profile</MDBBtn>
                 </div>
@@ -107,7 +107,7 @@ return (
                       <MDBCardText>Age</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{Age}</MDBCardText>
+                      <MDBCardText className="text-muted">{age}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                   <hr />
@@ -116,7 +116,7 @@ return (
                       <MDBCardText>Address</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{Address}</MDBCardText>
+                      <MDBCardText className="text-muted">{address}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                   <hr />
@@ -125,7 +125,7 @@ return (
                       <MDBCardText>Email</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{Email}</MDBCardText>
+                      <MDBCardText className="text-muted">{email}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                   <hr />
@@ -134,7 +134,7 @@ return (
                       <MDBCardText>Phone</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{Phone}</MDBCardText>
+                      <MDBCardText className="text-muted">{phone}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                 </MDBCardBody>
