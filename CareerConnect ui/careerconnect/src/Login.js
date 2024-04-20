@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authenticateCompany } from './Services/CompanyService';
+import {authenticateEmployee} from'./Services/EmployeeService';
 import backgroundImage from './login-test2.avif';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -39,6 +40,11 @@ function Login() {
         setPassword('');
       });
   }
+
+ 
+
+
+ 
 
   return (
     <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>
@@ -85,7 +91,7 @@ function Login() {
           <h5 className='mt-3'>What do you want to signup as?</h5>
           <div className='mt-4 mb-4'>
             <Link to='/signup' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Company</Link>
-            <Button variant="primary">Worker</Button>
+            <Link to='/EmployeeSignUp' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Worker</Link>
           </div>
         </Modal.Body>
       </Modal>

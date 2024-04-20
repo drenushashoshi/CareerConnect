@@ -2,6 +2,7 @@ package com.example.EmoloyerSystem.Controller;
 
 import com.example.EmoloyerSystem.Service.EmployeeService;
 import com.example.EmoloyerSystem.dto.EmployeeDto;
+import com.example.EmoloyerSystem.dto.EmployeeLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,16 @@ public class EmployeeController {
     public ResponseEntity<String >deleteEmployee(@PathVariable("id") Long employeeId){
         employeeService.deleteEmployee(employeeId);
         return ResponseEntity.ok("Employee deleted successfully");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?>login(@RequestBody EmployeeLogin loginDto){
+        Long employeeId=employeeService.authenticateEmployee(loginDto.getEmail(),loginDto.getPassword());
+        if (employeeId !=null){
+            return ResponseEntity.ok(employeeId);
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
     }
 
 

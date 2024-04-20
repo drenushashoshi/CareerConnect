@@ -74,4 +74,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         );
         employeeRepository.deleteById(employeeId);
     }
+
+    @Override
+    public Long authenticateEmployee(String email, String password) {
+        Employee employee =employeeRepository.findByEmail(email);
+        if(employee != null && employee.getPassword().equals(password)){
+            return (long) employee.getId();
+        }
+        return null;
+    }
+
+
 }

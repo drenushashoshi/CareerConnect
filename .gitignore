@@ -1,3 +1,6 @@
 
 *.pack
 *.json
+CareerConnect ui/careerconnect/node_modules/.cache/default-development/13.pack
+CareerConnect ui/careerconnect/node_modules/.cache/default-development/13.pack
+/CareerConnect ui/careerconnect/node_modules/.cache/default-development

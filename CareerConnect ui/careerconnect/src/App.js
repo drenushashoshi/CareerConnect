@@ -19,6 +19,7 @@ import EditEmployee from './Employee/EditEmployee';
 import EmployeePage from "./Employee/EmployeePage";
 import EmployeeList from "./Employee/EmployeeList";
 import EmployeeSignUp from './Employee/EmployeeSignUp';
+import Rate from './Rate/Rate';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path='/EmployeeList' element={<EmployeeList/>}></Route>
           <Route path='/EditEmployee' element={<EditEmployee/>}></Route>
           <Route path='/EditEmployee/:id' element={<EditEmployee/>}></Route>
+          <Route path='/Rate' element={<Rate/>}></Route>
       </Routes>
     </BrowserRouter>
   );
