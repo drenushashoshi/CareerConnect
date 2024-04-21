@@ -25,10 +25,6 @@ public class CompanyStaff {
     @Column(name="role", nullable = false)
     private String role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="companyId", nullable = false)
-    private Company company;
-
-    public CompanyStaff(int id, String name, String surname, String role, int companyId) {
-    }
+    @Column(name="companyId", nullable = false)
+    private int companyId;
 }

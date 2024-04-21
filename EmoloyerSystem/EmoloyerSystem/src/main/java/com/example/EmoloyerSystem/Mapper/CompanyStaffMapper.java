@@ -11,8 +11,7 @@ public class CompanyStaffMapper {
                 companyStaff.getName(),
                 companyStaff.getSurname(),
                 companyStaff.getRole(),
-                companyStaff.getCompany().getId()
-
+                companyStaff.getCompanyId()
         );
     }
     public static CompanyStaff mapToCompanyStaff(CompanyStaffDto companyStaffDto){

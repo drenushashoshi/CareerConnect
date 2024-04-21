@@ -20,6 +20,8 @@ import EmployeePage from "./Employee/EmployeePage";
 import EmployeeList from "./Employee/EmployeeList";
 import EmployeeSignUp from './Employee/EmployeeSignUp';
 import Rate from './Rate/Rate';
+import CompanyStaff from './Company/CompanyStaff';
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           <Route path='/EmployeeSignUp' element={<EmployeeSignUp/>}></Route>
           <Route path='/CompanyList' element={<CompanyList/>}></Route>
           <Route path='/CompanyPage' element={<CompanyPage/>}></Route>
+          <Route path='/CompanyStaff' element={<CompanyStaff/>}></Route>
           <Route path='/postJob' element={<PostJob/>}></Route>
           <Route path='/jobListing' element={<JobListing/>}></Route>
           <Route path='/alljobs' element={<AllJobs/>}></Route>

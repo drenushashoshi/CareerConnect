@@ -1,14 +1,11 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 
-import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.CompanyStaff;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
-import com.example.EmoloyerSystem.Mapper.CompanyMapper;
 import com.example.EmoloyerSystem.Mapper.CompanyStaffMapper;
 import com.example.EmoloyerSystem.Repository.CompanyStaffRepository;
 import com.example.EmoloyerSystem.Service.CompanyStaffService;
-import com.example.EmoloyerSystem.dto.CompanyDto;
 import com.example.EmoloyerSystem.dto.CompanyStaffDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

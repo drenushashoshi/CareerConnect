@@ -5,9 +5,7 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBBtn
+  MDBCardText
 } from 'mdb-react-ui-kit';
 import { useParams } from 'react-router-dom';
 import { getCompany, deleteCompany } from '../Services/CompanyService';
@@ -15,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { ReactComponent as GearIcon } from './gear.svg';
 import Footer from '../Footer'
+import CompanyStaff from './CompanyStaff';
 
 const CompanyPage = () => {
 
@@ -50,6 +49,7 @@ const CompanyPage = () => {
   function updateCompany(id) {
     navigator(`/EditCompanyProfile/${id}`);
   }
+  
 
   function removeCompany(id) {
     deleteCompany(id)
@@ -85,8 +85,8 @@ const CompanyPage = () => {
               <NavDropdown.Item href="#">Posto Kurse</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
-              <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Edit Profile</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => removeCompany(id)} href="#">Delete Profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => removeCompany(id)} href="#">Fshij Profilin</NavDropdown.Item>
               <NavDropdown.Item href="#">Rate Us</NavDropdown.Item>
               <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
             </NavDropdown>
@@ -148,6 +148,10 @@ const CompanyPage = () => {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
+      <div className="text-center mt-5">
+        <h2>Stafi i Kompanisë</h2><br/>
+      </div>
+      <CompanyStaff companyId={id}/>
       <div className="text-center mb-5">
         <h2>Shpalljet E Postuara</h2><br/><br/><br/><br/>
       </div>
