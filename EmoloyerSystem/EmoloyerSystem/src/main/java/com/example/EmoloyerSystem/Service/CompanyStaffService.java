@@ -9,7 +9,7 @@ import java.util.List;
 public interface CompanyStaffService {
     CompanyStaffDto createCompanyStaff(CompanyStaffDto companyStaffDto);
     CompanyStaffDto getCompanyStaffId(Integer companyStaffId);
-    List<CompanyStaffDto> getAllCompanyStaff();
+    List<CompanyStaffDto> getAllCompanyStaff(int companyId);
 
     CompanyStaffDto updateCompanyStaff(Integer id, CompanyStaffDto updatedCompanyStaff);
 

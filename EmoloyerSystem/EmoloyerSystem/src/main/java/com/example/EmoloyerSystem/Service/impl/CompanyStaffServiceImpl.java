@@ -32,9 +32,10 @@ public class CompanyStaffServiceImpl implements CompanyStaffService {
         return CompanyStaffMapper.mapToCompanyStaffDto(companyStaff);
     }
     @Override
-    public List<CompanyStaffDto> getAllCompanyStaff() {
-        List<CompanyStaff> companyStaffs=companyStaffRepository.findAll();
-        return companyStaffs.stream().map(CompanyStaffMapper::mapToCompanyStaffDto)
+    public List<CompanyStaffDto> getAllCompanyStaff(int companyId) {
+        List<CompanyStaff> companyStaffs = companyStaffRepository.findByCompanyId(companyId);
+        return companyStaffs.stream()
+                .map(CompanyStaffMapper::mapToCompanyStaffDto)
                 .collect(Collectors.toList());
     }
     @Override

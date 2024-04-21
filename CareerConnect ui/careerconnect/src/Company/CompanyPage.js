@@ -14,6 +14,7 @@ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { ReactComponent as GearIcon } from './gear.svg';
 import Footer from '../Footer'
 import CompanyStaff from './CompanyStaff';
+import ListStaff from './ListStaff';
 
 const CompanyPage = () => {
 
@@ -151,6 +152,7 @@ const CompanyPage = () => {
       <div className="text-center mt-5">
         <h2>Stafi i Kompanisë</h2><br/>
       </div>
+      <ListStaff companyId={id}/>
       <CompanyStaff companyId={id}/>
       <div className="text-center mb-5">
         <h2>Shpalljet E Postuara</h2><br/><br/><br/><br/>

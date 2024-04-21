@@ -30,8 +30,11 @@ public class CompanyStaffController {
     }
     //Read All CompanyStaff REST API
     @GetMapping
-    public ResponseEntity<List<CompanyStaffDto>>getAllCompanyStaff(){
-        List<CompanyStaffDto>companyStaffs=companyStaffService.getAllCompanyStaff();
+    public ResponseEntity<List<CompanyStaffDto>> getAllCompanyStaff(@RequestParam(required = false) int companyId) {
+        List<CompanyStaffDto> companyStaffs = null;
+        if (companyId != 0) {
+            companyStaffs = companyStaffService.getAllCompanyStaff(companyId);
+        } 
         return ResponseEntity.ok(companyStaffs);
     }
 
