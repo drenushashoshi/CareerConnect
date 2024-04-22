@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { listCompanyStaffs, getCompanyStaff, updateCompanyStaff } from '../Services/CompanyStaffService';
+import { listCompanyStaffs, getCompanyStaff, updateCompanyStaff, deleteCompanyStaff } from '../Services/CompanyStaffService';
 import {
     MDBRow,
     MDBCard,
@@ -10,6 +10,7 @@ import {
     MDBBtn
 } from 'mdb-react-ui-kit';
 import { ReactComponent as EditButton } from './pencil.svg';
+import {ReactComponent as DeleteButton} from './trash.svg'
 import Modal from 'react-bootstrap/Modal';
 
 const ListStaff = ({ companyId }) => {
@@ -66,6 +67,16 @@ const ListStaff = ({ companyId }) => {
         }
     };
 
+    function deleteStaff(staffId) {
+        deleteCompanyStaff(staffId)
+          .then((response) => {
+            window.location.href = `/CompanyPage/${companyId}`;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+
     return (
         <div className="container">
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -84,6 +95,17 @@ const ListStaff = ({ companyId }) => {
                                     }}
                                 >
                                     <EditButton />
+                                </button><br/>
+                                <button
+                                    onClick={() => deleteStaff(staff.id)}
+                                    style={{
+                                        border: 'none',
+                                        background: 'none',
+                                        padding: 0,
+                                        cursor: 'pointer' 
+                                    }}
+                                >
+                                    <DeleteButton />
                                 </button>
                                 </div>
                                 <MDBRow>

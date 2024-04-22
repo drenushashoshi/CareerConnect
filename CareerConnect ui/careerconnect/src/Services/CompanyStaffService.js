@@ -6,3 +6,4 @@ export const createCompanyStaff=(companyStaff)=>axios.post(REST_API_BASE_URL, co
 export const listCompanyStaffs = (companyId) => axios.get(`${REST_API_BASE_URL}?companyId=${companyId}`);
 export const getCompanyStaff=(companyStaffId)=>axios.get(REST_API_BASE_URL+'/'+companyStaffId);
 export const updateCompanyStaff=(companyStaffId, companyStaff)=>axios.put(REST_API_BASE_URL +'/'+companyStaffId, companyStaff);
+export const deleteCompanyStaff=(companyStaffId)=>axios.delete(REST_API_BASE_URL+'/'+companyStaffId);
