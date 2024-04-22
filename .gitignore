@@ -8,3 +8,4 @@ CareerConnect ui/careerconnect/node_modules/.cache/default-development/index.pac
 CareerConnect ui/careerconnect/node_modules/.cache/default-development/index.pack.old
 *.pack
 *.old
+*.pack
