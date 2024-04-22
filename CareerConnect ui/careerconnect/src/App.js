@@ -20,6 +20,7 @@ import EmployeePage from "./Employee/EmployeePage";
 import EmployeeList from "./Employee/EmployeeList";
 import EmployeeSignUp from './Employee/EmployeeSignUp';
 import Rate from './Rate/Rate';
+import PostInternship from './Internships/PostInternship';
 
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
@@ -57,6 +58,7 @@ function App() {
           <Route path='/Rate' element={<Rate/>}></Route>
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
           <Route path='/RatesList' element={<RatesList/>}></Route>
+          <Route path='/PostInternship' element={<PostInternship/>}></Route>
       </Routes>
     </BrowserRouter>
   );
