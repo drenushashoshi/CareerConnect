@@ -20,8 +20,12 @@ import EmployeePage from "./Employee/EmployeePage";
 import EmployeeList from "./Employee/EmployeeList";
 import EmployeeSignUp from './Employee/EmployeeSignUp';
 import Rate from './Rate/Rate';
+
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
+
+
+import RatesList from './Rate/RatesList';
 
 
 function App() {
@@ -52,6 +56,7 @@ function App() {
           <Route path='/EditEmployee/:id' element={<EditEmployee/>}></Route>
           <Route path='/Rate' element={<Rate/>}></Route>
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
+          <Route path='/RatesList' element={<RatesList/>}></Route>
       </Routes>
     </BrowserRouter>
   );

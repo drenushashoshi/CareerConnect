@@ -75,7 +75,7 @@ function removeEmployee(id){
 
 return (
     <>
-      <CustomNavbar />
+      
       <MDBContainer className="py-5">
 
 
