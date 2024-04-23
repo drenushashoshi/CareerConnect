@@ -23,6 +23,7 @@ import Rate from './Rate/Rate';
 import PostInternship from './Internships/PostInternship';
 import InternshipsList from './Internships/InternshipsList';
 import InternshipDetails from './Internships/InternshipDetails';
+import EditInternship from './Internships/EditInternship';
 
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
@@ -64,6 +65,8 @@ function App() {
           <Route path='/InternshipsList' element={<InternshipsList/>}></Route>
           <Route path='/InternshipDetails' element={<InternshipDetails/>}></Route>
           <Route path='/InternshipDetails/:id' element={<InternshipDetails/>}></Route>
+          <Route path='/EditInternship' element={<EditInternship/>}></Route>
+          <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
       </Routes>
     </BrowserRouter>
   );

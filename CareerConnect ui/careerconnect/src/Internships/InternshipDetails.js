@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import { getInternship } from '../Services/InternshipService';
+import { getInternship, deleteInternship } from '../Services/InternshipService';
 
 const InternshipDetails = () => {
 
@@ -37,7 +37,17 @@ const InternshipDetails = () => {
               console.error(error);
             });
         }
-      }, [id]);
+    }, [id]);
+
+    function handleDeleteInternship() {
+        deleteInternship(id) 
+            .then(() => {
+                navigator('/InternshipsList'); 
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
 
 
@@ -110,6 +120,20 @@ const InternshipDetails = () => {
                         </div>
                     </div>
                 </div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '50px' }}>
+                <Link to={`/EditInternship/${id}`}>
+                    <button className='btn btn-primary' style={{ borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
+                        Ndrysho Detajet e Praktikes
+                    </button>
+                </Link>
+                    <button className='btn btn-primary'
+                    onClick={() =>handleDeleteInternship(id)}
+                    style={{  borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
+                        Fshij Praktiken
+                    </button>
+                </div><br/><br/>
+
+
             </main>
         </>
     );
