@@ -72,13 +72,13 @@ const InternshipDetails = () => {
                                 <div className="job-post-details">
                                     <div className="post-details1 mb-50">
                                         <div className="small-section-tittle">
-                                            <h4>Internship Description</h4>
+                                            <h4>Pershkrimi</h4>
                                         </div>
                                         <p dangerouslySetInnerHTML={{__html: description}}></p>
                                     </div>
                                     <div className="post-details2 mb-50">
                                         <div className="small-section-tittle">
-                                            <h4>Required Knowledge, Skills, and Abilities</h4>
+                                            <h4>Njohurite e nevojshme</h4>
                                         </div>
                                         <ul>
                                             <p dangerouslySetInnerHTML={{__html:requirements}}></p>
@@ -90,14 +90,14 @@ const InternshipDetails = () => {
                                 <div className="post-details3 mb-4"
                                      style={{backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px'}}>
                                     <div className="small-section-tittle">
-                                        <h4>Internship Overview</h4>
+                                        <h4>Informatat e pergjithshme</h4>
                                     </div>
                                     <ul>
-                                        <li>Location: <span>{location}</span></li>
-                                        <li>Job nature: <span>{type}</span></li>
-                                        <li>Start Date: <span>{start_date}</span></li>
-                                        <li>End Date: <span>{end_date}</span></li>
-                                        <li>Deadline: <span>{deadline}</span></li>
+                                        <li>Lokacioni: <span>{location}</span></li>
+                                        <li>Tipi i punes: <span>{type}</span></li>
+                                        <li>Data e fillimit: <span>{start_date}</span></li>
+                                        <li>Data e perfundimit: <span>{end_date}</span></li>
+                                        <li>Afati i aplikimit: <span>{deadline}</span></li>
                                     </ul>
                                     <div className="apply-btn2">
                                         <Link to="/applications" className="btn btn-primary">Apply Now</Link>

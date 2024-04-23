@@ -101,8 +101,8 @@ function JobListing() {
                                         📍 {internship.location}<br />
                                         🕒 {internship.deadline}
                                     </Card.Text>
-                                    <Link to="/applications" className="btn btn-primary me-2">Apply</Link>
-                                    <Link to={`/InternshipDetails/${internship.id}`} className="btn btn-secondary">More Info</Link> 
+                                    <Link to="/applications" className="btn btn-primary me-2">Apliko</Link>
+                                    <Link to={`/InternshipDetails/${internship.id}`} className="btn btn-secondary">Shiko detajet</Link> 
                                 </Card.Body>
                             </Card>
                         </div>

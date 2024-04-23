@@ -153,11 +153,11 @@ const ListStaff = ({ companyId }) => {
                                     type="submit"
                                     style={{
                                         border: '1px solid #0d6efd',
-                                        width: '140px',
+                                        width: '160px',
                                         height: '40px'
                                     }}
                                 >
-                                    Save Changes
+                                    Ruaj Ndryshimet
                                 </MDBBtn>
                             </div>
                         </form>

@@ -150,8 +150,8 @@ function PostInternship() {
     return (
         <>
             <CostumNavbar />
-            <div style={{ backgroundColor: '#d6ebf9', textAlign: 'center', padding: '20px' }}>
-            <h2 style={{ color: '#0056b3', margin: 'auto',fontFamily: 'CourierNew'}}><b>POSTO PRAKTIKE</b></h2><br/>
+            <div style={{ backgroundColor: '#d6ebf9', textAlign: 'center'}}>
+            <h2 style={{ color: '#0056b3', margin: 'auto', fontFamily: 'Arial, sans-serif'}}><b>Posto Praktike</b></h2><br/>
 
                 <form style={{ width: '50%', margin: 'auto' }} onSubmit={handleSubmit}>
                     <input className="form-control" type="text" name="tittle" value={tittle} onChange={handleChange} placeholder="Titulli" style={{ marginBottom: '10px' }} />
@@ -188,7 +188,7 @@ function PostInternship() {
                     <div className="success-message">
                         {successMessage}
                         <br />
-                        <Link to="/alljobs">Click here to see all your jobs</Link>
+                        <Link to="/InternshipsList">Click here to see all your jobs</Link>
                     </div>
                 )}
             </div>

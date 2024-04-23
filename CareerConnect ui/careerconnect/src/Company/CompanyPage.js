@@ -73,91 +73,92 @@ const CompanyPage = () => {
 
   return (
     <>
-      <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0" style={{ marginBottom: '20px' }}>
-        <Navbar.Brand href="#" className="d-flex align-items-center text-center py-0 px-4 px-lg-5">
-          <h1 className="m-0 text-primary">CareerConnect</h1>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarCollapse" className="me-4" />
-        <Navbar.Collapse id="navbarCollapse">
-          <Nav className="ms-auto p-4 p-lg-0">
-            <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
-              <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-              <NavDropdown.Item href="#">Posto Praktike</NavDropdown.Item>
-              <NavDropdown.Item href="#">Posto Kurse</NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
-              <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => removeCompany(id)} href="#">Fshij Profilin</NavDropdown.Item>
-              <NavDropdown.Item href="#">Rate Us</NavDropdown.Item>
-              <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-          <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Your Profile<i className="fa fa-arrow-right ms-3"></i></Button>
-        </Navbar.Collapse>
-      </Navbar>
-      <MDBContainer className="py-5">
-        <MDBRow className="justify-content-center">
-          <MDBCol lg="8">
-            <MDBCard className="mb-4 shadow">
-              <MDBCardBody>
-                <div className="text-center">
-                  
-                  <h4 className="mb-2" style={{ fontFamily: 'Arial, sans-serif' }}>{name}</h4>
-                  <p className="text-muted mb-4">{address}</p>
-                </div>
-                <hr />
-                <div>
-                <MDBRow>
-                    <MDBCol sm="3">
-                      <MDBCardText>Email Adresa:</MDBCardText>
-                    </MDBCol>
-                    <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{email}</MDBCardText>
-                    </MDBCol>
-                  </MDBRow>
+      <div style={{ fontFamily: 'Georgia' }}>
+        <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0" style={{ marginBottom: '20px' }}>
+          <Navbar.Brand href="#" className="d-flex align-items-center text-center py-0 px-4 px-lg-5">
+            <h1 className="m-0 text-primary">CareerConnect</h1>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarCollapse" className="me-4" />
+          <Navbar.Collapse id="navbarCollapse">
+            <Nav className="ms-auto p-4 p-lg-0">
+              <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
+                <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
+                <NavDropdown.Item href="../PostInternship">Posto Praktike</NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
+                <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => removeCompany(id)} href="#">Fshij Profilin</NavDropdown.Item>
+                <NavDropdown.Item href="/Rate">Rate Us</NavDropdown.Item>
+                <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Your Profile<i className="fa fa-arrow-right ms-3"></i></Button>
+          </Navbar.Collapse>
+        </Navbar>
+        <MDBContainer className="py-5">
+          <MDBRow className="justify-content-center">
+            <MDBCol lg="8">
+              <MDBCard className="mb-4 shadow">
+                <MDBCardBody>
+                  <div className="text-center">
+                    
+                    <h4 className="mb-2" style={{ fontFamily: 'Arial, sans-serif' }}>{name}</h4>
+                    <p className="text-muted mb-4">{address}</p>
+                  </div>
                   <hr />
+                  <div>
                   <MDBRow>
-                    <MDBCol sm="3">
-                      <MDBCardText>Numri Kontaktues:</MDBCardText>
-                    </MDBCol>
-                    <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{phone_number}</MDBCardText>
-                    </MDBCol>
-                  </MDBRow>
-                  <hr />
-                  <MDBRow>
-                    <MDBCol sm="3">
-                      <MDBCardText>Viti i hapjes:</MDBCardText>
-                    </MDBCol>
-                    <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{opening_year}</MDBCardText>
-                    </MDBCol>
-                  </MDBRow>
-                  <hr />
-                  <MDBRow>
-                    <MDBCol sm="3">
-                      <MDBCardText>Përshkrimi i Kompanisë:</MDBCardText>
-                    </MDBCol>
-                    <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{description}</MDBCardText>
-                    </MDBCol>
-                  </MDBRow>
-                  
-                </div>
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-      <div className="text-center mt-5">
-        <h2>Stafi i Kompanisë</h2><br/>
+                      <MDBCol sm="3">
+                        <MDBCardText>Email Adresa:</MDBCardText>
+                      </MDBCol>
+                      <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{email}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr />
+                    <MDBRow>
+                      <MDBCol sm="3">
+                        <MDBCardText>Numri Kontaktues:</MDBCardText>
+                      </MDBCol>
+                      <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{phone_number}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr />
+                    <MDBRow>
+                      <MDBCol sm="3">
+                        <MDBCardText>Viti i hapjes:</MDBCardText>
+                      </MDBCol>
+                      <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{opening_year}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr />
+                    <MDBRow>
+                      <MDBCol sm="3">
+                        <MDBCardText>Përshkrimi i Kompanisë:</MDBCardText>
+                      </MDBCol>
+                      <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{description}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    
+                  </div>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
+        <div className="text-center mt-5" >
+          <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Stafi i Kompanisë</h2><br/><br/><br/>
+        </div>
+        <ListStaff companyId={id}/>
+        <CompanyStaff companyId={id}/><br/><br/>
+        <div className="text-center mb-5">
+          <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Shpalljet e Postuara</h2><br/><br/><br/><br/>
+        </div>
+        <Footer/>
       </div>
-      <ListStaff companyId={id}/>
-      <CompanyStaff companyId={id}/>
-      <div className="text-center mb-5">
-        <h2>Shpalljet E Postuara</h2><br/><br/><br/><br/>
-      </div>
-      <Footer/>
     </>
   );
 }

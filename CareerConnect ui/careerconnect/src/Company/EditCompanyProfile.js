@@ -4,7 +4,6 @@ import {
   MDBContainer,
   MDBRow,
   MDBCard,
-  MDBCardText,
   MDBCardBody,
   MDBInput,
   MDBBtn
@@ -13,9 +12,9 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCompany, updateCompany } from '../Services/CompanyService';
 import CustomNavbar from "../CustomNavbar";
+import Footer from '../Footer';
 
-const EditCompanyProfile=()=> {
-
+const EditCompanyProfile = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -23,8 +22,7 @@ const EditCompanyProfile=()=> {
   const [opening_year, setopening_year] = useState('');
   const [description, setDescription] = useState('');
 
-  const {id}=useParams();
-
+  const { id } = useParams();
   const navigator = useNavigate();
 
   function saveCompany(e) {
@@ -41,62 +39,62 @@ const EditCompanyProfile=()=> {
         });
     }
   }
-  
 
-  useEffect(()=>{
-    if(id){
-      getCompany(id).then((response)=>{
+  useEffect(() => {
+    if (id) {
+      getCompany(id).then((response) => {
         setName(response.data.name);
         setEmail(response.data.email);
         setAddress(response.data.address);
         setphone_number(response.data.phone_number);
         setopening_year(response.data.opening_year);
         setDescription(response.data.description);
-      }).catch(error=>{
+      }).catch(error => {
         console.error(error);
       })
     }
-  },[id])
+  }, [id])
 
-    return (
-        <>
-        <CustomNavbar /><MDBContainer className="py-5"></MDBContainer>
-        <MDBContainer className="py-5">
-
-
-        <MDBRow>
-            <MDBCol lg="4">
-            <MDBCard className="mb-4">
-                <MDBCardBody className="text-center">
-                <img src="/3177440.png" alt="image"
-                    className="rounded-circle"
-                    style={{ width: '100px' }}
-                    fluid />
-                <br/><br/>
-                
-                <MDBInput
+  return (
+    <>
+      <CustomNavbar />
+      <MDBContainer className="py-5">
+        <MDBRow className="justify-content-center">
+          <MDBCol lg="8">
+            <MDBCard className="mb-4 shadow">
+              <MDBCardBody>
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Emri:</span>
+                  </MDBCol>
+                  <MDBCol sm="6">
+                    <MDBInput
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                />
-                <br/>
-                <MDBInput
+                    />
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Adresa:</span>
+                  </MDBCol>
+                  <MDBCol sm="6">
+                    <MDBInput
                       type="text"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
-                </MDBCardBody>
-            </MDBCard>
-            </MDBCol>
-            <MDBCol lg="8">
-            <MDBCard className="mb-4">
-                <MDBCardBody>
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Email</MDBCardText>
                   </MDBCol>
-                  <MDBCol sm="9">
-                  <MDBInput
+                </MDBRow>
+                <hr />
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Email Adresa:</span>
+                  </MDBCol>
+                  <MDBCol sm="6">
+                    <MDBInput
                       type="text"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -104,12 +102,12 @@ const EditCompanyProfile=()=> {
                   </MDBCol>
                 </MDBRow>
                 <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Phone Number</MDBCardText>
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Numri kontaktues:</span>
                   </MDBCol>
-                  <MDBCol sm="9">
-                  <MDBInput
+                  <MDBCol sm="6">
+                    <MDBInput
                       type="text"
                       value={phone_number}
                       onChange={(e) => setphone_number(e.target.value)}
@@ -117,11 +115,11 @@ const EditCompanyProfile=()=> {
                   </MDBCol>
                 </MDBRow>
                 <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Opening Year</MDBCardText>
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Viti i hapjes:</span>
                   </MDBCol>
-                  <MDBCol sm="9">
+                  <MDBCol sm="6">
                     <MDBInput
                       type="text"
                       value={opening_year}
@@ -130,33 +128,36 @@ const EditCompanyProfile=()=> {
                   </MDBCol>
                 </MDBRow>
                 <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Description</MDBCardText>
+                <MDBRow className="mb-3">
+                  <MDBCol sm="6">
+                    <span>Përshkrimi:</span>
                   </MDBCol>
-                  <MDBCol sm="9">
+                  <MDBCol sm="6">
                     <MDBInput
                       type="textarea"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
                   </MDBCol>
+                </MDBRow><br/>
+                <MDBRow className="mb-3 justify-content-center">
+                <MDBCol sm="6">
+                  <button
+                    className='btn btn-primary w-100'
+                    onClick={saveCompany}
+                  >
+                    Ruaj ndryshimet
+                  </button>
+                </MDBCol>
                 </MDBRow>
-                <hr/>
-                <br/>
-                <MDBBtn
-                        className='w-50 mb-3 justify-content-center'
-                        size='md'
-                        type="submit"
-                        onClick={saveCompany}
-                    >
-                    Save
-                    </MDBBtn>
-                </MDBCardBody>
+              </MDBCardBody>
             </MDBCard>
-            </MDBCol>
+          </MDBCol>
         </MDBRow>
-        </MDBContainer></>
-    );
+      </MDBContainer>
+      <Footer/>
+    </>
+  );
 }
-export default EditCompanyProfile
+
+export default EditCompanyProfile;
