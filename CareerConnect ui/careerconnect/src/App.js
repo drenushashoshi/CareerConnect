@@ -21,6 +21,8 @@ import EmployeeList from "./Employee/EmployeeList";
 import EmployeeSignUp from './Employee/EmployeeSignUp';
 import Rate from './Rate/Rate';
 import PostInternship from './Internships/PostInternship';
+import InternshipsList from './Internships/InternshipsList';
+import InternshipDetails from './Internships/InternshipDetails';
 
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
@@ -59,6 +61,9 @@ function App() {
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
           <Route path='/RatesList' element={<RatesList/>}></Route>
           <Route path='/PostInternship' element={<PostInternship/>}></Route>
+          <Route path='/InternshipsList' element={<InternshipsList/>}></Route>
+          <Route path='/InternshipDetails' element={<InternshipDetails/>}></Route>
+          <Route path='/InternshipDetails/:id' element={<InternshipDetails/>}></Route>
       </Routes>
     </BrowserRouter>
   );
