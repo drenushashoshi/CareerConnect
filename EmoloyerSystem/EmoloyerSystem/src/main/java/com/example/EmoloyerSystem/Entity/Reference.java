@@ -36,4 +36,8 @@ public class Reference {
 
     @Column(name="email", unique = true)
     private String email;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cv_id")
+    private int cv_id;
 }

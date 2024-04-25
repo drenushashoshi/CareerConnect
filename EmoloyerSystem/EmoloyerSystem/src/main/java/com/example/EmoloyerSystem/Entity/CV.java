@@ -16,7 +16,7 @@ public class CV{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cvid",unique = true,updatable = false)
+    @Column(name = "cv_id",unique = true,updatable = false)
     private int cv_id;
 
     @Column(name="profilepic", nullable = false)
@@ -43,17 +43,12 @@ public class CV{
     @Column(name="description",nullable = false,length = 1000)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="experience_id",nullable = true)
-    private WorkExperience experience_id;
-
     @Column(name="college", nullable = true)
     private String college;
+    
+    @Column(name="degree", nullable = true)
+    private String degree;
 
     @Column(name="highschool",nullable = true)
     private String highschool;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="reference_id",nullable = true)
-    private Reference reference_id;
 }

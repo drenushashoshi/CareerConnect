@@ -30,6 +30,7 @@ import ListStaff from './Company/ListStaff';
 
 
 import RatesList from './Rate/RatesList';
+import CvInfo from './CV/CvInfo';
 
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
           <Route path='/InternshipDetails/:id' element={<InternshipDetails/>}></Route>
           <Route path='/EditInternship' element={<EditInternship/>}></Route>
           <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
+          <Route path='/CvCreate' element={<CvInfo/>}></Route>
       </Routes>
     </BrowserRouter>
   );

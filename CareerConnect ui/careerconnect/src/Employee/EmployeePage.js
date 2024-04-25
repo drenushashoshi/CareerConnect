@@ -35,11 +35,11 @@ const {id}=useParams();
 useEffect(()=>{
     if(id){
         getEmployee(id).then((response)=>{
-            setName(response.data.name);
-            setSurname(response.data.surname);
-            setAge(response.data.age);
-            setAddress(response.data.address);
-            setEmail(response.data.email);
+            setName(response.data.Name);
+            setSurname(response.data.Surname);
+            setAge(response.data.Age);
+            setAddress(response.data.Address);
+            setEmail(response.data.Email);
             setPassword(response.data.password);
             setPhoto(response.data.photo);
             setPhone(response.data.phone);
