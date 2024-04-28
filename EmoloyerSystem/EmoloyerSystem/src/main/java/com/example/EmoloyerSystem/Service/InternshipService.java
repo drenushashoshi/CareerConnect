@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Service;
 
+import com.example.EmoloyerSystem.dto.CompanyStaffDto;
 import com.example.EmoloyerSystem.dto.InternshipDto;
 
 
@@ -11,6 +12,9 @@ public interface InternshipService {
     InternshipDto getInternshipById(Integer internshipId);
 
     List<InternshipDto> getAllInternships();
+
+
+    List<InternshipDto> getAllCompanyInternships(int companyId);
 
     InternshipDto updateInternship(Integer internshipId, InternshipDto updatedInternship);
 

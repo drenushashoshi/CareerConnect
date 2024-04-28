@@ -15,7 +15,8 @@ public class InternshipMapper {
                 internship.getRequirements(),
                 internship.getLocation(),
                 internship.getType(),
-                internship.getDeadline()
+                internship.getDeadline(),
+                internship.getCompanyId()
         );
     }
 
@@ -30,7 +31,8 @@ public class InternshipMapper {
                 internshipDto.getRequirements(),
                 internshipDto.getLocation(),
                 internshipDto.getType(),
-                internshipDto.getDeadline()
+                internshipDto.getDeadline(),
+                internshipDto.getCompanyId()
         );
     }
 }

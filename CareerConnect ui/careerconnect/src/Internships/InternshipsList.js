@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import { listInternships } from '../Services/InternshipService';
+import { listInternships} from '../Services/InternshipService';
 
 
-function JobListing() {
-    const [jobs, setJobs] = useState([]);
+function InternshipListing() {
+    
     const locations = [
         'Deçan', 'Dragash', 'Drenas', 'Ferizaj', 'Fushë Kosovë', 'Gjakovë', 'Gjilan', 'Burim',
         'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
@@ -113,4 +113,4 @@ function JobListing() {
     );
 }
 
-export default JobListing;
+export default InternshipListing;

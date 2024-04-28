@@ -21,4 +21,5 @@ public class InternshipDto {
     private String location;
     private String type;
     private String deadline;
+    private int companyId;
 }

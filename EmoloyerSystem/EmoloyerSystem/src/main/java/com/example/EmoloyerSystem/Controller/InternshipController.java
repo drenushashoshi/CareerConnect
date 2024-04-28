@@ -30,12 +30,21 @@ public class InternshipController {
         return ResponseEntity.ok(internshipDto);
     }
 
-    // Read All Internships REST API
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<InternshipDto>> getAllInternships() {
         List<InternshipDto> internships = internshipService.getAllInternships();
         return ResponseEntity.ok(internships);
     }
+
+    @GetMapping
+    public ResponseEntity<List<InternshipDto>> getAllCompanyInternships(@RequestParam(required = false) Integer companyId) {
+        List<InternshipDto> companyInternships = null;
+        if (companyId != 0) {
+            companyInternships = internshipService.getAllCompanyInternships(companyId);
+        }
+        return ResponseEntity.ok(companyInternships);
+    }
+
 
     // Update Internship REST API
     @PutMapping("{id}")

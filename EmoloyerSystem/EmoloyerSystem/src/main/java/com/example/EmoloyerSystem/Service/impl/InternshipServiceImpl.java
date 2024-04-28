@@ -41,6 +41,14 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
+    public List<InternshipDto> getAllCompanyInternships(int companyId) {
+        List<Internship> companyInternships = internshipRepository.findByCompanyId(companyId);
+        return companyInternships.stream()
+                .map(InternshipMapper::mapToInternshipDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public InternshipDto updateInternship(Integer internshipId, InternshipDto updatedInternship) {
         Internship internship = internshipRepository.findById(internshipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Internship not found with id: " + internshipId));

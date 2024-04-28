@@ -15,6 +15,7 @@ import { ReactComponent as GearIcon } from './gear.svg';
 import Footer from '../Footer'
 import CompanyStaff from './CompanyStaff';
 import ListStaff from './ListStaff';
+import CompanysInternships from '../Internships/CompanysInternships';
 
 const CompanyPage = () => {
 
@@ -83,7 +84,7 @@ const CompanyPage = () => {
             <Nav className="ms-auto p-4 p-lg-0">
               <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                <NavDropdown.Item href="../PostInternship">Posto Praktike</NavDropdown.Item>
+                <NavDropdown.Item href={`../PostInternship/${id}`}>Posto Praktike</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
@@ -157,6 +158,7 @@ const CompanyPage = () => {
         <div className="text-center mb-5">
           <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Shpalljet e Postuara</h2><br/><br/><br/><br/>
         </div>
+        <CompanysInternships companyId={id}/>
         <Footer/>
       </div>
     </>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MDBCard, MDBCardBody, MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
 import { createCompanyStaff } from '../Services/CompanyStaffService';
 
+
 const CompanyStaff = ({ companyId }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -9,6 +10,8 @@ const CompanyStaff = ({ companyId }) => {
     const [nameError, setNameError] = useState('');
     const [surnameError, setSurnameError] = useState('');
     const [roleError, setRoleError] = useState('');
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();

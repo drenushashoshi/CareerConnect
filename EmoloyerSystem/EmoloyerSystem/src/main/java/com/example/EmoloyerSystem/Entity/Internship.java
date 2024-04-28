@@ -41,4 +41,7 @@ public class Internship {
 
     @Column(name="deadline", nullable = false)
     private String deadline;
+
+    @Column(name="companyId", nullable=false)
+    private int companyId;
 }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import CostumNavbar from "../CustomNavbar";
-import { Link } from "react-router-dom";
+import { Link, useParams  } from "react-router-dom";
 import { createInternship } from '../Services/InternshipService';
 
 function PostInternship() {
@@ -15,6 +15,8 @@ function PostInternship() {
     const [deadline, setDeadline] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errors, setErrors] = useState({});
+
+    const { companyId } = useParams();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,7 +58,7 @@ function PostInternship() {
         e.preventDefault();
         const errors = validateForm();
         if (Object.keys(errors).length === 0) {
-            const internship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline };
+            const internship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline, companyId };
             console.log(internship);
             createInternship(internship)
                 .then((response) => {

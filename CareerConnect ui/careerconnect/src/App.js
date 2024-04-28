@@ -31,6 +31,7 @@ import ListStaff from './Company/ListStaff';
 
 import RatesList from './Rate/RatesList';
 import CvInfo from './CV/CvInfo';
+import CompanysInternships from './Internships/CompanysInternships';
 
 
 function App() {
@@ -63,12 +64,15 @@ function App() {
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
           <Route path='/RatesList' element={<RatesList/>}></Route>
           <Route path='/PostInternship' element={<PostInternship/>}></Route>
+          <Route path='/PostInternship/:companyId' element={<PostInternship/>}></Route>
           <Route path='/InternshipsList' element={<InternshipsList/>}></Route>
           <Route path='/InternshipDetails' element={<InternshipDetails/>}></Route>
+          <Route path='/CompanysInternships' element={<CompanysInternships/>}></Route>
           <Route path='/InternshipDetails/:id' element={<InternshipDetails/>}></Route>
           <Route path='/EditInternship' element={<EditInternship/>}></Route>
           <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
           <Route path='/CvCreate' element={<CvInfo/>}></Route>
+          
       </Routes>
     </BrowserRouter>
   );
