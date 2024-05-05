@@ -1,6 +1,4 @@
 package com.example.EmoloyerSystem.dto;
-
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

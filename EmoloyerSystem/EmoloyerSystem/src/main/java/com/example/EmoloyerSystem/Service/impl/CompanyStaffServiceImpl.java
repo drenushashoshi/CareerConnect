@@ -41,7 +41,7 @@ public class CompanyStaffServiceImpl implements CompanyStaffService {
     @Override
     public CompanyStaffDto updateCompanyStaff(Integer companyStaffId, CompanyStaffDto updatedCompanyStaff) {
         CompanyStaff companyStaff=companyStaffRepository.findById(companyStaffId).orElseThrow(
-                ()-> new ResourceNotFoundException("CompanyStaff does not exist")
+                ()-> new ResourceNotFoundException("Company Staff does not exist")
         );
         companyStaff.setName(updatedCompanyStaff.getName());
         companyStaff.setSurname(updatedCompanyStaff.getSurname());
