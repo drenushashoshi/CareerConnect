@@ -20,5 +20,5 @@ public class WorkExperienceDto {
     private String city;
     private String jobposition;
     private String description;
-    private int cv_id;
+    private CV cv_id;
 }

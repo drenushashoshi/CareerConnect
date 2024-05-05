@@ -19,5 +19,5 @@ public class ReferenceDto {
     private String companyname;
     private String phone_nr;
     private String email;
-    private int cv_id;
+    private CV cv_id;
 }

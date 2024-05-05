@@ -10,4 +10,5 @@ import com.example.EmoloyerSystem.Entity.Reference;
 public interface ReferenceRepository extends JpaRepository<Reference,Integer>{
 
     Optional<Reference> findById(int id);
+    Optional<List<Reference>> findByCvId(int id);
 }

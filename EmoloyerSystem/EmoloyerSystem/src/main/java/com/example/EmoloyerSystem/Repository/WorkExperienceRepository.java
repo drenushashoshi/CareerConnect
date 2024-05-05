@@ -9,4 +9,5 @@ import com.example.EmoloyerSystem.Entity.WorkExperience;
 
 public interface WorkExperienceRepository extends JpaRepository<WorkExperience,Integer>{
     Optional<WorkExperience> findById(int id);
+    Optional<List<WorkExperience>> findByCvId(int id);
 }

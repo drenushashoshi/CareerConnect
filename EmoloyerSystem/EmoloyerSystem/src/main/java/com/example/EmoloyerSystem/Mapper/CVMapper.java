@@ -7,7 +7,7 @@ public class CVMapper {
     public static CVDto mapToCvDto(CV Cv)
     {
         return new CVDto(
-            Cv.getCv_id(),
+            Cv.getCvid(),
             Cv.getProfilepic(),
             Cv.getName(),
             Cv.getSurname(),

@@ -40,7 +40,7 @@ public class WorkExperience {
     @Column(name="description",nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cv_id")
-    private int cv_id;
+    private CV cv_id;
 }

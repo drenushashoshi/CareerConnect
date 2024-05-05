@@ -18,8 +18,8 @@ public class CV{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cv_id",unique = true,updatable = false)
-    private int cv_id;
+    @Column(name = "cvid",unique = true,updatable = false)
+    private int cvid;
 
     @Column(name="profilepic", nullable = false)
     private String profilepic;
@@ -54,9 +54,9 @@ public class CV{
     @Column(name="highschool",nullable = true)
     private String highschool;
 
-    @Column(name = "references", nullable = true)
+    @OneToMany(mappedBy = "cv_id")
     private List<Reference> references;
 
-    @Column(name = "work_experiences", nullable = true)
+    @OneToMany(mappedBy = "cv_id")
     private List<WorkExperience> workExperiences;
 }
