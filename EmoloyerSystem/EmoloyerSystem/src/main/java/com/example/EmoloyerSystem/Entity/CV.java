@@ -1,5 +1,7 @@
 package com.example.EmoloyerSystem.Entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,4 +53,10 @@ public class CV{
 
     @Column(name="highschool",nullable = true)
     private String highschool;
+
+    @Column(name = "references", nullable = true)
+    private List<Reference> references;
+
+    @Column(name = "work_experiences", nullable = true)
+    private List<WorkExperience> workExperiences;
 }
