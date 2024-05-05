@@ -34,7 +34,7 @@ public class Company {
     @Column(name="opening_year", nullable = false)
     private int opening_year;
 
-    @Column(name="description", nullable = false)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
 

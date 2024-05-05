@@ -20,6 +20,9 @@ const ListStaff = ({ companyId }) => {
     const [surname, setSurname] = useState('');
     const [role, setRole] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [nameError, setNameError] = useState('');
+    const [surnameError, setSurnameError] = useState('');
+    const [roleError, setRoleError] = useState('');
 
     useEffect(() => {
         listCompanyStaffs(companyId)
@@ -53,17 +56,40 @@ const ListStaff = ({ companyId }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const staff = { name, surname, role };
-        if (companyStaffId) {
-            updateCompanyStaff(companyStaffId, staff)
-                .then((response) => {
-                    console.log(response.data);
-                    handleCloseModal();
-                    window.location.href = `/CompanyPage/${companyId}`;
-                })
-                .catch(error => {
-                    console.error("Error updating companyStaff:", error);
-                });
+
+        // Reset errors
+        setNameError('');
+        setSurnameError('');
+        setRoleError('');
+
+        // Check if name, surname, and role are not empty
+        let isValid = true;
+        if (!name.trim()) {
+            setNameError('Emri nuk mund të jetë bosh');
+            isValid = false;
+        }
+        if (!surname.trim()) {
+            setSurnameError('Mbiemri nuk mund të jetë bosh');
+            isValid = false;
+        }
+        if (!role.trim()) {
+            setRoleError('Pozita e punës nuk mund të jetë bosh');
+            isValid = false;
+        }
+
+        if (isValid) {
+            const staff = { name, surname, role };
+            if (companyStaffId) {
+                updateCompanyStaff(companyStaffId, staff)
+                    .then((response) => {
+                        console.log(response.data);
+                        handleCloseModal();
+                        window.location.href = `/CompanyPage/${companyId}`;
+                    })
+                    .catch(error => {
+                        console.error("Error updating companyStaff:", error);
+                    });
+            }
         }
     };
 
@@ -75,7 +101,7 @@ const ListStaff = ({ companyId }) => {
           .catch(error => {
             console.error(error);
           });
-      }
+    }
 
     return (
         <div className="container">
@@ -128,24 +154,36 @@ const ListStaff = ({ companyId }) => {
                                             type="text"
                                             placeholder='Emri'
                                             value={name}
-                                            onChange={(e) => setName(e.target.value)}
+                                            onChange={(e) => {
+                                                setName(e.target.value);
+                                                setNameError('');
+                                            }}
                                         />
+                                        {nameError && <div style={{ color: 'red' }}>{nameError}</div>}
                                     </MDBCol>
                                     <MDBCol>
                                         <MDBInput
                                             type="text"
                                             placeholder='Mbiemri'
                                             value={surname}
-                                            onChange={(e) => setSurname(e.target.value)}
+                                            onChange={(e) => {
+                                                setSurname(e.target.value);
+                                                setSurnameError('');
+                                            }}
                                         />
+                                        {surnameError && <div style={{ color: 'red' }}>{surnameError}</div>}
                                     </MDBCol>
                                 </MDBRow><br />
                                 <MDBInput
                                     type="text"
                                     placeholder='Pozita e punes (p.sh CEO)'
                                     value={role}
-                                    onChange={(e) => setRole(e.target.value)}
+                                    onChange={(e) => {
+                                        setRole(e.target.value);
+                                        setRoleError('');
+                                    }}
                                 />
+                                {roleError && <div style={{ color: 'red' }}>{roleError}</div>}
                             </MDBCardBody>
                             <div className="d-flex justify-content-center">
                                 <MDBBtn

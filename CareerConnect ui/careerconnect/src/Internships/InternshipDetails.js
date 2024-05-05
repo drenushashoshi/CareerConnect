@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
 import { getInternship, deleteInternship } from '../Services/InternshipService';
+import Footer from '../Footer';
+import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const InternshipDetails = () => {
 
@@ -14,8 +19,10 @@ const InternshipDetails = () => {
     const [location, setLocation] = useState('');
     const [type, setType] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const { id } = useParams();
+    const navigator = useNavigate();
     const [internship, setInternship] = useState(null);
 
     useEffect(() => {
@@ -47,7 +54,15 @@ const InternshipDetails = () => {
             .catch(error => {
                 console.error(error);
             });
+        
     }
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
+    const handleSignUpClick = (event) => {
+        event.preventDefault();
+        handleShowModal();
+    };
 
 
 
@@ -55,86 +70,79 @@ const InternshipDetails = () => {
         <>
             <CustomNavbar />
             <main>
-                <div className="job-post-company pt-120 pb-120">
+                <div className="job-post-company pt-120 pb-120 mt-5">
                     <div className="container">
                         <div className="row justify-content-between">
                             <div className="col-xl-7 col-lg-8">
                                 <div className="single-job-items mb-50">
                                     <div className="job-items">
                                         <div className="job-tittle">
-                                            <h2 style={{
-                                                color: '#2B3940',
-                                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'
-                                            }}>{tittle}</h2>
+                                            <h2 style={{ fontFamily: 'Arial, sans-serif',  fontWeight: 'bold' }}>{tittle}</h2>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="job-post-details">
-                                    <div className="post-details1 mb-50">
-                                        <div className="small-section-tittle">
-                                            <h4>Pershkrimi</h4>
-                                        </div>
-                                        <p dangerouslySetInnerHTML={{__html: description}}></p>
+                                    <div className=" mb-50">
+                                        <p >{description}</p>
                                     </div>
                                     <div className="post-details2 mb-50">
                                         <div className="small-section-tittle">
-                                            <h4>Njohurite e nevojshme</h4>
+                                            <h3 style={{ fontFamily: 'Arial, sans-serif',  fontWeight: 'bold' }}>Njohurite e nevojshme</h3>
                                         </div>
-                                        <ul>
-                                            <p dangerouslySetInnerHTML={{__html:requirements}}></p>
-                                        </ul>
+                                        <p>{requirements}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-xl-4 col-lg-4">
-                                <div className="post-details3 mb-4"
-                                     style={{backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px'}}>
-                                    <div className="small-section-tittle">
-                                        <h4>Informatat e pergjithshme</h4>
+                                <div className=" mb-4" style={{backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px'}}>
+                                    <div className=" justify-content-center">
+                                        <h5><strong>Informatat e pergjithshme</strong></h5>
                                     </div>
-                                    <ul>
+                                    <ul style={{listStyleType: 'none'}}> 
                                         <li>Lokacioni: <span>{location}</span></li>
                                         <li>Tipi i punes: <span>{type}</span></li>
                                         <li>Data e fillimit: <span>{start_date}</span></li>
                                         <li>Data e perfundimit: <span>{end_date}</span></li>
                                         <li>Afati i aplikimit: <span>{deadline}</span></li>
+                                        <li>Kompania: <span>{company_name}</span></li>
                                     </ul>
-                                    <div className="apply-btn2">
-                                        <Link to="/applications" className="btn btn-primary">Apply Now</Link>
+                                    <div className="d-flex justify-content-center"> 
+                                        <Link to="/CompanyPage"  style={{  textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}className="btn">Shiko Kompaninë</Link>
+                                    </div><br/>
+                                    <div className="apply-btn2 d-flex justify-content-center"> 
+                                        <Link to="/applications" className="btn btn-primary">Apliko</Link>
                                     </div>
-                                </div>
-                                <div className="post-details4 mb-4"
-                                     style={{backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px'}}>
-                                    <div className="small-section-tittle">
-                                        <h4>Company Information</h4>
-                                    </div>
-                                    <span>company</span>
-                                    <p>company info</p>
-                                    <ul>
-                                        <li>Name of company: <span>{company_name}</span></li>
-                                        <li>Email: <span>of company</span></li>
-                                    </ul>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '50px' }}>
+                <div className='mt-5' style={{ display: 'flex', justifyContent: 'center', gap: '50px' }}>
                 <Link to={`/EditInternship/${id}`}>
                     <button className='btn btn-primary' style={{ borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
                         Ndrysho Detajet e Praktikes
                     </button>
                 </Link>
                     <button className='btn btn-primary'
-                    onClick={() =>handleDeleteInternship(id)}
+                    onClick={handleSignUpClick}
                     style={{  borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
                         Fshij Praktiken
                     </button>
                 </div><br/><br/>
 
-
+            
             </main>
+            <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Body className='text-center custom-font'>
+                <h5 className='mt-3'>A jeni të sigurtë që doni të fshini praktikën?</h5>
+                <div className='mt-4 mb-4'>
+                    <Link to='' className='btn ' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}>Cancel</Link>
+
+                    <Link to='' onClick={() =>handleDeleteInternship(id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width:'80px' }}>OK</Link>
+                </div>
+                </Modal.Body>
+            </Modal>
+            <Footer/>
         </>
     );
 }

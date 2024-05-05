@@ -9,23 +9,25 @@ import {
 } from 'mdb-react-ui-kit';
 import { useParams } from 'react-router-dom';
 import { getCompany, deleteCompany } from '../Services/CompanyService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { ReactComponent as GearIcon } from './gear.svg';
-import Footer from '../Footer'
+import Footer from '../Footer';
 import CompanyStaff from './CompanyStaff';
 import ListStaff from './ListStaff';
 import CompanysInternships from '../Internships/CompanysInternships';
+import CustomNavbar from '../CustomNavbar';
+import backgroundImage from './background.jpg';
+import Modal from 'react-bootstrap/Modal';
 
 const CompanyPage = () => {
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [phone_number, setphone_number] = useState('');
   const [opening_year, setopening_year] = useState('');
   const [description, setDescription] = useState('');
-
+  const [showModal, setShowModal] = useState(false);
 
   const { id } = useParams();
   const navigator = useNavigate();
@@ -40,7 +42,6 @@ const CompanyPage = () => {
           setphone_number(response.data.phone_number);
           setopening_year(response.data.opening_year);
           setDescription(response.data.description);
-        
         })
         .catch(error => {
           console.error(error);
@@ -51,7 +52,6 @@ const CompanyPage = () => {
   function updateCompany(id) {
     navigator(`/EditCompanyProfile/${id}`);
   }
-  
 
   function removeCompany(id) {
     deleteCompany(id)
@@ -64,7 +64,7 @@ const CompanyPage = () => {
   }
 
   const handleProfileButtonClick = () => {
-    const isLoggedIn = false; 
+    const isLoggedIn = false;
     if (isLoggedIn) {
       navigator('/CompanyPage');
     } else {
@@ -72,42 +72,57 @@ const CompanyPage = () => {
     }
   };
 
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleSignUpClick = (event) => {
+    event.preventDefault();
+    handleShowModal();
+  };
+
   return (
     <>
-      <div style={{ fontFamily: 'Georgia' }}>
-        <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0" style={{ marginBottom: '20px' }}>
-          <Navbar.Brand href="#" className="d-flex align-items-center text-center py-0 px-4 px-lg-5">
-            <h1 className="m-0 text-primary">CareerConnect</h1>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarCollapse" className="me-4" />
-          <Navbar.Collapse id="navbarCollapse">
-            <Nav className="ms-auto p-4 p-lg-0">
-              <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
-                <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                <NavDropdown.Item href={`../PostInternship/${id}`}>Posto Praktike</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
-                <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => removeCompany(id)} href="#">Fshij Profilin</NavDropdown.Item>
-                <NavDropdown.Item href="/Rate">Rate Us</NavDropdown.Item>
-                <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Your Profile<i className="fa fa-arrow-right ms-3"></i></Button>
-          </Navbar.Collapse>
-        </Navbar>
-        <MDBContainer className="py-5">
+      
+      <CustomNavbar />
+      <div style={{ 
+            backgroundImage: `url(${backgroundImage})`, 
+            backgroundSize: 'cover', 
+            backgroundRepeat: 'no-repeat', 
+            backgroundPosition: 'center', 
+            textAlign: 'center',
+            minHeight: '100vh', 
+            }}>
+        <div style={{ backgroundColor:'#3b5998', color: '#fff', fontFamily: 'Arial, sans-serif', padding: '10px', height: '70px', margin: '0 -15px' }}>
+          <div className="container d-flex justify-content-between align-items-center">
+            <h4 style={{ fontWeight: 'bold', padding: '10px', marginLeft: '15px' }}>{name}</h4>
+            <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
+              <NavDropdown.Item onClick={() => updateCompany(id)} href="#">Ndrysho Profilin</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
+              <NavDropdown.Item href="/Rate">Rate Us</NavDropdown.Item>
+              <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
+            </NavDropdown>
+          </div>
+        </div>
+        <MDBContainer className="py-5" >
           <MDBRow className="justify-content-center">
             <MDBCol lg="8">
               <MDBCard className="mb-4 shadow">
                 <MDBCardBody>
-                  <div className="text-center">
-                    
-                    <h4 className="mb-2" style={{ fontFamily: 'Arial, sans-serif' }}>{name}</h4>
-                    <p className="text-muted mb-4">{address}</p>
-                  </div>
-                  <hr />
+                    <MDBRow style={{ padding:'20px' }}>
+                      <MDBCol >
+                        <MDBCardText className="text-muted">{description}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow><br/><hr/>
                   <div>
+                  <MDBRow>
+                      <MDBCol sm="3">
+                        <MDBCardText>Adresa:</MDBCardText>
+                      </MDBCol>
+                      <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{address}</MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr />
                   <MDBRow>
                       <MDBCol sm="3">
                         <MDBCardText>Email Adresa:</MDBCardText>
@@ -133,16 +148,8 @@ const CompanyPage = () => {
                       <MDBCol sm="9">
                         <MDBCardText className="text-muted">{opening_year}</MDBCardText>
                       </MDBCol>
-                    </MDBRow>
-                    <hr />
-                    <MDBRow>
-                      <MDBCol sm="3">
-                        <MDBCardText>Përshkrimi i Kompanisë:</MDBCardText>
-                      </MDBCol>
-                      <MDBCol sm="9">
-                        <MDBCardText className="text-muted">{description}</MDBCardText>
-                      </MDBCol>
-                    </MDBRow>
+                    </MDBRow><br/>
+                    
                     
                   </div>
                 </MDBCardBody>
@@ -150,17 +157,27 @@ const CompanyPage = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-        <div className="text-center mt-5" >
-          <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Stafi i Kompanisë</h2><br/><br/><br/>
+        <div className="text-center mt-5">
+          <h2 style={{ fontFamily: 'Arial, sans-serif', color:'#0056b3', fontWeight: 'bold' }}>Stafi i Kompanisë</h2><br /><br /><br />
         </div>
-        <ListStaff companyId={id}/>
-        <CompanyStaff companyId={id}/><br/><br/>
+        <ListStaff companyId={id} />
+        <CompanyStaff companyId={id} /><br /><br />
         <div className="text-center mb-5">
-          <h2 style={{ fontFamily: 'Arial, sans-serif' }}>Shpalljet e Postuara</h2><br/><br/><br/><br/>
+          <h2 style={{ fontFamily: 'Arial, sans-serif', color:'#0056b3', fontWeight: 'bold' }}>Shpalljet e Postuara</h2><br />
         </div>
-        <CompanysInternships companyId={id}/>
-        <Footer/>
-      </div>
+        <CompanysInternships companyId={id} /><br/>
+        <Footer />
+        </div>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Body className='text-center custom-font'>
+          <h5 className='mt-3'>Me fshirjen e profilit, të gjitha të dhënat e juaja do të fshihen. A doni të vazhdoni?</h5>
+          <div className='mt-4 mb-4'>
+            <Link to='' className='btn ' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}>Cancel</Link>
+
+            <Link to='' onClick={() => removeCompany(id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width:'80px' }}>OK</Link>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

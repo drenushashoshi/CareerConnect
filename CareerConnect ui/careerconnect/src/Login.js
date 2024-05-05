@@ -79,8 +79,7 @@ function Login() {
             <div className='d-grid'>
               <button type="submit" className='btn btn-primary'>Sign in</button>
             </div>
-            <p className='text-end mt-2'>
-              Forgot <a href="">Password?</a>
+            <p className='text-start mt-2'>
               <a href="" className='ms-2' onClick={handleSignUpClick}>Sign up</a>
             </p>
           </form>

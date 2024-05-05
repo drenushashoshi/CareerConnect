@@ -10,6 +10,7 @@ import {
   MDBCardBody,
   MDBInput
 } from 'mdb-react-ui-kit';
+import Footer from '../Footer';
 
 
 function Signup() {
@@ -35,26 +36,24 @@ function Signup() {
   const [opening_yearTouched, setopening_yearTouched] = useState(false);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
  
-
+  const isPasswordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password);
+  const isRepeatPasswordValid = repeatPassword === password;
+  const isNameValid = name.trim() !== '' && /^[A-Z]/.test(name);
+  const isAddressValid = address.trim() !== '' && /^[A-Z]/.test(address);
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isphone_numberValid = phone_number.trim() !== '';
+  const isopening_yearValid = opening_year.trim() !== '';
+  const isDescriptionValid = description.trim() !== '';
 
   const validateForm = () => {
-    const isNameValid = name.trim() !== '';
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isAddressValid = address.trim() !== '';
-    const isphone_numberValid = phone_number.trim() !== '';
-    const isPasswordValid = password.trim() !== '';
-    const isRepeatPasswordValid = repeatPassword === password;
-    const isopening_yearValid = opening_year.trim() !== '';
-    const isDescriptionValid = description.trim() !== '';
-  
-    setNameTouched(!isNameValid);
-    setEmailTouched(!isEmailValid);
-    setAddressTouched(!isAddressValid);
-    setphone_numberTouched(!isphone_numberValid);
-    setPasswordTouched(!isPasswordValid);
-    setRepeatPasswordTouched(!isRepeatPasswordValid);
-    setopening_yearTouched(!isopening_yearValid);
-    setDescriptionTouched(!isDescriptionValid);
+    setNameTouched(true);
+    setEmailTouched(true);
+    setAddressTouched(true);
+    setphone_numberTouched(true);
+    setPasswordTouched(true);
+    setRepeatPasswordTouched(true);
+    setopening_yearTouched(true);
+    setDescriptionTouched(true);
   
     return (
       isNameValid &&
@@ -68,6 +67,7 @@ function Signup() {
     );
   };
   
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -76,12 +76,15 @@ function Signup() {
     if (isFormValid) {
       const company = { name, email, address, phone_number, password, opening_year, description};
       console.log(company);
-      createCompany(company).then((response) => {
-        console.log(response.data);
-        navigator('/CompanyList');
-      });
+      createCompany(company)
+        .then((response) => {
+          console.log(response.data);
+          navigator(`/CompanyPage/${response.data.id}`);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-    
   };
   
 
@@ -109,9 +112,9 @@ function Signup() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         onBlur={() => setNameTouched(true)}
-                        invalid={nameTouched && !name.trim()}
+                        invalid={nameTouched && (!name.trim() || !isNameValid)}
                       />
-                      {nameTouched && !name.trim() && <div className="text-danger">Name is required</div>}
+                      {nameTouched && (!name.trim() || !isNameValid) && <div className="text-danger">Name is required and must start with a capital letter</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
@@ -122,9 +125,9 @@ function Signup() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={() => setEmailTouched(true)}
-                        invalid={emailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+                        invalid={emailTouched && !isEmailValid}
                       />
-                      {emailTouched && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && <div className="text-danger">Invalid email</div>}
+                      {emailTouched && !isEmailValid && <div className="text-danger">Invalid email</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -137,9 +140,9 @@ function Signup() {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         onBlur={() => setAddressTouched(true)}
-                        invalid={addressTouched && !address.trim()}
+                        invalid={addressTouched && (!address.trim() || !isAddressValid)}
                       />
-                      {addressTouched && !address.trim() && <div className="text-danger">Address is required</div>}
+                      {addressTouched && (!address.trim() || !isAddressValid) && <div className="text-danger">Address is required and must start with a capital letter</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
@@ -150,9 +153,9 @@ function Signup() {
                         value={phone_number}
                         onChange={(e) => setphone_number(e.target.value)}
                         onBlur={() => setphone_numberTouched(true)}
-                        invalid={phone_numberTouched && !phone_number.trim()}
+                        invalid={phone_numberTouched && !isphone_numberValid}
                       />
-                      {phone_numberTouched && !phone_number.trim() && <div className="text-danger">phone number is required</div>}
+                      {phone_numberTouched && !isphone_numberValid && <div className="text-danger">Phone number is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -165,9 +168,9 @@ function Signup() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={() => setPasswordTouched(true)}
-                        invalid={passwordTouched && !password.trim()}
+                        invalid={passwordTouched && (!password.trim() || !isPasswordValid)}
                       />
-                      {passwordTouched && !password.trim() && <div className="text-danger">Password is required</div>}
+                      {passwordTouched && (!password.trim() || !isPasswordValid) && <div className="text-danger">Password is required and must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number</div>}
                     </MDBCol>
                     <MDBCol md='6'>
                       <MDBInput
@@ -178,9 +181,9 @@ function Signup() {
                         value={repeatPassword}
                         onChange={(e) => setRepeatPassword(e.target.value)}
                         onBlur={() => setRepeatPasswordTouched(true)}
-                        invalid={repeatPasswordTouched && repeatPassword !== password}
+                        invalid={repeatPasswordTouched && (repeatPassword !== password || !isRepeatPasswordValid)}
                       />
-                      {repeatPasswordTouched && repeatPassword !== password && <div className="text-danger">Passwords do not match</div>}
+                      {repeatPasswordTouched && (repeatPassword !== password || !isRepeatPasswordValid) && <div className="text-danger">Passwords do not match</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -193,9 +196,9 @@ function Signup() {
                         value={opening_year}
                         onChange={(e) => setopening_year(e.target.value)}
                         onBlur={() => setopening_yearTouched(true)}
-                        invalid={opening_yearTouched && !opening_year.trim()}
+                        invalid={opening_yearTouched && !isopening_yearValid}
                       />
-                      {opening_yearTouched && !opening_year.trim() && <div className="text-danger">Opening year is required</div>}
+                      {opening_yearTouched && !isopening_yearValid && <div className="text-danger">Opening year is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <div className="mt-4 mb-4">
@@ -214,9 +217,9 @@ function Signup() {
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       onBlur={() => setDescriptionTouched(true)}
-                      invalid={descriptionTouched && !description.trim()}
+                      invalid={descriptionTouched && !isDescriptionValid}
                     />
-                    {descriptionTouched && !description.trim() && <div className="text-danger">Description is required</div>}
+                    {descriptionTouched && !isDescriptionValid && <div className="text-danger">Description is required</div>}
                   </div>
                   
                   <br/>
@@ -243,6 +246,7 @@ function Signup() {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
+      <Footer/>
     </div>
   )
 }

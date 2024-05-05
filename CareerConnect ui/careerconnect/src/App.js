@@ -24,14 +24,12 @@ import PostInternship from './Internships/PostInternship';
 import InternshipsList from './Internships/InternshipsList';
 import InternshipDetails from './Internships/InternshipDetails';
 import EditInternship from './Internships/EditInternship';
-
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
-
-
 import RatesList from './Rate/RatesList';
 import CvInfo from './CV/CvInfo';
 import CompanysInternships from './Internships/CompanysInternships';
+import Dashboard from './Dashboard';
 
 
 function App() {
@@ -72,6 +70,7 @@ function App() {
           <Route path='/EditInternship' element={<EditInternship/>}></Route>
           <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
           <Route path='/CvCreate' element={<CvInfo/>}></Route>
+          <Route path='/Dashboard' element={<Dashboard/>}></Route>
           
       </Routes>
     </BrowserRouter>
