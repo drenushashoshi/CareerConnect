@@ -27,4 +27,5 @@ public class CompanyStaff {
 
     @Column(name="companyId", nullable = false)
     private int companyId;
+
 }

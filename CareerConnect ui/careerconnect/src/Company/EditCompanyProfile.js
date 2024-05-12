@@ -5,94 +5,62 @@ import {
   MDBRow,
   MDBCard,
   MDBCardBody,
-  MDBInput,
-  MDBBtn
+  MDBInput
 } from 'mdb-react-ui-kit';
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { getCompany, updateCompany } from '../Services/CompanyService';
 import CustomNavbar from "../CustomNavbar";
 import Footer from '../Footer';
+import CompanyService from '../Services/CompanyService';
 
 const EditCompanyProfile = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone_number, setphone_number] = useState('');
-  const [opening_year, setopening_year] = useState('');
-  const [description, setDescription] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [addressError, setAddressError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-  const [yearError, setYearError] = useState('');
-
-  const { id } = useParams();
   const navigator = useNavigate();
+  const { id } = useParams();
 
-  function saveCompany(e) {
-    e.preventDefault();
-
-    
-    setNameError('');
-    setEmailError('');
-    setAddressError('');
-    setPhoneError('');
-    setYearError('');
-
-   
-    let isValid = true;
-    if (!name.trim()) {
-      setNameError('Emri nuk mund të jetë bosh');
-      isValid = false;
-    }
-    if (!email.trim()) {
-      setEmailError('Emaili nuk mund të jetë bosh');
-      isValid = false;
-    }
-    if (!address.trim()) {
-      setAddressError('Adresa nuk mund të jetë bosh');
-      isValid = false;
-    }
-    if (!phone_number.trim()) {
-      setPhoneError('Numri kontaktues nuk mund të jetë bosh');
-      isValid = false;
-    }
-    const openingYearString = String(opening_year);
-    if (!openingYearString.trim()) {
-      setYearError('Viti i hapjes nuk mund të jetë bosh');
-      isValid = false;
-    }
-
-    if (isValid) {
-      const company = { name, email, address, phone_number, opening_year, description };
-      if (id) {
-        updateCompany(id, company)
-          .then((response) => {
-            console.log(response.data);
-            navigator(`/CompanyPage/${id}`);
-          })
-          .catch(error => {
-            console.error("Error updating company:", error);
-          });
-      }
-    }
-  }
+  const [companyData, setCompanyData] = useState({
+    name: '',
+    email: '',
+    address: '',
+    phone_number: '',
+    opening_year: '',
+    description: ''
+  });
 
   useEffect(() => {
-    if (id) {
-      getCompany(id).then((response) => {
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setAddress(response.data.address);
-        setphone_number(response.data.phone_number);
-        setopening_year(response.data.opening_year);
-        setDescription(response.data.description);
-      }).catch(error => {
-        console.error(error);
-      })
+    fetchCompanyDataById(id);
+  }, [id]);
+
+  const fetchCompanyDataById = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await CompanyService.getCompany(id, token);
+      const { name, email, address, phone_number, opening_year, description } = response.company;
+      setCompanyData({ name, email, address, phone_number, opening_year, description })
+
+    } catch (error) {
+      console.error('Error fetching company data ', error);
     }
-  }, [id])
+  };
+
+  const handelInputChange = (e) => {
+    const { name, value } = e.target;
+    setCompanyData((prevCompanyData) => ({
+      ...prevCompanyData,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      await CompanyService.updateCompany(id, companyData, token);
+      navigator('/CompanyPage');
+    } catch (error) {
+      console.error('error updating company profile ', error);
+      alert(error)
+    }
+  };
 
   return (
     <>
@@ -109,10 +77,10 @@ const EditCompanyProfile = () => {
                   <MDBCol sm="6">
                     <MDBInput
                       type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      name="name"
+                      value={companyData.name}
+                      onChange={handelInputChange}
                     />
-                    {nameError && <div style={{ color: 'red' }}>{nameError}</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -123,10 +91,10 @@ const EditCompanyProfile = () => {
                   <MDBCol sm="6">
                     <MDBInput
                       type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
+                      name="address"
+                      value={companyData.address}
+                      onChange={handelInputChange}
                     />
-                    {addressError && <div style={{ color: 'red' }}>{addressError}</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -137,10 +105,10 @@ const EditCompanyProfile = () => {
                   <MDBCol sm="6">
                     <MDBInput
                       type="text"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      name="email"
+                      value={companyData.email}
+                      onChange={handelInputChange}
                     />
-                    {emailError && <div style={{ color: 'red' }}>{emailError}</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -151,10 +119,10 @@ const EditCompanyProfile = () => {
                   <MDBCol sm="6">
                     <MDBInput
                       type="text"
-                      value={phone_number}
-                      onChange={(e) => setphone_number(e.target.value)}
+                      name="phone_number"
+                      value={companyData.phone_number}
+                      onChange={handelInputChange}
                     />
-                    {phoneError && <div style={{ color: 'red' }}>{phoneError}</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -165,10 +133,10 @@ const EditCompanyProfile = () => {
                   <MDBCol sm="6">
                     <MDBInput
                       type="text"
-                      value={opening_year}
-                      onChange={(e) => setopening_year(e.target.value)}
+                      name="opening_year"
+                      value={companyData.opening_year}
+                      onChange={handelInputChange}
                     />
-                    {yearError && <div style={{ color: 'red' }}>{yearError}</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -177,29 +145,30 @@ const EditCompanyProfile = () => {
                     <span>Përshkrimi:</span>
                   </MDBCol>
                   <MDBCol sm="6">
-                      <textarea
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          style={{
-                            height: '200px',
-                            width: '100%',
-                            resize: 'none',
-                            padding: '10px',
-                            fontSize: '1rem',
-                            fontFamily: 'inherit',
-                            border: '1px solid #ced4da',
-                            borderRadius: '0.25rem',
-                            boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
-                            transition: 'box-shadow 0.15s ease-in-out',
-                          }}
-                        />
+                    <textarea
+                      name="description"
+                      value={companyData.description}
+                      onChange={handelInputChange}
+                      style={{
+                        height: '200px',
+                        width: '100%',
+                        resize: 'none',
+                        padding: '10px',
+                        fontSize: '1rem',
+                        fontFamily: 'inherit',
+                        border: '1px solid #ced4da',
+                        borderRadius: '0.25rem',
+                        boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
+                        transition: 'box-shadow 0.15s ease-in-out',
+                      }}
+                    />
                   </MDBCol>
-                </MDBRow><br/>
+                </MDBRow><br />
                 <MDBRow className="mb-3 justify-content-center">
                   <MDBCol sm="6">
                     <button
                       className='btn btn-primary w-100'
-                      onClick={saveCompany}
+                      onClick={handleSubmit}
                     >
                       Ruaj ndryshimet
                     </button>
@@ -210,7 +179,7 @@ const EditCompanyProfile = () => {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-      <Footer/>
+      <Footer />
     </>
   );
 }

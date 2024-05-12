@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { listCompanies } from '../Services/CompanyService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import CompanyService from '../Services/CompanyService';
 
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
-        listCompanies()
-            .then((response) => {
-                setCompanies(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        fetchCompanies();
     }, []);
+
+    const fetchCompanies=async()=>{
+        try{
+            const token= localStorage.getItem('token');
+            const response=await CompanyService.getAllCompanies(token);
+            setCompanies(response.CompanyList);
+        }catch(error){
+            console.log('Error fetching companies ', error);
+        }
+    };
     
 
     return (
