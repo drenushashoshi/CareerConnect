@@ -26,6 +26,11 @@ import InternshipDetails from './Internships/InternshipDetails';
 import EditInternship from './Internships/EditInternship';
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
+
+
+import EmployeePostList from './Employee/EmployeePostList';
+import EmployeePostSignup from './Employee/EmployeePostSignup';
+
 import RatesList from './Rate/RatesList';
 import CvInfo from './CV/CvInfo';
 import CompanysInternships from './Internships/CompanysInternships';
@@ -58,6 +63,8 @@ function App() {
           <Route path='/EmployeeList' element={<EmployeeList/>}></Route>
           <Route path='/EditEmployee' element={<EditEmployee/>}></Route>
           <Route path='/EditEmployee/:id' element={<EditEmployee/>}></Route>
+          <Route path='/EmployeePostSignup' element={<EmployeePostSignup/>}></Route>
+          <Route path='/EmployeePostList' element={<EmployeePostList/>}></Route>
           <Route path='/Rate' element={<Rate/>}></Route>
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
           <Route path='/RatesList' element={<RatesList/>}></Route>

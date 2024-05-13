@@ -1,8 +1,13 @@
 import React,{useEffect,useState} from "react";
- import {deleteRate, listRates} from '../Services/RateService'
+ import {deleteRate, listRates} from '../Services/RateService';
+ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+ import { useNavigate } from 'react-router-dom';
+
 
  const RatesList=()=>{
      const [rate,setRate]=useState([])
+
+     const navigator = useNavigate();
 
      useEffect(()=>{
          listRates().then((response)=>{
@@ -11,15 +16,16 @@ import React,{useEffect,useState} from "react";
              console.error(error);
          })
      },[])
-     function deleteRate(id) {
+     function removeRate(id) {
         deleteRate(id)
           .then((response) => {
-            navigator('/');
+            navigator('/RatesList');
           })
           .catch(error => {
             console.error(error);
           });
       }
+     
 
 
      return(
@@ -35,6 +41,7 @@ import React,{useEffect,useState} from "react";
                         <th>Delete</th>
                     </tr>
                 </thead>
+                
             
 
             <tbody>
@@ -45,7 +52,7 @@ import React,{useEffect,useState} from "react";
                         <td>{rate.vleresimi}</td>
                         <td>{rate.komenti}</td>
                         <td>{rate.dataKrijimit}</td>
-                        <td><button onClick={() => deleteRate(rate.id)}>Delete</button></td>
+                        <td><button onClick={() => removeRate(rate.id)}>Delete</button></td>
                     </tr>
                     )
                 }
