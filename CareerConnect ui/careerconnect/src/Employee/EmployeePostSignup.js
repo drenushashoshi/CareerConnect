@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit'; // Import MDB components
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
+
+import { createEmployeePost } from '../Services/EmployeePostService';
 
 const EmployeePost = ({ employeePostId }) => {
     const [title, setTitle] = useState('');
@@ -30,16 +32,22 @@ const EmployeePost = ({ employeePostId }) => {
             isValid = false;
         }
 
-        if (isValid) {
-           
-            console.log('Form submitted successfully!');
-            console.log('Title:', title);
-            console.log('Content:', content);
-            console.log('Date:', date);
-            console.log('Attachments:', attachments);
-
         
-        }
+        
+            
+            
+          
+            if (isValid) {
+              const employeePost = { title, content, date, attachments};
+              console.log(employeePost);
+              createEmployeePost(employeePost).then((response) => {
+                console.log(response.data);
+                navigator('/');
+              });
+            }
+            
+          
+
     };
 
   

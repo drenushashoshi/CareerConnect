@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REST_API_BASE_URL='http://localhost:8080/api/EmployeePost';
+const REST_API_BASE_URL='http://localhost:8080/api/employeesPost';
 
 export const createEmployeePost=(employeePost)=>axios.post(REST_API_BASE_URL,employeePost);
 export const listEmployeePosts=(employeePostId)=>axios.get(`${REST_API_BASE_URL}?employeePostId=${employeePostId}`);
