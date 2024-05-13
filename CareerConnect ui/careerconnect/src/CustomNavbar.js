@@ -2,15 +2,18 @@
 import React from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import CompanyService from './Services/CompanyService';
 
 function CustomNavbar() {
+    const isAuthenticated=CompanyService.isAuthenticated();
+    const isCompany=CompanyService.isCompany();
+
     const navigate = useNavigate();
     const { id } = useParams(); 
 
     const handleProfileButtonClick = () => {
-        const isLoggedIn = false;
-        if (isLoggedIn) {
-            navigate('/profile'); 
+        if (isAuthenticated) {
+            navigate('/CompanyPage'); 
         } else {
             navigate('/'); 
         }
@@ -29,10 +32,12 @@ function CustomNavbar() {
                         <NavDropdown.Item href="../InternshipsList">Praktike</NavDropdown.Item>
 
                     </NavDropdown>
-                    <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
-                        <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                        <NavDropdown.Item  href={`../PostInternship/${id}`}>Posto Praktike</NavDropdown.Item>
-                    </NavDropdown>
+                    {isCompany && (
+                        <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
+                            <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
+                            <NavDropdown.Item href={`../PostInternship/${id}`}>Posto Praktike</NavDropdown.Item>
+                        </NavDropdown>
+                    )}
                 </Nav>
                 <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Your Profile<i className="fa fa-arrow-right ms-3"></i></Button>
             </Navbar.Collapse>

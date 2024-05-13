@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authenticateCompany } from './Services/CompanyService';
-import {authenticateEmployee} from'./Services/EmployeeService';
+import CompanyService from './Services/CompanyService';
 import backgroundImage from './login-test2.avif';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import './styles.css';
 
 function Login() {
@@ -23,28 +21,24 @@ function Login() {
     handleShowModal();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { email, password };
-    authenticateCompany(data)
-      .then((response) => {
-        console.log("Successful login!");
-        const id=response.data;
-        localStorage.setItem('id', id);
-        navigator(`/CompanyPage/${id}`);
-      })
-      .catch((error) => {
+    try{
+      const data = await CompanyService.login(email, password);
+      if(data.token){
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('role', data.role)
+        navigator('/CompanyPage')
+      }else{
+        setError(data.message)
+      }
+    }catch(error){
         console.error("Login failed:", error);
-        setError('Invalid email or password');
+        setError(error.message);
         setEmail('');
         setPassword('');
-      });
+    };
   }
-
- 
-
-
- 
 
   return (
     <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>

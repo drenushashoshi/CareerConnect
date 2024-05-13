@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createCompany } from '../Services/CompanyService';
+import CompanyService from '../Services/CompanyService';
 import { useNavigate } from 'react-router-dom';
 import {
   MDBBtn,
@@ -22,6 +22,7 @@ function Signup() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [opening_year, setopening_year] = useState('');
   const [description, setDescription] = useState('');
+  const [role, setRole] = useState('');
   
 
   const navigator=useNavigate();
@@ -68,22 +69,23 @@ function Signup() {
   };
   
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    try{
+      const isFormValid = validateForm(); 
     
-    const isFormValid = validateForm(); 
-  
-    if (isFormValid) {
-      const company = { name, email, address, phone_number, password, opening_year, description};
-      console.log(company);
-      createCompany(company)
-        .then((response) => {
-          console.log(response.data);
-          navigator(`/CompanyPage/${response.data.id}`);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      if (isFormValid) {
+        const companyData = { name, email, address, phone_number, password, opening_year, description, role};
+        const token=localStorage.getItem('token');
+        
+        await CompanyService.register(companyData, token);
+
+        alert('Company registered successfully!');
+        navigator('/CompanyPage')
+      }
+    }catch(error){
+      console.error('Error registering company ', error);
+
     }
   };
   
@@ -221,6 +223,19 @@ function Signup() {
                     />
                     {descriptionTouched && !isDescriptionValid && <div className="text-danger">Description is required</div>}
                   </div>
+                  <MDBRow>
+                    <MDBCol md='6'>
+                      <MDBInput
+                        wrapperClass='mt-4'
+                        placeholder='Role'
+                        id='role'
+                        type='text'
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                      />
+                      
+                    </MDBCol>
+                  </MDBRow>
                   
                   <br/>
                   <div className="d-flex justify-content-center">
