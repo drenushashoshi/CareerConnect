@@ -12,9 +12,17 @@ class CompanyService{
             throw err;
         }
     }
-    static async register(companyData, token){
+    static async register(companyData){
         try{
-            const response= await axios.post(`${CompanyService.BASE_URL}/auth/register`, companyData, {
+            const response= await axios.post(`${CompanyService.BASE_URL}/auth/register`, companyData, )
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async createCompanyStaff(companyStaffData, token){
+        try{
+            const response= await axios.post(`${CompanyService.BASE_URL}/company/registerStaff`, companyStaffData, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;
@@ -22,9 +30,20 @@ class CompanyService{
             throw err;
         }
     }
-    static async getAllCompanies(token){
+    static async getAllCompanyStaff(companyId, token){
         try{
-            const response= await axios.get(`${CompanyService.BASE_URL}/admincompany/getAllCompanies`, {
+            const response= await axios.get(`${CompanyService.BASE_URL}/company/CompanyStaff?companyId=${companyId}`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    
+    static async getAllCompanies(id, token){
+        try{
+            const response= await axios.get(`${CompanyService.BASE_URL}/admincompany/getAllCompanies/${id}`, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;
@@ -52,6 +71,17 @@ class CompanyService{
             throw err;
         }
     }
+
+    static async getStaff(id, token){
+        try{
+            const response= await axios.get(`${CompanyService.BASE_URL}/company/getStaff/${id}`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
     static async deleteCompany(id, token){
         try{
             const response= await axios.delete(`${CompanyService.BASE_URL}/company/deleteCompany/${id}`, {
@@ -62,9 +92,29 @@ class CompanyService{
             throw err;
         }
     }
+    static async deleteStaff(id, token){
+        try{
+            const response= await axios.delete(`${CompanyService.BASE_URL}/company/deleteStaff/${id}`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
     static async updateCompany(id,companyData, token){
         try{
             const response= await axios.put(`${CompanyService.BASE_URL}/company/updateCompany/${id}`, companyData, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async updateStaff(id,staffData, token){
+        try{
+            const response= await axios.put(`${CompanyService.BASE_URL}/company/updateStaff/${id}`, staffData, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;

@@ -1,15 +1,16 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import CompanyService from './Services/CompanyService';
 
 function CustomNavbar() {
+    const [profileInfo, setProfileInfo] = useState({});
     const isAuthenticated=CompanyService.isAuthenticated();
     const isCompany=CompanyService.isCompany();
 
     const navigate = useNavigate();
-    const { id } = useParams(); 
+    
 
     const handleProfileButtonClick = () => {
         if (isAuthenticated) {
@@ -18,6 +19,20 @@ function CustomNavbar() {
             navigate('/'); 
         }
     };
+
+    useEffect(() => {
+        fetchProfileInfo();
+    }, []);
+
+    const fetchProfileInfo = async () => {
+        try {
+        const token = localStorage.getItem('token');
+        const response = await CompanyService.getProfile(token);
+        setProfileInfo(response.company);
+        } catch (error) {
+        console.log('Error fetching profile data ', error);
+        }
+    }
 
     return (
         <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0" >
@@ -35,7 +50,7 @@ function CustomNavbar() {
                     {isCompany && (
                         <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
                             <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                            <NavDropdown.Item href={`../PostInternship/${id}`}>Posto Praktike</NavDropdown.Item>
+                            <NavDropdown.Item href={`../PostInternship`}>Posto Praktike</NavDropdown.Item>
                         </NavDropdown>
                     )}
                 </Nav>

@@ -8,15 +8,15 @@ import {
   MDBCardText
 } from 'mdb-react-ui-kit';
 import { Link, useNavigate } from 'react-router-dom';
-import { NavDropdown } from 'react-bootstrap';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Modal from 'react-bootstrap/Modal';
+import CompanyStaff from './CompanyStaff';
 import { ReactComponent as GearIcon } from './gear.svg';
 import Footer from '../Footer';
-import CompanyStaff from './CompanyStaff';
 import ListStaff from './ListStaff';
 import CompanysInternships from '../Internships/CompanysInternships';
 import CustomNavbar from '../CustomNavbar';
 import backgroundImage from './background.jpg';
-import Modal from 'react-bootstrap/Modal';
 import CompanyService from '../Services/CompanyService';
 
 const CompanyPage = () => {

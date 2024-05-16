@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import { getInternship, deleteInternship } from '../Services/InternshipService';
+import InterService from '../Services/InterService';
 import Footer from '../Footer';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -21,23 +21,23 @@ const InternshipDetails = () => {
     const [deadline, setDeadline] = useState('');
     const [showModal, setShowModal] = useState(false);
 
-    const { id } = useParams();
+    const {id}= useParams();
     const navigator = useNavigate();
-    const [internship, setInternship] = useState(null);
+    
 
     useEffect(() => {
         if (id) {
-          getInternship(id)
+          InterService.getInternshipById(id)
             .then((response) => {
-              setTittle(response.data.tittle);
-              setCompany_name(response.data.company_name);
-              setStart_date(response.data.start_date);
-              setEnd_date(response.data.end_date);
-              setRequirements(response.data.requirements);
-              setDescription(response.data.description);
-              setLocation(response.data.location);
-              setType(response.data.type);
-              setDeadline(response.data.deadline);
+              setTittle(response.tittle);
+              setCompany_name(response.company_name);
+              setStart_date(response.start_date);
+              setEnd_date(response.end_date);
+              setRequirements(response.requirements);
+              setDescription(response.description);
+              setLocation(response.location);
+              setType(response.type);
+              setDeadline(response.deadline);
             
             })
             .catch(error => {
@@ -47,7 +47,8 @@ const InternshipDetails = () => {
     }, [id]);
 
     function handleDeleteInternship() {
-        deleteInternship(id) 
+        const token =localStorage.getItem('token');
+        InterService.deleteInternship(id,token) 
             .then(() => {
                 navigator('/InternshipsList'); 
             })

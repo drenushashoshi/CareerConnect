@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import { getInternship, updateInternship } from '../Services/InternshipService';
+import InterService from '../Services/InterService'
 import Footer from '../Footer';
 
 const EditInternship = () => {
@@ -28,18 +28,19 @@ const EditInternship = () => {
 
     useEffect(() => {
         if (id) {
-            getInternship(id)
+            const token=localStorage.getItem('token');
+            InterService.getInternshipById(id, token)
                 .then((response) => {
                     setInternship(response.data);
-                    setTittle(response.data.tittle);
-                    setCompany_name(response.data.company_name);
-                    setStart_date(response.data.start_date);
-                    setEnd_date(response.data.end_date);
-                    setRequirements(response.data.requirements);
-                    setDescription(response.data.description);
-                    setLocation(response.data.location);
-                    setType(response.data.type);
-                    setDeadline(response.data.deadline);
+                    setTittle(response.tittle);
+                    setCompany_name(response.company_name);
+                    setStart_date(response.start_date);
+                    setEnd_date(response.end_date);
+                    setRequirements(response.requirements);
+                    setDescription(response.description);
+                    setLocation(response.location);
+                    setType(response.type);
+                    setDeadline(response.deadline);
                 })
                 .catch(error => {
                     console.error(error);
@@ -97,7 +98,8 @@ const EditInternship = () => {
         if (isValid) {
             const updatedInternship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline };
             if (id) {
-                updateInternship(id, updatedInternship)
+                const token=localStorage.getItem('token');
+                InterService.updateInternship(id, updatedInternship, token)
                     .then((response) => {
                         console.log(response.data);
                         navigator(`/InternshipDetails/${id}`);

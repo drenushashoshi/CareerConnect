@@ -60,6 +60,7 @@ public class CompanyMenagmentService {
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRole(company.getRole());
+            response.setId(company.getId());
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully logged in");

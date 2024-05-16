@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDBCard, MDBCardBody, MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
-import { createCompanyStaff } from '../Services/CompanyStaffService';
-
+import CompanyService from '../Services/CompanyService';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyStaff = ({ companyId }) => {
     const [name, setName] = useState('');
@@ -10,53 +10,48 @@ const CompanyStaff = ({ companyId }) => {
     const [nameError, setNameError] = useState('');
     const [surnameError, setSurnameError] = useState('');
     const [roleError, setRoleError] = useState('');
+    const navigator = useNavigate();
 
-    
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Reset error messages
+    
         setNameError('');
         setSurnameError('');
         setRoleError('');
-
+    
         let isValid = true;
-
-        // Validate name
-        if (!name) {
+    
+        if (!name.trim()) {
             setNameError('Please enter your name.');
             isValid = false;
         }
-
-        // Validate surname
-        if (!surname) {
+    
+        if (!surname.trim()) {
             setSurnameError('Please enter your surname.');
             isValid = false;
         }
-
-        // Validate role
-        if (!role) {
+    
+        if (!role.trim()) {
             setRoleError('Please enter your role.');
             isValid = false;
         }
-
-        // If any validation failed, stop execution
+    
         if (!isValid) {
             return;
         }
-
-        // If all inputs are valid, proceed with form submission
+    
         const companyStaff = { name, surname, role, companyId };
         console.log(companyStaff);
-        createCompanyStaff(companyStaff)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        const token = localStorage.getItem('token');
+        try {
+            const response = await CompanyService.createCompanyStaff(companyStaff, token);
+            console.log(response.data);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
     };
+    
 
     return (
         <div className="container">

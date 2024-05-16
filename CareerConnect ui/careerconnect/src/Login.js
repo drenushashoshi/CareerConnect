@@ -28,6 +28,7 @@ function Login() {
       if(data.token){
         localStorage.setItem('token', data.token)
         localStorage.setItem('role', data.role)
+        sessionStorage.setItem('companyId', data.id)
         navigator('/CompanyPage')
       }else{
         setError(data.message)

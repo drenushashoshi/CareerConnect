@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import CostumNavbar from "../CustomNavbar";
-import { Link, useParams  } from "react-router-dom";
-import { createInternship } from '../Services/InternshipService';
+import { Link} from "react-router-dom";
+import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg'; 
 import Footer from '../Footer';
 
@@ -18,7 +18,7 @@ function PostInternship() {
     const [successMessage, setSuccessMessage] = useState('');
     const [errors, setErrors] = useState({});
 
-    const { companyId } = useParams();
+    const  companyId =sessionStorage.getItem('companyId');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,24 +56,23 @@ function PostInternship() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validateForm();
-        if (Object.keys(errors).length === 0) {
-            const internship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline, companyId };
-            console.log(internship);
-            createInternship(internship)
-                .then((response) => {
-                    console.log(response.data);
-                    setSuccessMessage("Internship posted successfully!");
-                })
-                .catch((error) => {
-                    console.error("Error posting internship: ", error);
-                });
-        } else {
-            setErrors(errors);
+        try {
+            const errors = validateForm();
+            if (Object.keys(errors).length === 0) {
+                const internship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline, companyId };
+                const token = localStorage.getItem('token');
+                await InterService.createInternship(internship, token);
+                setSuccessMessage("Internship posted successfully!");
+            } else {
+                setErrors(errors);
+            }
+        } catch (error) {
+            console.error("Error posting internship: ", error);
         }
     };
+    
 
     const validateForm = () => {
         const errors = {};

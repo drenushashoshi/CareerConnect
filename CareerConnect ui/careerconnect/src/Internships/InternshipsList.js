@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import { listInternships} from '../Services/InternshipService';
+import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg';
 import Footer from '../Footer';
 import { ReactComponent as GeoIcon } from './geo-alt.svg';
@@ -52,14 +52,18 @@ function InternshipListing() {
 
     const[internship, setInternship]=useState([])
 
-    useEffect(()=>{
-        listInternships().then((response)=>{
-            setInternship(response.data);
-        }).catch(error=>{
-            console.error(error);
-        })
+    useEffect(() => {
+        fetchInternships();
+    }, []);
 
-    }, [])
+    const fetchInternships=async()=>{
+        try{
+            const response=await InterService.getAllInternships();
+            setInternship(response);
+        }catch(error){
+            console.log('Error fetching internships ', error);
+        }
+    };
     
 
     return (
