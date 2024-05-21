@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/public/jobs")
 public class JobController {
     private JobService jobService;
 
@@ -52,5 +52,15 @@ public class JobController {
     public ResponseEntity<String> deleteJob(@PathVariable("id") Integer jobId) {
         jobService.deleteJob(jobId);
         return ResponseEntity.ok("Job Deleted");
+    }
+
+    // Search Jobs REST API
+    @GetMapping("/search")
+    public ResponseEntity<List<JobDto>> searchJobs(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "location", required = false) String locationName,
+            @RequestParam(value = "Industria", required = false) String IndustriaName) {
+        List<JobDto> jobs = jobService.searchJobs(query, locationName, IndustriaName);
+        return ResponseEntity.ok(jobs);
     }
 }

@@ -14,4 +14,6 @@ public interface JobService {
     JobDto updateJob(Integer jobId, JobDto updatedJob);
 
     void deleteJob(Integer jobId);
+
+    List<JobDto> searchJobs(String query, String locationName, String IndustriaName);
 }

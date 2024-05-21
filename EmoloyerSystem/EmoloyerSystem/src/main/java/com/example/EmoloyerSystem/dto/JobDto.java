@@ -10,13 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobDto {
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private String requirements;
-    private String location;
+    private String LocationName;
     private String salary;
-    private String jobType;
+    private String IndustriaName;
     private String deadline;
 
 }

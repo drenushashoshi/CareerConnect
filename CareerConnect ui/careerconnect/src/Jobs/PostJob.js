@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './PostJob.css';
-import CostumNavbar from "../CustomNavbar";
+import CustomNavbar from "../CustomNavbar";
 import { createJob } from '../Services/JobService';
+import { getLocations } from '../Services/LocationService';
+import { getIndustries } from '../Services/IndustriaService';
 import { Link } from "react-router-dom";
 
 function PostJob() {
@@ -14,9 +16,42 @@ function PostJob() {
         jobType: '',
         deadline: ''
     });
-
+    const [locations, setLocations] = useState([]);
+    const [industries, setIndustries] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const locationsResponse = await getLocations();
+                console.log("Locations Response:", locationsResponse);
+                if (locationsResponse && locationsResponse.data && locationsResponse.data.length > 0) {
+                    setLocations(locationsResponse.data);
+                } else {
+                    console.error('No locations found in the response');
+                }
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            }
+
+            try {
+                const response = await getIndustries();
+                console.log('Response:', response);
+                if (Array.isArray(response)) {
+                    setIndustries(response);
+                } else if (response.data && Array.isArray(response.data)) {
+                    setIndustries(response.data);
+                } else {
+                    console.error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching industries:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,81 +93,42 @@ function PostJob() {
                     console.error('Failed to create job posting');
                 }
             } catch (error) {
-                console.log('Error:', error);
+                console.error('Error:', error);
             }
         }
     };
 
-    // Array of location options
-    const locationOptions = ['Deçan', 'Dragash', 'Drenas', 'Ferizaj', 'Fushë Kosovë', 'Gjakovë', 'Gjilan', 'Burim',
-        'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
-        'Besianë', 'Prishtinë', 'Prizren', 'Rahovec', 'Skenderaj', 'Suharekë', 'Shtërpcë', 'Shtime',
-        'Viti', 'Vushtrri'];
-    // Array of category options
-    const categoryOptions = [
-        'Administratë',
-        'Arkitekturë',
-        'Art dhe Kulturë',
-        'Banka',
-        'Industria Automobilistike',
-        'Retail dhe Distribuim',
-        'Ndërtimtari & Patundshmëri',
-        'Mbështetje e Konsumatorëve, Call Center',
-        'Ekonomi, Financë, Kontabilitet',
-        'Edukim, Shkencë & Hulumtim',
-        'Punë të Përgjithshme',
-        'Burime Njerëzore',
-        'Teknologji e Informacionit',
-        'Gazetari, Shtyp & Media',
-        'Ligj & Legjislacion',
-        'Menaxhment',
-        'Marketing, Reklamim & PR',
-        'Inxhinieri',
-        'Shëndetësi, Medicinë',
-        'Industri Farmaceutike',
-        'Prodhim',
-        'Siguri & Mbrojtje',
-        'Industri të Shërbimit',
-        'Telekomunikim',
-        'Tekstil, Lëkurë, Industri Veshëmbathjeje',
-        'Menaxhment Ekzekutiv',
-        'Gastronomi, Hoteleri, Turizëm',
-        'Përkthim, Interpretim',
-        'Transport, Logjistikë',
-        'Industri e Përpunimit të Drurit'
-    ];
-
     return (
         <>
-            <CostumNavbar/>
+            <CustomNavbar />
             <div className="post-job-container">
-                <h1 className="post-job-title">Posto Pune</h1>
+                <h1 className="post-job-title">Post a Job</h1>
                 <form className="post-job-form" onSubmit={handleSubmit}>
-                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Titulli" />
+                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Title" />
                     {formErrors.title && <span className="error">{formErrors.title}</span>}
-                    <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Pershkrimi" rows="6" />
+                    <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" rows="6" />
                     {formErrors.description && <span className="error">{formErrors.description}</span>}
-                    <textarea name="requirements" value={formData.requirements} onChange={handleChange} placeholder="Kerkesat" rows="6" />
+                    <textarea name="requirements" value={formData.requirements} onChange={handleChange} placeholder="Requirements" rows="6" />
                     {formErrors.requirements && <span className="error">{formErrors.requirements}</span>}
                     <select name="location" value={formData.location} onChange={handleChange}>
                         <option value="">Select Location</option>
-                        {locationOptions.map((location, index) => (
-                            <option key={index} value={location}>{location}</option>
+                        {locations.map(location => (
+                            <option key={location.name} value={location.name}>{location.name}</option>
                         ))}
                     </select>
                     {formErrors.location && <span className="error">{formErrors.location}</span>}
-                    <input type="text" name="salary" value={formData.salary} onChange={handleChange} placeholder="Paga" />
+                    <input type="text" name="salary" value={formData.salary} onChange={handleChange} placeholder="Salary" />
                     {formErrors.salary && <span className="error">{formErrors.salary}</span>}
                     <select name="jobType" value={formData.jobType} onChange={handleChange}>
                         <option value="">Select Category</option>
-                        {categoryOptions.map((category, index) => (
-                            <option key={index} value={category}>{category}</option>
+                        {industries.map(industry => (
+                            <option key={industry.name} value={industry.name}>{industry.name}</option>
                         ))}
                     </select>
                     {formErrors.jobType && <span className="error">{formErrors.jobType}</span>}
                     <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} placeholder="Deadline" />
                     {formErrors.deadline && <span className="error">{formErrors.deadline}</span>}
-                    <button type="submit" className="post-job-button">Posto</button>
+                    <button type="submit" className="post-job-button">Post Job</button>
                 </form>
                 {successMessage && (
                     <div className="success-message">
@@ -147,3 +143,4 @@ function PostJob() {
 }
 
 export default PostJob;
+

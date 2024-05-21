@@ -26,6 +26,8 @@ import InternshipDetails from './Internships/InternshipDetails';
 import EditInternship from './Internships/EditInternship';
 import CompanyStaff from './Company/CompanyStaff';
 import ListStaff from './Company/ListStaff';
+import LocationDashboard from "./Location/LocationDashboard";
+import IndustriaDashboard from "./Industria/IndustriaDashboard";
 
 
 import EmployeePostList from './Employee/EmployeePostList';
@@ -78,7 +80,8 @@ function App() {
           <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
           <Route path='/CvCreate' element={<CvInfo/>}></Route>
           <Route path='/Dashboard' element={<Dashboard/>}></Route>
-          
+          <Route path='/LocationDashboard' element={<LocationDashboard/>}></Route>
+          <Route path='/IndustriaDashboard' element={<IndustriaDashboard/>}></Route>
       </Routes>
     </BrowserRouter>
   );

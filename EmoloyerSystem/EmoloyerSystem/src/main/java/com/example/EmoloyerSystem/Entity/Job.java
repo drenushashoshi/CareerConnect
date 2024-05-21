@@ -1,4 +1,5 @@
 package com.example.EmoloyerSystem.Entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,16 +26,18 @@ public class Job {
     @Column(name="requirements", nullable = false, length = 500)
     private String requirements;
 
-    @Column(name="location", nullable = false)
-    private String location;
-
     @Column(name="salary")
     private String salary;
 
-    @Column(name="jobType", nullable = false)
-    private String jobType;
-
     @Column(name="deadline", nullable = false)
     private String deadline;
+
+    @ManyToOne
+    @JoinColumn(name = "industria")
+    private Industria industria;
+
+    @ManyToOne
+    @JoinColumn(name = "location")
+    private Location location;
 
 }
