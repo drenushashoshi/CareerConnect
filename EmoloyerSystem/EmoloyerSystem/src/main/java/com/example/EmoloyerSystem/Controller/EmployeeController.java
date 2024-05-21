@@ -1,66 +1,58 @@
 package com.example.EmoloyerSystem.Controller;
 
+import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Service.EmployeeService;
+import com.example.EmoloyerSystem.Service.JWTUtils;
+import com.example.EmoloyerSystem.dto.CompanyDto;
 import com.example.EmoloyerSystem.dto.EmployeeDto;
-import com.example.EmoloyerSystem.dto.EmployeeLogin;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
 
-@CrossOrigin("*")
-@AllArgsConstructor
 @RestController
-@RequestMapping("/api/employees")
 public class EmployeeController {
+    @Autowired
+    private EmployeeService employeeService;
 
-    private final EmployeeService employeeService;
-
-    // Add Employee REST API
-    @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
-        EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+    @PostMapping("/public/registerE")
+    public ResponseEntity<EmployeeDto> register(@RequestBody EmployeeDto employeeDto){
+        return ResponseEntity.ok(employeeService.register(employeeDto));
     }
 
-    // Get Employee REST API
-    @GetMapping("{id}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId) {
-        EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
-        return ResponseEntity.ok(employeeDto);
+    @PostMapping("/auth/loginE")
+    public ResponseEntity<EmployeeDto> login(@RequestBody EmployeeDto employeeDto){
+        return ResponseEntity.ok(employeeService.login(employeeDto));
     }
-
-    // Get All Employee REST API
-    @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
-        List<EmployeeDto> employee = employeeService.getAllEmployee();
-        return ResponseEntity.ok(employee);
+    @PostMapping("/auth/refreshE")
+    public ResponseEntity<EmployeeDto> refreshToken(@RequestBody EmployeeDto employeeDto){
+        return ResponseEntity.ok(employeeService.refreshToken(employeeDto));
     }
-
-    // Update Employee REST API
-    @PutMapping("{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Long employeeId,
-                                                      @RequestBody EmployeeDto updatedEmployee) {
-        EmployeeDto employeeDto = employeeService.updateEmployee(employeeId, updatedEmployee);
-        return ResponseEntity.ok(employeeDto);
+    @GetMapping("/public/getAllEmployees")
+    public ResponseEntity<EmployeeDto> getAllEmployees(){
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
-
-    // Delete Employee REST API
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeId) {
-        employeeService.deleteEmployee(employeeId);
-        return ResponseEntity.ok("Employee deleted successfully");
+    @GetMapping("/employee/getEmployee/{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Integer id){
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody EmployeeLogin loginDto) {
-        Long employeeId = employeeService.authenticateEmployee(loginDto.getEmail(), loginDto.getPassword());
-        if (employeeId != null) {
-            return ResponseEntity.ok(employeeId);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        }
+    @PutMapping("/employee/updateEmployee/{id}")
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Integer id, @RequestBody Employee employee){
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+    }
+    @GetMapping("/employee/getProfile")
+    public ResponseEntity<EmployeeDto> getProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        EmployeeDto response = employeeService.getMyInfo(email);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    @DeleteMapping("/employee/deleteEmployee/{id}")
+    public ResponseEntity<EmployeeDto> deleteEmployee(@PathVariable Integer id){
+        return ResponseEntity.ok(employeeService.deleteEmployee(id));
     }
 }

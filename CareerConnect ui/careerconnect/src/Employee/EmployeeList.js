@@ -1,21 +1,26 @@
 import React,{useEffect,useState}from 'react'
-import { listEmployees } from '../Services/EmployeeService'
+import EmployeeService from '../Services/EmployeeService'
 
 
 
 
 const EmployeeList=()=>{
-    const[employee,setEmployee]=useState([])
+    const[employees,setEmployees]=useState([])
 
     useEffect(()=>{
-        listEmployees().then((response)=>{
-            setEmployee(response.data);
-        })
-       .catch(error=>{
-        console.error(error);
-       })
+        fetchEmployees();
     
-},[])
+    },[])
+
+    const fetchEmployees=async()=>{
+        try{
+            const token=localStorage.getItem('token');
+            const response=await EmployeeService.getAllEmployees();
+            setEmployees(response.employeeList);
+        }catch(error){
+            console.log('Error fetching employees ', error);
+        }
+    }
 
 
 return(
@@ -30,8 +35,6 @@ return(
                     <th>Age</th>
                     <th>Adress</th>
                     <th>Email</th>
-                    <th>password</th>
-                    <th>Photo</th>
                     <th>Phone</th>
                     <th>JobPreferences</th>
                     <th>Skills</th>
@@ -40,7 +43,7 @@ return(
 
             <tbody>
                 {
-                    employee.map(employee=>
+                    employees.map(employee=>
                     <tr key={employee.id}> 
                         <td>{employee.id}</td>
                         <td>{employee.name}</td>
@@ -48,8 +51,6 @@ return(
                         <td>{employee.age}</td>
                         <td>{employee.adress}</td>
                         <td>{employee.email}</td>
-                        <td>{employee.password}</td>
-                        <td>{employee.photo}</td>
                         <td>{employee.phone}</td>
                         <td>{employee.jobPreferences}</td>
                         <td>{employee.skills}</td>

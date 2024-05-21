@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.config;
 
 import com.example.EmoloyerSystem.Service.CompanyDetailsService;
+import com.example.EmoloyerSystem.Service.EmployeeDetailsService;
 import com.example.EmoloyerSystem.Service.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,26 +27,35 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     private CompanyDetailsService companyDetailsService;
 
+    @Autowired
+    private EmployeeDetailsService employeeDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader=request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
-        final String userEmail;
 
-        if(authHeader==null || authHeader.isBlank()){
+        if (authHeader == null || authHeader.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwtToken=authHeader.substring(7);
-        userEmail=jwtUtils.extractUsername(jwtToken);
+        jwtToken = authHeader.substring(7);
+        String userEmail = jwtUtils.extractUsername(jwtToken);
 
-        if(userEmail!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails=companyDetailsService.loadUserByUsername(userEmail);
+        UserDetails userDetails;
+        if (request.getRequestURI().startsWith("/auth/loginE") || request.getRequestURI().startsWith("/employee/")) {
+            // Use EmployeeDetailsService for employee-related endpoints
+            userDetails = employeeDetailsService.loadUserByUsername(userEmail);
+        } else {
+            // Use CompanyDetailsService for other endpoints
+            userDetails = companyDetailsService.loadUserByUsername(userEmail);
+        }
 
-            if(jwtUtils.isTokenValid(jwtToken, userDetails)){
-                SecurityContext securityContext= SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (jwtUtils.isTokenValid(jwtToken, userDetails)) {
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

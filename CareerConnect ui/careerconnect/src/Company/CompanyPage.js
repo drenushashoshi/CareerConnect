@@ -86,8 +86,8 @@ const CompanyPage = () => {
             <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
               <NavDropdown.Item onClick={() => updateCompany()} href="#">Ndrysho Profilin</NavDropdown.Item>
               <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
-              <NavDropdown.Item href="/Rate">Rate Us</NavDropdown.Item>
-              <NavDropdown.Item href="/" onClick={handelLogOut}>Log Out</NavDropdown.Item>
+              <NavDropdown.Item href="/Rate">Na Vlerësoni</NavDropdown.Item>
+              <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
             </NavDropdown>
             )}
           </div>

@@ -27,7 +27,7 @@ public class CompanyManagementController {
     public ResponseEntity<CompanyDto> refreshToken(@RequestBody CompanyDto companyDto){
         return ResponseEntity.ok(companyMenagmentService.refreshToken(companyDto));
     }
-    @GetMapping("/admincompany/getAllCompanies")
+    @GetMapping("/public/getAllCompanies")
     public ResponseEntity<CompanyDto> getAllCompanies(){
         return ResponseEntity.ok(companyMenagmentService.getAllCompanies());
     }

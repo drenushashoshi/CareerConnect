@@ -14,8 +14,8 @@ const CompanyList = () => {
     const fetchCompanies=async()=>{
         try{
             const token= localStorage.getItem('token');
-            const response=await CompanyService.getAllCompanies(token);
-            setCompanies(response.CompanyList);
+            const response=await CompanyService.getAllCompanies();
+            setCompanies(response.companyList);
         }catch(error){
             console.log('Error fetching companies ', error);
         }

@@ -41,11 +41,9 @@ class CompanyService{
         }
     }
     
-    static async getAllCompanies(id, token){
+    static async getAllCompanies(){
         try{
-            const response= await axios.get(`${CompanyService.BASE_URL}/admincompany/getAllCompanies/${id}`, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
+            const response= await axios.get(`${CompanyService.BASE_URL}/public/getAllCompanies`)
             return response.data;
         }catch(err){
             throw err;

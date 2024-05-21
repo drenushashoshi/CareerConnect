@@ -1,15 +1,98 @@
 import axios from "axios";
 
-const REST_API_BASE_URL='http://localhost:8080/api/employees';
 
-export const listEmployees=()=>axios.get(REST_API_BASE_URL);
-export const createEmployee=(employee)=>axios.post(REST_API_BASE_URL,employee);
-export const authenticateEmployee = (data) => axios.post(`${REST_API_BASE_URL}/login`, data);
-export const getEmployee=(employeeId)=>axios.get(REST_API_BASE_URL+'/'+employeeId);
-export const updateEmployee=(employeeId,employee)=>axios.put(REST_API_BASE_URL+'/'+employeeId,employee);
-export const deleteEmployee=(employeeId)=>axios.delete(REST_API_BASE_URL+'/'+employeeId);
+class EmployeeService{
+    static BASE_URL="http://localhost:8080"
+
+    static async login(email, password){
+        try{
+            const response= await axios.post(`${EmployeeService.BASE_URL}/auth/loginE`,{email, password} )
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async register(employeeData){
+        try{
+            const response= await axios.post(`${EmployeeService.BASE_URL}/public/registerE`, employeeData, )
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    
+    
+    static async getAllEmployees(){
+        try{
+            const response= await axios.get(`${EmployeeService.BASE_URL}/public/getAllEmployees`)
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async getProfile(token){
+        try{
+            const response= await axios.get(`${EmployeeService.BASE_URL}/employee/getProfile`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async getEmployeeById(id, token){
+        try{
+            const response= await axios.get(`${EmployeeService.BASE_URL}/employee/getEmployee/${id}`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    static async deleteEmployee(id, token){
+        try{
+            const response= await axios.delete(`${EmployeeService.BASE_URL}/employee/deleteEmployee/${id}`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async updateEmployee(id,employeeData, token){
+        try{
+            const response= await axios.put(`${EmployeeService.BASE_URL}/employee/updateEmployee/${id}`, employeeData, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    static logout(){
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+    
+    }
+    static isAuthenticated(){
+        const token=localStorage.getItem('token')
+        return !!token
+    }
+    static isAdmin(){
+        const role=localStorage.getItem('role')
+        return role==='Admin'
+    }
+    static isEmployee(){
+        const role=localStorage.getItem('role')
+        return role==='Employee'
+    }
+    static adminOnly(){
+        return this.isAuthenticated() && this.isAdmin();
+    }
 
 
-
-
-
+}
+export default EmployeeService;

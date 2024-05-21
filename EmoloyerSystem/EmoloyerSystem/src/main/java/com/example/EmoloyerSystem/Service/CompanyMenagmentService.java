@@ -24,10 +24,10 @@ public class CompanyMenagmentService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CompanyDto register(CompanyDto registrationRequest){
-        CompanyDto companyDto=new CompanyDto();
-        try{
-            Company company=new Company();
+    public CompanyDto register(CompanyDto registrationRequest) {
+        CompanyDto response = new CompanyDto();
+        try {
+            Company company = new Company();
             company.setEmail(registrationRequest.getEmail());
             company.setName(registrationRequest.getName());
             company.setAddress(registrationRequest.getAddress());
@@ -36,26 +36,39 @@ public class CompanyMenagmentService {
             company.setDescription(registrationRequest.getDescription());
             company.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             company.setRole(registrationRequest.getRole());
-            Company companyResult= companyRepository.save(company);
-            if(companyResult.getId()>0){
-                companyDto.setCompany((companyResult));
-                companyDto.setMessage("Company Saved Successfully");
-                companyDto.setStatusCode(200);
+
+            Company savedCompany = companyRepository.save(company);
+
+            if (savedCompany.getId() > 0) {
+
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        registrationRequest.getEmail(), registrationRequest.getPassword()));
+
+                String jwt = JWTUtils.generateToken(savedCompany);
+                String refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), savedCompany);
+
+                response.setStatusCode(200);
+                response.setToken(jwt);
+                response.setRole(savedCompany.getRole());
+                response.setId(savedCompany.getId());
+                response.setRefreshToken(refreshToken);
+                response.setExpirationTime("24Hrs");
+                response.setMessage("Company registered and logged in successfully");
             }
-        }catch(Exception e){
-            companyDto.setStatusCode(500);
-            companyDto.setError(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
         }
-        return companyDto;
+        return response;
     }
 
     public CompanyDto login(CompanyDto loginRequest){
-        CompanyDto response=new CompanyDto();
-        try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-                    loginRequest.getPassword()));
-            var company= companyRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
-            var jwt= JWTUtils.generateToken(company);
+        CompanyDto response = new CompanyDto();
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginRequest.getEmail(), loginRequest.getPassword()));
+            var company = companyRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
+            var jwt = JWTUtils.generateToken(company); // Pass Company object here
             var refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), company);
             response.setStatusCode(200);
             response.setToken(jwt);
@@ -64,12 +77,13 @@ public class CompanyMenagmentService {
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully logged in");
-        }catch(Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
         }
         return response;
     }
+
 
     public CompanyDto refreshToken(CompanyDto refreshTokenRequest){
         CompanyDto response=new CompanyDto();

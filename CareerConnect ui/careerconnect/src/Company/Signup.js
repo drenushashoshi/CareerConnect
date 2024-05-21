@@ -12,83 +12,86 @@ import {
 } from 'mdb-react-ui-kit';
 import Footer from '../Footer';
 
-
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
-  const [phone_number, setphone_number] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [opening_year, setopening_year] = useState('');
+  const [opening_year, setOpeningYear] = useState('');
   const [description, setDescription] = useState('');
-  const [role, setRole] = useState('');
-  
-
-  const navigator=useNavigate();
-
+  const role = 'Company';  
+  const navigator = useNavigate();
 
   const [nameTouched, setNameTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
   const [addressTouched, setAddressTouched] = useState(false);
-  const [phone_numberTouched, setphone_numberTouched] = useState(false);
+  const [phone_numberTouched, setPhoneNumberTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [repeatPasswordTouched, setRepeatPasswordTouched] = useState(false);
-  const [opening_yearTouched, setopening_yearTouched] = useState(false);
+  const [opening_yearTouched, setOpeningYearTouched] = useState(false);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
- 
+
   const isPasswordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password);
   const isRepeatPasswordValid = repeatPassword === password;
   const isNameValid = name.trim() !== '' && /^[A-Z]/.test(name);
   const isAddressValid = address.trim() !== '' && /^[A-Z]/.test(address);
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isphone_numberValid = phone_number.trim() !== '';
-  const isopening_yearValid = opening_year.trim() !== '';
+  const isPhoneNumberValid = phone_number.trim() !== '';
+  const isOpeningYearValid = opening_year.trim() !== '';
   const isDescriptionValid = description.trim() !== '';
 
   const validateForm = () => {
     setNameTouched(true);
     setEmailTouched(true);
     setAddressTouched(true);
-    setphone_numberTouched(true);
+    setPhoneNumberTouched(true);
     setPasswordTouched(true);
     setRepeatPasswordTouched(true);
-    setopening_yearTouched(true);
+    setOpeningYearTouched(true);
     setDescriptionTouched(true);
-  
+
     return (
       isNameValid &&
       isEmailValid &&
       isAddressValid &&
-      isphone_numberValid &&
+      isPhoneNumberValid &&
       isPasswordValid &&
       isRepeatPasswordValid &&
-      isopening_yearValid &&
+      isOpeningYearValid &&
       isDescriptionValid
     );
   };
-  
-  
-  const handleSubmit = async(e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const isFormValid = validateForm(); 
-    
+    try {
+      const isFormValid = validateForm();
+
       if (isFormValid) {
-        const companyData = { name, email, address, phone_number, password, opening_year, description, role};
-        const token=localStorage.getItem('token');
+        const companyData = { name, email, address, phone_number, password, opening_year, description, role };
+
         
-        await CompanyService.register(companyData, token);
+        const data = await CompanyService.register(companyData);
+        
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', role);
+          sessionStorage.setItem('companyId', data.id);
 
-        alert('Company registered successfully!');
-        navigator('/CompanyPage')
+          
+          navigator('/CompanyPage');
+        } else {
+          
+          alert(data.message || 'Registration failed');
+        }
       }
-    }catch(error){
-      console.error('Error registering company ', error);
-
+    } catch (error) {
+      console.error('Error registering company', error);
+      alert('Error registering company');
     }
   };
-  
 
   return (
     <div>
@@ -153,11 +156,11 @@ function Signup() {
                         id='phone_number'
                         type='text'
                         value={phone_number}
-                        onChange={(e) => setphone_number(e.target.value)}
-                        onBlur={() => setphone_numberTouched(true)}
-                        invalid={phone_numberTouched && !isphone_numberValid}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        onBlur={() => setPhoneNumberTouched(true)}
+                        invalid={phone_numberTouched && !isPhoneNumberValid}
                       />
-                      {phone_numberTouched && !isphone_numberValid && <div className="text-danger">Phone number is required</div>}
+                      {phone_numberTouched && !isPhoneNumberValid && <div className="text-danger">Phone number is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -196,11 +199,11 @@ function Signup() {
                         id='opening_year'
                         type='text'
                         value={opening_year}
-                        onChange={(e) => setopening_year(e.target.value)}
-                        onBlur={() => setopening_yearTouched(true)}
-                        invalid={opening_yearTouched && !isopening_yearValid}
+                        onChange={(e) => setOpeningYear(e.target.value)}
+                        onBlur={() => setOpeningYearTouched(true)}
+                        invalid={opening_yearTouched && !isOpeningYearValid}
                       />
-                      {opening_yearTouched && !isopening_yearValid && <div className="text-danger">Opening year is required</div>}
+                      {opening_yearTouched && !isOpeningYearValid && <div className="text-danger">Opening year is required</div>}
                     </MDBCol>
                   </MDBRow>
                   <div className="mt-4 mb-4">
@@ -223,37 +226,22 @@ function Signup() {
                     />
                     {descriptionTouched && !isDescriptionValid && <div className="text-danger">Description is required</div>}
                   </div>
-                  <MDBRow>
-                    <MDBCol md='6'>
-                      <MDBInput
-                        wrapperClass='mt-4'
-                        placeholder='Role'
-                        id='role'
-                        type='text'
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                      />
-                      
-                    </MDBCol>
-                  </MDBRow>
-                  
                   <br/>
                   <div className="d-flex justify-content-center">
-                        <MDBBtn
-                            className='w-50 mb-3'
-                            size='md'
-                            type="submit"
-                            style={{
-                                width: '50%', 
-                                height: '40px', 
-                                lineHeight: '40px', 
-                                fontSize: '16px', 
-                                padding: '0', 
-                            }}
-                            >
-                            Sign up 
-                        </MDBBtn>
-
+                    <MDBBtn
+                      className='w-50 mb-3'
+                      size='md'
+                      type="submit"
+                      style={{
+                        width: '50%', 
+                        height: '40px', 
+                        lineHeight: '40px', 
+                        fontSize: '16px', 
+                        padding: '0', 
+                      }}
+                    >
+                      Sign up 
+                    </MDBBtn>
                   </div>
                 </form>
               </MDBCardBody>

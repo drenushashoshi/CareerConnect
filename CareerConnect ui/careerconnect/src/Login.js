@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CompanyService from './Services/CompanyService';
+import EmployeeService from './Services/EmployeeService'; 
 import backgroundImage from './login-test2.avif';
 import Modal from 'react-bootstrap/Modal';
 import './styles.css';
@@ -11,6 +12,7 @@ function Login() {
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('company'); 
   const [error, setError] = useState('');
 
   const handleShowModal = () => setShowModal(true);
@@ -23,22 +25,37 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const data = await CompanyService.login(email, password);
-      if(data.token){
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('role', data.role)
-        sessionStorage.setItem('companyId', data.id)
-        navigator('/CompanyPage')
-      }else{
-        setError(data.message)
+    try {
+      let data;
+      if (userType === 'company') {
+        data = await CompanyService.login(email, password);
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.role);
+          sessionStorage.setItem('companyId', data.id);
+          navigator('/CompanyPage');
+        } else {
+          setError(data.message);
+        }
+      } else {
+        data = await EmployeeService.login(email, password); 
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.role);
+          sessionStorage.setItem('employeeId', data.id);
+          navigator('/EmployeePage');
+        } else {
+          setError(data.message);
+        }
       }
-    }catch(error){
-        console.error("Login failed:", error);
-        setError(error.message);
-        setEmail('');
-        setPassword('');
-    };
+      
+      
+    } catch (error) {
+      console.error("Login failed:", error);
+      setError(error.message);
+      setEmail('');
+      setPassword('');
+    }
   }
 
   return (
@@ -66,11 +83,13 @@ function Login() {
               <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter password' className='form-control'/>
             </div>
             <div className='mb-2'>
-              <input type="checkbox" className='custom-control custom-checkbox' id="check" />
-              <label htmlFor='check' className='custom-input-label'>
-                Remember me
-              </label>
+              <label htmlFor="userType">Login as</label>
+              <select id="userType" value={userType} onChange={(e) => setUserType(e.target.value)} className='form-control'>
+                <option value="company">Company</option>
+                <option value="employee">Employee</option>
+              </select>
             </div>
+            
             <div className='d-grid'>
               <button type="submit" className='btn btn-primary'>Sign in</button>
             </div>

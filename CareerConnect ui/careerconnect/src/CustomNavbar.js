@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { useNavigate} from 'react-router-dom';
 import CompanyService from './Services/CompanyService';
+import EmployeeService from './Services/EmployeeService';
 
 function CustomNavbar() {
     const [profileInfo, setProfileInfo] = useState({});
     const isAuthenticated=CompanyService.isAuthenticated();
     const isCompany=CompanyService.isCompany();
+    const isEmployee=EmployeeService.isEmployee();
 
     const navigate = useNavigate();
     
@@ -42,11 +44,13 @@ function CustomNavbar() {
             <Navbar.Toggle aria-controls="navbarCollapse" className="me-4" />
             <Navbar.Collapse id="navbarCollapse">
                 <Nav className="ms-auto p-4 p-lg-0">
-                    <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown">
-                        <NavDropdown.Item href="../JobListing">Pune</NavDropdown.Item>
-                        <NavDropdown.Item href="../InternshipsList">Praktike</NavDropdown.Item>
+                    {isEmployee && (
+                        <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown">
+                            <NavDropdown.Item href="../JobListing">Pune</NavDropdown.Item>
+                            <NavDropdown.Item href="../InternshipsList">Praktike</NavDropdown.Item>
 
-                    </NavDropdown>
+                        </NavDropdown>
+                    )}
                     {isCompany && (
                         <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
                             <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
