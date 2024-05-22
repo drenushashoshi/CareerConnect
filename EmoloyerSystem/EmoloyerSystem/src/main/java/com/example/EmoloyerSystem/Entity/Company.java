@@ -46,6 +46,12 @@ public class Company implements UserDetails {
     @Column(name = "role", nullable = false)
     private String role;
 
+    @OneToMany(mappedBy = "company")
+    private Collection<Internship> internships;
+
+    @OneToMany(mappedBy = "company")
+    private Collection<CompanyStaff> staff;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

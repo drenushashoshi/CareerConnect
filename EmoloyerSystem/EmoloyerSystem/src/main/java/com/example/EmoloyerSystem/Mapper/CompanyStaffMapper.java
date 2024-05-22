@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.Mapper;
 
 
+import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.CompanyStaff;
 import com.example.EmoloyerSystem.dto.CompanyStaffDto;
 
@@ -11,16 +12,19 @@ public class CompanyStaffMapper {
                 companyStaff.getName(),
                 companyStaff.getSurname(),
                 companyStaff.getRole(),
-                companyStaff.getCompanyId()
+                companyStaff.getCompany().getId()
         );
     }
-    public static CompanyStaff mapToCompanyStaff(CompanyStaffDto companyStaffDto){
-        return new CompanyStaff(
-                companyStaffDto.getId(),
-                companyStaffDto.getName(),
-                companyStaffDto.getSurname(),
-                companyStaffDto.getRole(),
-                companyStaffDto.getCompanyId()
-        );
+    public static CompanyStaff mapToCompanyStaff(CompanyStaffDto companyStaffDto, Company company){
+        CompanyStaff companyStaff = new CompanyStaff();
+
+        companyStaff.setId(companyStaffDto.getId());
+        companyStaff.setName(companyStaffDto.getName());
+        companyStaff.setSurname(companyStaffDto.getSurname());
+        companyStaff.setRole(companyStaffDto.getRole());
+        companyStaff.setCompany(company);
+
+        return companyStaff;
+
     }
 }

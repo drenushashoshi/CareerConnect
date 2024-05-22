@@ -1,9 +1,11 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 
+import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.CompanyStaff;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.CompanyStaffMapper;
+import com.example.EmoloyerSystem.Repository.CompanyRepository;
 import com.example.EmoloyerSystem.Repository.CompanyStaffRepository;
 import com.example.EmoloyerSystem.Service.CompanyStaffService;
 import com.example.EmoloyerSystem.dto.CompanyStaffDto;
@@ -16,9 +18,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CompanyStaffServiceImpl implements CompanyStaffService {
     private CompanyStaffRepository companyStaffRepository;
+    private final CompanyRepository companyRepository;
     @Override
     public CompanyStaffDto createCompanyStaff(CompanyStaffDto companyStaffDto) {
-        CompanyStaff companyStaff= CompanyStaffMapper.mapToCompanyStaff(companyStaffDto);
+
+        Company company=companyRepository.findById(companyStaffDto.getCompanyId())
+                .orElseThrow(()->new ResourceNotFoundException("Company not found with id: "+companyStaffDto.getCompanyId()));
+
+        CompanyStaff companyStaff= CompanyStaffMapper.mapToCompanyStaff(companyStaffDto, company);
         CompanyStaff savedCompanyStaff=companyStaffRepository.save(companyStaff);
 
         return CompanyStaffMapper.mapToCompanyStaffDto(savedCompanyStaff);

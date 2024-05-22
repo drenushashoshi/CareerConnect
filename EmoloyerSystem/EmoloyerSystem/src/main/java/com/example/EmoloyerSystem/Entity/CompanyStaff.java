@@ -25,7 +25,8 @@ public class CompanyStaff {
     @Column(name="role", nullable = false)
     private String role;
 
-    @Column(name="companyId", nullable = false)
-    private int companyId;
+    @ManyToOne
+    @JoinColumn(name = "company")
+    private Company company;
 
 }

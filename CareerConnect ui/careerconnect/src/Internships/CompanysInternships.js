@@ -36,11 +36,11 @@ import InterService from '../Services/InterService';
                              <div key={internship.id} className="col-md-6 mb-4">
                                  <Card>
                                      <Card.Body>
-                                         <Card.Title>{internship.tittle}</Card.Title>
+                                         <Card.Title>{internship.title}</Card.Title>
                                          <Card.Text className="text-start p-3"> 
                                              Data e fillimit se praktikes: <strong>{internship.start_date}</strong><br/>
                                              Data e perfundimit se praktikes: <strong>{internship.end_date}</strong><br/>
-                                             <GeoIcon/><strong>{internship.location}</strong><br />
+                                             <GeoIcon/><strong>{internship.locationName}</strong><br />
                                              <ClockIcon/>Afati i aplikimit: <strong>{internship.deadline}</strong>
                                          </Card.Text>
                                          {isEmployee &&(<Link to="/applications" className="btn btn-primary me-2">Apliko</Link>)}

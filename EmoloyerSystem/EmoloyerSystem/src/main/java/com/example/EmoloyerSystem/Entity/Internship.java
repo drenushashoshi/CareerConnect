@@ -36,9 +36,6 @@ public class Internship {
     @Column(name="deadline", nullable = false)
     private String deadline;
 
-    @Column(name="companyId", nullable=false)
-    private int companyId;
-
     @ManyToOne
     @JoinColumn(name = "industria")
     private Industria industria;
@@ -46,4 +43,8 @@ public class Internship {
     @ManyToOne
     @JoinColumn(name = "location")
     private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "company")
+    private Company company;
 }

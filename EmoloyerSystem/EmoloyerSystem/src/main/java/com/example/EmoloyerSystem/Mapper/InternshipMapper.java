@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Mapper;
 
+import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Internship;
 import com.example.EmoloyerSystem.Entity.Location;
@@ -18,11 +19,11 @@ public class InternshipMapper {
                 internship.getLocation().getName(),
                 internship.getIndustria().getName(),
                 internship.getDeadline(),
-                internship.getCompanyId()
+                internship.getCompany().getId()
         );
     }
 
-    public static Internship mapToInternship(InternshipDto internshipDto, Location location, Industria industria){
+    public static Internship mapToInternship(InternshipDto internshipDto, Location location, Industria industria, Company company){
 
         Internship internship = new Internship();
 
@@ -36,7 +37,7 @@ public class InternshipMapper {
         internship.setLocation(location);
         internship.setIndustria(industria);
         internship.setDeadline(internshipDto.getDeadline());
-        internship.setCompanyId(internshipDto.getCompanyId());
+        internship.setCompany(company);
 
 
         return internship;

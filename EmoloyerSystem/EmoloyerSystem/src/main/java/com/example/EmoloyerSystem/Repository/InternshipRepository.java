@@ -1,9 +1,6 @@
 package com.example.EmoloyerSystem.Repository;
 
-import com.example.EmoloyerSystem.Entity.CompanyStaff;
-import com.example.EmoloyerSystem.Entity.Industria;
-import com.example.EmoloyerSystem.Entity.Internship;
-import com.example.EmoloyerSystem.Entity.Location;
+import com.example.EmoloyerSystem.Entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -20,5 +17,7 @@ public interface InternshipRepository extends JpaRepository<Internship, Integer>
     List<Internship> findByIndustriaName(String industriaName);
     void deleteByIndustria(Industria industria);
     void deleteByLocation(Location location);
+
+    void deleteByCompany(Company company);
 
 }

@@ -1,11 +1,13 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 
+import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Internship;
 import com.example.EmoloyerSystem.Entity.Location;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.InternshipMapper;
+import com.example.EmoloyerSystem.Repository.CompanyRepository;
 import com.example.EmoloyerSystem.Repository.IndustriaRepository;
 import com.example.EmoloyerSystem.Repository.InternshipRepository;
 import com.example.EmoloyerSystem.Repository.LocationRepository;
@@ -23,16 +25,20 @@ public class InternshipServiceImpl implements InternshipService {
     private InternshipRepository internshipRepository;
     private final LocationRepository locationRepository;
     private final IndustriaRepository IndustriaRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public InternshipDto createInternship(InternshipDto internshipDto) {
+        Company company=companyRepository.findById(internshipDto.getCompanyId())
+                .orElseThrow(()->new ResourceNotFoundException("Company not found with id: "+internshipDto.getCompanyId()));
+
         Location location = locationRepository.findByName(internshipDto.getLocationName())
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found with id: " + internshipDto.getLocationName()));
 
         Industria Industria = IndustriaRepository.findByName(internshipDto.getIndustriaName())
                 .orElseThrow(() -> new ResourceNotFoundException("Industria not found with id: " + internshipDto.getIndustriaName()));
 
-        Internship internship = InternshipMapper.mapToInternship(internshipDto, location, Industria);
+        Internship internship = InternshipMapper.mapToInternship(internshipDto, location, Industria, company);
         Internship savedInternship = internshipRepository.save(internship);
         return InternshipMapper.mapToInternshipDto(savedInternship);
     }

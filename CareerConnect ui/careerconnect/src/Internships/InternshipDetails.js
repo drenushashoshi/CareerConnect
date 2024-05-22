@@ -14,7 +14,7 @@ const InternshipDetails = () => {
     const isCompany=CompanyService.isCompany();
     const isEmployee=EmployeeService.isEmployee();
 
-    const [tittle, setTittle] = useState('');
+    const [title, setTittle] = useState('');
     const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
@@ -34,7 +34,7 @@ const InternshipDetails = () => {
         if (id) {
           InterService.getInternshipById(id)
             .then((response) => {
-              setTittle(response.tittle);
+              setTittle(response.title);
               setCompany_name(response.company_name);
               setStart_date(response.start_date);
               setEnd_date(response.end_date);
@@ -84,7 +84,7 @@ const InternshipDetails = () => {
                                 <div className="single-job-items mb-50">
                                     <div className="job-items">
                                         <div className="job-tittle">
-                                            <h2 style={{ fontFamily: 'Arial, sans-serif',  fontWeight: 'bold' }}>{tittle}</h2>
+                                            <h2 style={{ fontFamily: 'Arial, sans-serif',  fontWeight: 'bold' }}>{title}</h2>
                                         </div>
                                     </div>
                                 </div>
