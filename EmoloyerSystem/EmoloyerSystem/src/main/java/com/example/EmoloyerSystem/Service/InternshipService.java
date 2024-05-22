@@ -19,4 +19,6 @@ public interface InternshipService {
     InternshipDto updateInternship(Integer internshipId, InternshipDto updatedInternship);
 
     void deleteInternship(Integer internshipId);
+
+    List<InternshipDto> searchInternships(String query, String locationName, String IndustriaName);
 }

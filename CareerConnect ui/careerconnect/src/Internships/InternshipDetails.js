@@ -5,10 +5,14 @@ import InterService from '../Services/InterService';
 import Footer from '../Footer';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
-
+import CompanyService from '../Services/CompanyService';
+import EmployeeService from '../Services/EmployeeService';
 
 
 const InternshipDetails = () => {
+
+    const isCompany=CompanyService.isCompany();
+    const isEmployee=EmployeeService.isEmployee();
 
     const [tittle, setTittle] = useState('');
     const [company_name, setCompany_name] = useState('');
@@ -19,6 +23,7 @@ const InternshipDetails = () => {
     const [location, setLocation] = useState('');
     const [type, setType] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [companyId, setCompanyId] = useState('');
     const [showModal, setShowModal] = useState(false);
 
     const {id}= useParams();
@@ -38,6 +43,7 @@ const InternshipDetails = () => {
               setLocation(response.location);
               setType(response.type);
               setDeadline(response.deadline);
+              setCompanyId(response.companyId);
             
             })
             .catch(error => {
@@ -108,10 +114,10 @@ const InternshipDetails = () => {
                                         <li>Kompania: <span>{company_name}</span></li>
                                     </ul>
                                     <div className="d-flex justify-content-center"> 
-                                        <Link to="/CompanyPage"  style={{  textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}className="btn">Shiko Kompaninë</Link>
+                                        {isEmployee &&(<Link to={`/CompanyPage/${companyId}`} style={{  textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}className="btn">Shiko Kompaninë</Link>)}
                                     </div><br/>
                                     <div className="apply-btn2 d-flex justify-content-center"> 
-                                        <Link to="/applications" className="btn btn-primary">Apliko</Link>
+                                    {isEmployee &&(<Link to="/applications" className="btn btn-primary">Apliko</Link>)}
                                     </div>
                                 </div>
                             </div>
@@ -120,15 +126,15 @@ const InternshipDetails = () => {
                 </div>
                 <div className='mt-5' style={{ display: 'flex', justifyContent: 'center', gap: '50px' }}>
                 <Link to={`/EditInternship/${id}`}>
-                    <button className='btn btn-primary' style={{ borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
+                    {isCompany &&(<button className='btn btn-primary' style={{ borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
                         Ndrysho Detajet e Praktikes
-                    </button>
+                    </button>)}
                 </Link>
-                    <button className='btn btn-primary'
+                    {isCompany &&(<button className='btn btn-primary'
                     onClick={handleSignUpClick}
                     style={{  borderRadius: '5px', color: 'white', cursor: 'pointer', border: 'none', padding: '10px 20px', transition: 'background-color 0.3s' }}>
                         Fshij Praktiken
-                    </button>
+                    </button>)}
                 </div><br/><br/>
 
             

@@ -17,10 +17,10 @@ public class Internship {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="tittle", nullable = false)
-    private String tittle;
+    @Column(name="title", nullable = false)
+    private String title;
 
-    @Column(name="company_name", nullable = false)
+    @Column(name="company_name", nullable = true)
     private String company_name;
 
     @Column(name="description", nullable = false, length = 1000)
@@ -33,15 +33,17 @@ public class Internship {
     @Column(name="requirements", nullable = false, length = 500)
     private String requirements;
 
-    @Column(name="location", nullable = false)
-    private String location;
-
-    @Column(name="type", nullable = false)
-    private String type;
-
     @Column(name="deadline", nullable = false)
     private String deadline;
 
     @Column(name="companyId", nullable=false)
     private int companyId;
+
+    @ManyToOne
+    @JoinColumn(name = "industria")
+    private Industria industria;
+
+    @ManyToOne
+    @JoinColumn(name = "location")
+    private Location location;
 }

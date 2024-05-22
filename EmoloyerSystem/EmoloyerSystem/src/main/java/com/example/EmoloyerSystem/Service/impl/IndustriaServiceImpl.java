@@ -4,6 +4,7 @@ import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Repository.IndustriaRepository;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.IndustriaMapper;
+import com.example.EmoloyerSystem.Repository.InternshipRepository;
 import com.example.EmoloyerSystem.Repository.JobRepository;
 import com.example.EmoloyerSystem.Service.IndustriaService;
 import com.example.EmoloyerSystem.dto.IndustriaDto;
@@ -19,10 +20,12 @@ public class IndustriaServiceImpl implements IndustriaService {
 
     private final IndustriaRepository industriaRepository;
     private final JobRepository jobRepository;
+    private final InternshipRepository internshipRepository;
 
-    public IndustriaServiceImpl(IndustriaRepository industriaRepository, JobRepository jobRepository) {
+    public IndustriaServiceImpl(IndustriaRepository industriaRepository, JobRepository jobRepository, InternshipRepository internshipRepository) {
         this.industriaRepository = industriaRepository;
         this.jobRepository = jobRepository;
+        this.internshipRepository = internshipRepository;
     }
 
     @Override
@@ -61,6 +64,8 @@ public class IndustriaServiceImpl implements IndustriaService {
 
         // Delete associated jobs
         jobRepository.deleteByIndustria(industria);
+
+        internshipRepository.deleteByIndustria(industria);
 
         // Then delete the Industria
         industriaRepository.delete(industria);

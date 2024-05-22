@@ -62,7 +62,17 @@ class CompanyService{
             throw err;
         }
     }
-    
+    static async searchInternships(query, Industria, location) {
+        try {
+            const response = await axios.get(`${CompanyService.BASE_URL}/public/search`, {
+                params: { query, Industria, location }
+            });
+            return response.data;
+        } catch (err) {
+            throw err;
+        }
+    }
+
 
 }
 export default CompanyService;

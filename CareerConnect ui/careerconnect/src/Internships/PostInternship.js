@@ -1,22 +1,26 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import CostumNavbar from "../CustomNavbar";
 import { Link} from "react-router-dom";
 import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg'; 
 import Footer from '../Footer';
+import { getLocations } from '../Services/LocationService';
+import { getIndustries } from '../Services/IndustriaService';
 
 function PostInternship() {
-    const [tittle, setTittle] = useState('');
+    const [title, setTitle] = useState('');
     const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
     const [requirements, setRequirements] = useState('');
-    const [location, setLocation] = useState('');
-    const [type, setType] = useState('');
+    const [locationName, setLocation] = useState('');
+    const [industriaName, setIndustria] = useState('');
     const [deadline, setDeadline] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errors, setErrors] = useState({});
+    const [locations, setLocations] = useState([]);
+    const [industries, setIndustries] = useState([]);
 
     const  companyId =sessionStorage.getItem('companyId');
 
@@ -24,8 +28,8 @@ function PostInternship() {
         const { name, value } = e.target;
         setErrors({ ...errors, [name]: '' }); 
         switch (name) {
-            case "tittle":
-                setTittle(value);
+            case "title":
+                setTitle(value);
                 break;
             case "company_name":
                 setCompany_name(value);
@@ -42,11 +46,11 @@ function PostInternship() {
             case "requirements":
                 setRequirements(value);
                 break;
-            case "location":
+            case "locationName":
                 setLocation(value);
                 break;
-            case "type":
-                setType(value);
+            case "industriaName":
+                setIndustria(value);
                 break;
             case "deadline":
                 setDeadline(value);
@@ -56,12 +60,44 @@ function PostInternship() {
         }
     };
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const locationsResponse = await getLocations();
+                console.log("Locations Response:", locationsResponse);
+                if (locationsResponse && locationsResponse.data && locationsResponse.data.length > 0) {
+                    setLocations(locationsResponse.data);
+                } else {
+                    console.error('No locations found in the response');
+                }
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            }
+
+            try {
+                const response = await getIndustries();
+                console.log('Response:', response);
+                if (Array.isArray(response)) {
+                    setIndustries(response);
+                } else if (response.data && Array.isArray(response.data)) {
+                    setIndustries(response.data);
+                } else {
+                    console.error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching industries:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const errors = validateForm();
             if (Object.keys(errors).length === 0) {
-                const internship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline, companyId };
+                const internship = { title, company_name, description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
                 const token = localStorage.getItem('token');
                 await InterService.createInternship(internship, token);
                 setSuccessMessage("Internship posted successfully!");
@@ -76,8 +112,8 @@ function PostInternship() {
 
     const validateForm = () => {
         const errors = {};
-        if (!tittle.trim()) {
-            errors.tittle = 'Titulli is required';
+        if (!title.trim()) {
+            errors.title = 'Titulli is required';
         }
         if (!company_name.trim()) {
             errors.company_name = 'Emri i Kompanise is required';
@@ -98,11 +134,11 @@ function PostInternship() {
         if (!requirements.trim()) {
             errors.requirements = 'Kerkesat is required';
         }
-        if (!location) {
-            errors.location = 'Lokacioni is required';
+        if (!locationName) {
+            errors.locationName = 'Lokacioni is required';
         }
-        if (!type) {
-            errors.type = 'Kategoria is required';
+        if (!industriaName) {
+            errors.industriaName = 'Kategoria is required';
         }
         if (!deadline) {
             errors.deadline = 'Deadline is required';
@@ -111,44 +147,6 @@ function PostInternship() {
         }
         return errors;
     };
-
-    const locationOptions = ['Deçan', 'Dragash', 'Drenas', 'Ferizaj', 'Fushë Kosovë', 'Gjakovë', 'Gjilan', 'Burim',
-        'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
-        'Besianë', 'Prishtinë', 'Prizren', 'Rahovec', 'Skenderaj', 'Suharekë', 'Shtërpcë', 'Shtime',
-        'Viti', 'Vushtrri'];
-
-    const categoryOptions = [
-        'Administratë',
-        'Arkitekturë',
-        'Art dhe Kulturë',
-        'Banka',
-        'Industria Automobilistike',
-        'Retail dhe Distribuim',
-        'Ndërtimtari & Patundshmëri',
-        'Mbështetje e Konsumatorëve, Call Center',
-        'Ekonomi, Financë, Kontabilitet',
-        'Edukim, Shkencë & Hulumtim',
-        'Punë të Përgjithshme',
-        'Burime Njerëzore',
-        'Teknologji e Informacionit',
-        'Gazetari, Shtyp & Media',
-        'Ligj & Legjislacion',
-        'Menaxhment',
-        'Marketing, Reklamim & PR',
-        'Inxhinieri',
-        'Shëndetësi, Medicinë',
-        'Industri Farmaceutike',
-        'Prodhim',
-        'Siguri & Mbrojtje',
-        'Industri të Shërbimit',
-        'Telekomunikim',
-        'Tekstil, Lëkurë, Industri Veshëmbathjeje',
-        'Menaxhment Ekzekutiv',
-        'Gastronomi, Hoteleri, Turizëm',
-        'Përkthim, Interpretim',
-        'Transport, Logjistikë',
-        'Industri e Përpunimit të Drurit'
-    ];
 
     return (
         <>
@@ -167,11 +165,11 @@ function PostInternship() {
                 <form style={{ width: '50%', margin: 'auto' }} onSubmit={handleSubmit}>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)' }}>
-                            <input className="form-control" type="text" name="tittle" value={tittle} onChange={handleChange} placeholder="Titulli" style={{ width: '100%' }} />
-                            {errors.tittle && <span style={{ color: 'red' }}>{errors.tittle}</span>}
+                            <input className="form-control" industria="text" name="title" value={title} onChange={handleChange} placeholder="Titulli" style={{ width: '100%' }} />
+                            {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
                         </div>
                         <div style={{ width: 'calc(50% - 5px)' }}>
-                            <input className="form-control" type="text" name="company_name" value={company_name} onChange={handleChange} placeholder="Emri i Kompanise" style={{ width: '100%' }} />
+                            <input className="form-control" industria="text" name="company_name" value={company_name} onChange={handleChange} placeholder="Emri i Kompanise" style={{ width: '100%' }} />
                             {errors.company_name && <span style={{ color: 'red' }}>{errors.company_name}</span>}
                         </div>
                     </div>
@@ -194,22 +192,22 @@ function PostInternship() {
                     {errors.requirements && <span style={{ color: 'red' }}>{errors.requirements}</span>}
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)' }}>
-                            <select className="form-control" name="location" value={location} onChange={handleChange} style={{ width: '100%' }}>
+                            <select className="form-control" name="locationName" value={locationName} onChange={handleChange} style={{ width: '100%' }}>
                                 <option value="">Selekto Lokacionin</option>
-                                {locationOptions.map((location, index) => (
-                                    <option key={index} value={location}>{location}</option>
+                                {locations.map(location => (
+                                    <option key={location.name} value={location.name}>{location.name}</option>
                                 ))}
                             </select>
-                            {errors.location && <span style={{ color: 'red' }}>{errors.location}</span>}
+                            {errors.locationName && <span style={{ color: 'red' }}>{errors.locationName}</span>}
                         </div>
                         <div style={{ width: 'calc(50% - 5px)' }}>
-                            <select className="form-control" name="type" value={type} onChange={handleChange} style={{ width: '100%' }}>
+                            <select className="form-control" name="industriaName" value={industriaName} onChange={handleChange} style={{ width: '100%' }}>
                                 <option value="">Select Category</option>
-                                {categoryOptions.map((category, index) => (
-                                    <option key={index} value={category}>{category}</option>
+                                {industries.map(industry => (
+                                    <option key={industry.name} value={industry.name}>{industry.name}</option>
                                 ))}
                             </select>
-                            {errors.type && <span style={{ color: 'red' }}>{errors.type}</span>}
+                            {errors.industriaName && <span style={{ color: 'red' }}>{errors.industriaName}</span>}
                         </div>
                     </div>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
@@ -219,13 +217,13 @@ function PostInternship() {
                             {errors.deadline && <span style={{ color: 'red' }}>{errors.deadline}</span>}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ cursor: 'pointer', width: '50%', marginTop: '10px' }}>Posto</button>
+                    <button industria="submit" className="btn btn-primary" style={{ cursor: 'pointer', width: '50%', marginTop: '10px' }}>Posto</button>
                 </form><br/><br/>
                     {successMessage && (
                         <div className="success-message">
                             {successMessage}
                             <br />
-                            <Link to="/InternshipsList">Click here to see all your jobs</Link>
+                            <Link to="/CompanyPage">Click here to see all your posted internships</Link>
                         </div>
                     )}
                 

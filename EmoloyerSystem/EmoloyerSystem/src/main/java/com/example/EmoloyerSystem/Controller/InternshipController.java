@@ -3,7 +3,6 @@ package com.example.EmoloyerSystem.Controller;
 
 import com.example.EmoloyerSystem.Service.InternshipService;
 import com.example.EmoloyerSystem.dto.InternshipDto;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +57,14 @@ public class InternshipController {
     public ResponseEntity<String> deleteInternship(@PathVariable("id") Integer internshipId) {
         internshipService.deleteInternship(internshipId);
         return ResponseEntity.ok("Internship Deleted");
+    }
+
+    @GetMapping("/public/search")
+    public ResponseEntity<List<InternshipDto>> searchInternships(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "location", required = false) String locationName,
+            @RequestParam(value = "Industria", required = false) String IndustriaName) {
+        List<InternshipDto> internships = internshipService.searchInternships(query, locationName, IndustriaName);
+        return ResponseEntity.ok(internships);
     }
 }

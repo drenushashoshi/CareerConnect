@@ -22,4 +22,7 @@ public class Industria {
 
     @OneToMany(mappedBy = "industria")
     private Collection<Job> jobs;
+
+    @OneToMany(mappedBy = "industria")
+    private Collection<Internship> internships;
 }

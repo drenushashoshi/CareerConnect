@@ -23,11 +23,11 @@ const ListStaff = ({ companyId }) => {
   const [nameError, setNameError] = useState('');
   const [surnameError, setSurnameError] = useState('');
   const [roleError, setRoleError] = useState('');
-  const [staffChanges, setStaffChanges] = useState(0); // State to track changes
+  const [staffChanges, setStaffChanges] = useState(0);
 
   useEffect(() => {
     fetchStaff(companyId);
-  }, [companyId, staffChanges]); // Added staffChanges as a dependency
+  }, [companyId, staffChanges]); 
 
   const fetchStaff = async (companyId) => {
     try {

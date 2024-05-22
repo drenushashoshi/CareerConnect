@@ -4,12 +4,16 @@
 import InterService from '../Services/InterService';
  import { ReactComponent as GeoIcon } from './geo-alt.svg';
  import { ReactComponent as ClockIcon } from './hourglass-split.svg';
+ import CompanyService from '../Services/CompanyService';
+ import EmployeeService from '../Services/EmployeeService';
 
 
  const CompanysInternships = ({companyId}) => {
 
     
-     const[internship, setInternship]=useState([])
+     const[internship, setInternship]=useState([]);
+     const isCompany=CompanyService.isCompany();
+      const isEmployee=EmployeeService.isEmployee();
 
      useEffect(() => {
         fetchInternships(companyId);
@@ -39,9 +43,9 @@ import InterService from '../Services/InterService';
                                              <GeoIcon/><strong>{internship.location}</strong><br />
                                              <ClockIcon/>Afati i aplikimit: <strong>{internship.deadline}</strong>
                                          </Card.Text>
-                                         <Link to="/applications" className="btn btn-primary me-2">Apliko</Link>
-                                         <Link to={`/InternshipDetails`} className="btn btn-secondary me-2">Shiko detajet</Link> 
-                                         <Link  className="btn btn-secondary">Shiko aplikimet</Link> 
+                                         {isEmployee &&(<Link to="/applications" className="btn btn-primary me-2">Apliko</Link>)}
+                                         <Link to={`/InternshipDetails/${internship.id}`} className="btn btn-secondary me-2">Shiko detajet</Link> 
+                                         {isCompany &&(<Link  className="btn btn-secondary">Shiko aplikimet</Link> )}
                                      </Card.Body>
                                  </Card>
                              </div>

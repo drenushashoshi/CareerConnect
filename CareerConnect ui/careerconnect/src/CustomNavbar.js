@@ -15,9 +15,11 @@ function CustomNavbar() {
     
 
     const handleProfileButtonClick = () => {
-        if (isAuthenticated) {
+        if (isAuthenticated && isCompany) {
             navigate('/CompanyPage'); 
-        } else {
+        } else if(isAuthenticated && isEmployee){
+            navigate('/EmployeePage');
+        }else {
             navigate('/'); 
         }
     };

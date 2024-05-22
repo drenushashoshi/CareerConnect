@@ -1,10 +1,14 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 
+import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Internship;
+import com.example.EmoloyerSystem.Entity.Location;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.InternshipMapper;
+import com.example.EmoloyerSystem.Repository.IndustriaRepository;
 import com.example.EmoloyerSystem.Repository.InternshipRepository;
+import com.example.EmoloyerSystem.Repository.LocationRepository;
 import com.example.EmoloyerSystem.Service.InternshipService;
 import com.example.EmoloyerSystem.dto.InternshipDto;
 import lombok.AllArgsConstructor;
@@ -17,10 +21,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class InternshipServiceImpl implements InternshipService {
     private InternshipRepository internshipRepository;
+    private final LocationRepository locationRepository;
+    private final IndustriaRepository IndustriaRepository;
 
     @Override
     public InternshipDto createInternship(InternshipDto internshipDto) {
-        Internship internship = InternshipMapper.mapToInternship(internshipDto);
+        Location location = locationRepository.findByName(internshipDto.getLocationName())
+                .orElseThrow(() -> new ResourceNotFoundException("Location not found with id: " + internshipDto.getLocationName()));
+
+        Industria Industria = IndustriaRepository.findByName(internshipDto.getIndustriaName())
+                .orElseThrow(() -> new ResourceNotFoundException("Industria not found with id: " + internshipDto.getIndustriaName()));
+
+        Internship internship = InternshipMapper.mapToInternship(internshipDto, location, Industria);
         Internship savedInternship = internshipRepository.save(internship);
         return InternshipMapper.mapToInternshipDto(savedInternship);
     }
@@ -53,19 +65,28 @@ public class InternshipServiceImpl implements InternshipService {
         Internship internship = internshipRepository.findById(internshipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Internship not found with id: " + internshipId));
 
-        internship.setTittle(updatedInternship.getTittle());
-        internship.setCompany_name(updatedInternship.getCompany_name());
-        internship.setDescription(updatedInternship.getDescription());
+        internship.setTitle(updatedInternship.getTitle());
         internship.setStart_date(updatedInternship.getStart_date());
         internship.setEnd_date(updatedInternship.getEnd_date());
+        internship.setCompany_name(updatedInternship.getCompany_name());
+        internship.setDescription(updatedInternship.getDescription());
         internship.setRequirements(updatedInternship.getRequirements());
-        internship.setLocation(updatedInternship.getLocation());
-        internship.setType(updatedInternship.getType());
         internship.setDeadline(updatedInternship.getDeadline());
 
+        Location location = locationRepository.findByName(updatedInternship.getLocationName())
+                .orElseThrow(() -> new ResourceNotFoundException("Location not found with name: " + updatedInternship.getLocationName()));
+
+        Industria industria = IndustriaRepository.findByName(updatedInternship.getIndustriaName())
+                .orElseThrow(() -> new ResourceNotFoundException("Industria not found with name: " + updatedInternship.getIndustriaName()));
+
+        internship.setLocation(location);
+        internship.setIndustria(industria);
+
         Internship updatedInternshipObj = internshipRepository.save(internship);
+
         return InternshipMapper.mapToInternshipDto(updatedInternshipObj);
     }
+
 
     @Override
     public void deleteInternship(Integer internshipId) {
@@ -74,4 +95,32 @@ public class InternshipServiceImpl implements InternshipService {
         }
         internshipRepository.deleteById(internshipId);
     }
+
+    @Override
+    public List<InternshipDto> searchInternships(String query, String locationName, String industriaName) {
+        List<Internship> internships;
+
+        if (query != null && !query.isEmpty() && locationName != null && !locationName.isEmpty() && industriaName != null && !industriaName.isEmpty()) {
+            internships = internshipRepository.findByTitleContainingIgnoreCaseAndLocationNameAndIndustriaName(query, locationName, industriaName);
+        } else if (query != null && !query.isEmpty() && locationName != null && !locationName.isEmpty()) {
+            internships = internshipRepository.findByTitleContainingIgnoreCaseAndLocationName(query, locationName);
+        } else if (query != null && !query.isEmpty() && industriaName != null && !industriaName.isEmpty()) {
+            internships = internshipRepository.findByTitleContainingIgnoreCaseAndIndustriaName(query, industriaName);
+        } else if (query != null && !query.isEmpty()) {
+            internships = internshipRepository.findByTitleContainingIgnoreCase(query);
+        } else if (locationName != null && !locationName.isEmpty() && industriaName != null && !industriaName.isEmpty()) {
+            internships = internshipRepository.findByLocationNameAndIndustriaName(locationName, industriaName);
+        } else if (locationName != null && !locationName.isEmpty()) {
+            internships = internshipRepository.findByLocationName(locationName);
+        } else if (industriaName != null && !industriaName.isEmpty()) {
+            internships = internshipRepository.findByIndustriaName(industriaName);
+        } else {
+            internships = internshipRepository.findAll();
+        }
+
+        return internships.stream()
+                .map(InternshipMapper::mapToInternshipDto)
+                .collect(Collectors.toList());
+    }
+
 }

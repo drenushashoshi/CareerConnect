@@ -22,4 +22,7 @@ public class Location {
 
     @OneToMany(mappedBy = "location")
     private Collection<Job> jobs;
+
+    @OneToMany(mappedBy = "location")
+    private Collection<Internship> internship;
 }

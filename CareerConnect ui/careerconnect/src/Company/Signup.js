@@ -71,7 +71,6 @@ function Signup() {
 
       if (isFormValid) {
         const companyData = { name, email, address, phone_number, password, opening_year, description, role };
-
         
         const data = await CompanyService.register(companyData);
         

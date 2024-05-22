@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Entity.Location;
+import com.example.EmoloyerSystem.Repository.InternshipRepository;
 import com.example.EmoloyerSystem.Repository.JobRepository;
 import com.example.EmoloyerSystem.Repository.LocationRepository;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
@@ -21,6 +22,7 @@ public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository LocationRepository;
     private final JobRepository jobRepository;
+    private final InternshipRepository internshipRepository;
 
     @Override
     public LocationDto createLocation(LocationDto locationDto) {
@@ -60,6 +62,8 @@ public class LocationServiceImpl implements LocationService {
 
         // Delete associated jobs
         jobRepository.deleteByLocation(Location);
+
+        internshipRepository.deleteByLocation(Location);
 
         LocationRepository.delete(Location);
     }

@@ -12,14 +12,14 @@ import lombok.Setter;
 
 public class InternshipDto {
     private int id;
-    private String tittle;
+    private String title;
     private String company_name;
     private String description;
     private String start_date;
     private String end_date;
     private String requirements;
-    private String location;
-    private String type;
+    private String LocationName;
+    private String IndustriaName;
     private String deadline;
     private int companyId;
 }
