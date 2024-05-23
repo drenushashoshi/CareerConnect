@@ -38,18 +38,23 @@ function Login() {
           setError(data.message);
         }
       } else {
-        data = await EmployeeService.login(email, password); 
+        data = await EmployeeService.login(email, password);
         if (data.token) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
           sessionStorage.setItem('employeeId', data.id);
-          navigator('/EmployeePage');
+          
+          if (data.role === 'Employee') {
+            navigator('/EmployeePage');
+          } else if (data.role === 'ADMIN') {
+            navigator('/Dashboard');
+          } else {
+            setError('Unknown role');
+          }
         } else {
           setError(data.message);
         }
       }
-      
-      
     } catch (error) {
       console.error("Login failed:", error);
       setError(error.message);
@@ -57,7 +62,7 @@ function Login() {
       setPassword('');
     }
   }
-
+  
   return (
     <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>
       <div className='d-flex flex-column align-items-center'>

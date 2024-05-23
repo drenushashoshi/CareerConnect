@@ -21,7 +21,7 @@ function InternshipListing() {
     const [locations, setLocations] = useState([]);
     const [searchParams, setSearchParams] = useState({
         query: '',
-        Industria: '',
+        Industry: '',
         location: ''
     });
     const [loading, setLoading] = useState(false);
@@ -73,8 +73,8 @@ function InternshipListing() {
         setLoading(true);
         setError(null);
         try {
-            const response = await InterService.searchInternships(searchParams.query, searchParams.Industria, searchParams.location);
-            setInternships(response.data);
+            const response = await InterService.searchInternships(searchParams.query, searchParams.Industry, searchParams.location);
+            setInternships(response);
         } catch (error) {
             setError('Error searching internships');
             console.error('Error searching:', error);
@@ -85,7 +85,7 @@ function InternshipListing() {
     const handleClearSearch = () => {
         setSearchParams({
             query: '',
-            Industria: '',
+            Industry: '',
             location: ''
         });
         fetchInternships();
@@ -109,17 +109,17 @@ function InternshipListing() {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    placeholder="Keyword"
-                                    name="keyword"
-                                    value={searchParams.keyword}
+                                    placeholder="Search"
+                                    name="query"
+                                    value={searchParams.query}
                                     onChange={handleSearchChange}
                                 />
                             </div>
                             <div className="col-md-3">
                                 <select
                                     className="form-select"
-                                    name="industriaName"
-                                    value={searchParams.Industria}
+                                    name="Industry"
+                                    value={searchParams.Industry}
                                     onChange={handleSearchChange}
                                 >
                                     <option value="">Industry</option>
@@ -131,7 +131,7 @@ function InternshipListing() {
                             <div className="col-md-3">
                                 <select
                                     className="form-select"
-                                    name="locationName"
+                                    name="location"
                                     value={searchParams.location}
                                     onChange={handleSearchChange}
                                 >
@@ -152,7 +152,7 @@ function InternshipListing() {
                     {loading && <p>Loading jobs...</p>}
                     {error && <p>{error}</p>}
                     <div className="row">
-                        {internships.map(internship => (
+                        {internships?.map(internship => (
                             <div key={internship.id} className="col-md-6 mb-4">
                                 <Card>
                                     <Card.Body>
@@ -161,6 +161,7 @@ function InternshipListing() {
                                             Data e fillimit se praktikes: <strong>{internship.start_date}</strong><br />
                                             Data e perfundimit se praktikes: <strong>{internship.end_date}</strong><br />
                                             <GeoIcon /><strong>{internship.locationName}</strong><br />
+                                            Industria:<strong>{internship.industriaName}</strong><br />
                                             <ClockIcon />Afati i aplikimit: <strong>{internship.deadline}</strong>
                                         </Card.Text>
                                         {isEmployee && <Link to="/applications" className="btn btn-primary me-2">Apliko</Link>}
