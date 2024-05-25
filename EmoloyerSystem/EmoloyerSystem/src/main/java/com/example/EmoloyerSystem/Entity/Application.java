@@ -16,7 +16,7 @@ public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "ApplicationID",unique = true,updatable = false)
+    @Column(name = "ApplicationID",unique = true,updatable = false)
     private int ID;
 
     @Column(name="Name",nullable = false)
