@@ -1,38 +1,32 @@
 import React, { useRef, useState } from 'react'
 import { getApplications, createApplication, updateResume, uploadResume } from '../Services/ApplicationService';
+import { useNavigate } from 'react-router-dom';
 
 const Application = () => {
-    
-    const fileRef = useRef();
-    const [file, setFile] =useState(undefined);
-    const [values,setValues] = useState({
+    const navigator = useNavigate();
+    const [values, setValues] = useState({
         city: '',
-        description:'',
-        email:'',
+        description: '',
+        email: '',
         gender: '',
         name: '',
         phone_nr: '',
         age: '',
     });
     const onChange = (event) => {
-        setValues({...values,[event.target.name]:event.target.value})
+        setValues({ ...values, [event.target.name]: event.target.value })
     }
     const handleNewApplication = async (event) => {
         event.preventDefault();
         try {
             console.log(values);
             const { data } = await createApplication(values);
-            const formData = new FormData();
-            formData.append('file', file, file.name);
-            formData.append('id', data.id);
-            const { data: Resume } = await uploadResume(formData);
-            console.log(Resume);
-            setFile(undefined);
-            fileRef.current.value = null;
+            navigator(`/CvCreate/`);
+
         } catch (error) {
             console.log(error);
         }
-        
+
     }
     const uploadResume = async (formData) => {
         try {
@@ -41,9 +35,9 @@ const Application = () => {
             console.log(error);
         }
     };
-  return (
-    <>
-        <div className="container">
+    return (
+        <>
+            <div className="container">
                 <div className='modal__header'>
                 </div>
                 <div className="row mx-0 justify-content-center">
@@ -128,19 +122,13 @@ const Application = () => {
                                     onChange={onChange}
                                 ></textarea>
                             </label>
-
-                            <label className="d-block mb-4">
-                                <span className="form-label d-block">Your CV (Must be a PDF file)</span>
-                                <input name="file" type="file" onChange={(event)=>setFile(event.target.files[0])} ref={fileRef} className="form-control" />
-                            </label>
-
                             <div className="mb-4">
                                 <span className="form-label d-block">Gender</span>
                                 <div>
                                     <div className="form-check">
                                         <label className="d-block">
                                             <input
-                                            id='male'
+                                                id='male'
                                                 type="radio"
                                                 className="form-check-input"
                                                 name="gender"
@@ -179,8 +167,8 @@ const Application = () => {
                     </div>
                 </div>
             </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default Application

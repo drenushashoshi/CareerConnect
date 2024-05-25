@@ -7,4 +7,4 @@ export const createWorkExperience=(WorkExperience)=> axios.post(REST_API_BASE_UR
 export const getWorkExperienceById=(WorkExperienceId)=>axios.get(REST_API_BASE_URL+'/'+WorkExperienceId);
 export const updateWorkExperience=(WorkExperienceId, WorkExperience)=>axios.put(REST_API_BASE_URL +'/'+WorkExperienceId, WorkExperience);
 export const deleteWorkExperience=(WorkExperienceId)=>axios.put(REST_API_BASE_URL+'/'+WorkExperienceId);
-export const getWorkExperienceByCvId=()=>axios.get(REST_API_BASE_URL);
+export const getWorkExperienceByCvId=(id)=>axios.get(REST_API_BASE_URL+'/cv/'+id);

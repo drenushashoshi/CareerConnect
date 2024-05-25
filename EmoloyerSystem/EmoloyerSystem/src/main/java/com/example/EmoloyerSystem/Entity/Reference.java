@@ -39,5 +39,5 @@ public class Reference {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cv_id")
-    private CV cv_id;
+    private CV CV;
 }

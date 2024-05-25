@@ -21,7 +21,7 @@ public class CV{
     @Column(name = "cvid",unique = true,updatable = false)
     private int cvid;
 
-    @Column(name="profilepic", nullable = false)
+    @Column(name="profilepic", nullable = true)
     private String profilepic;
 
     @Column(name="name",nullable = false)
@@ -54,9 +54,12 @@ public class CV{
     @Column(name="highschool",nullable = true)
     private String highschool;
 
-    @OneToMany(mappedBy = "cv_id")
+    @OneToMany(mappedBy = "CV")
     private List<Reference> references;
 
-    @OneToMany(mappedBy = "cv_id")
+    @OneToMany(mappedBy = "CV")
     private List<WorkExperience> workExperiences;
+
+    @OneToMany(mappedBy = "CV")
+    private List<Language> Language;
 }
