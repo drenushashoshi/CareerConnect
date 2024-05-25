@@ -3,17 +3,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
 import InterService from '../Services/InterService'
 import Footer from '../Footer';
+import { getLocations } from '../Services/LocationService';
+import { getIndustries } from '../Services/IndustriaService';
+import CompanyService from '../Services/CompanyService';
+
 
 const EditInternship = () => {
-    const [tittle, setTittle] = useState('');
+    const [title, settitle] = useState('');
     const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
     const [requirements, setRequirements] = useState('');
-    const [location, setLocation] = useState('');
-    const [type, setType] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [locationName, setLocation] = useState('');
+    const [industriaName, setIndustria] = useState('');
     const [titleError, setTitleError] = useState('');
     const [companyNameError, setCompanyNameError] = useState('');
     const [startDateError, setStartDateError] = useState('');
@@ -22,24 +26,34 @@ const EditInternship = () => {
     const [requirementsError, setRequirementsError] = useState('');
     const [locationError, setLocationError] = useState('');
     const [typeError, setTypeError] = useState('');
+    const [locations, setLocations] = useState([]);
+    const [industries, setIndustries] = useState([]);
+
+    const navigator = useNavigate();
 
     const { id } = useParams();
     const [internship, setInternship] = useState(null);
 
     useEffect(() => {
+        if (!CompanyService.isCompany()) {
+            navigator('/');
+        }
+    }, [navigator]);
+
+    useEffect(() => {
         if (id) {
-            const token=localStorage.getItem('token');
+            const token = localStorage.getItem('token');
             InterService.getInternshipById(id, token)
                 .then((response) => {
                     setInternship(response.data);
-                    setTittle(response.tittle);
+                    settitle(response.title);
                     setCompany_name(response.company_name);
                     setStart_date(response.start_date);
                     setEnd_date(response.end_date);
                     setRequirements(response.requirements);
                     setDescription(response.description);
-                    setLocation(response.location);
-                    setType(response.type);
+                    setLocation(response.locationName);
+                    setIndustria(response.industriaName);
                     setDeadline(response.deadline);
                 })
                 .catch(error => {
@@ -48,7 +62,43 @@ const EditInternship = () => {
         }
     }, [id]);
 
-    const navigator = useNavigate();
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const locationsResponse = await getLocations();
+                console.log("Locations Response:", locationsResponse);
+                if (locationsResponse && locationsResponse.data && locationsResponse.data.length > 0) {
+                    setLocations(locationsResponse.data);
+                } else {
+                    console.error('No locations found in the response');
+                }
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            }
+
+            try {
+                const response = await getIndustries();
+                console.log('Response:', response);
+                if (Array.isArray(response)) {
+                    setIndustries(response);
+                } else if (response.data && Array.isArray(response.data)) {
+                    setIndustries(response.data);
+                } else {
+                    console.error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching industries:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    
+
+    const isEmptyOrWhitespace = (str) => {
+        return !str || /^\s*$/.test(str);
+    };
 
     function saveInternship(e) {
         e.preventDefault();
@@ -62,43 +112,39 @@ const EditInternship = () => {
         setTypeError('');
 
         let isValid = true;
-        if (!tittle.trim()) {
+        if (isEmptyOrWhitespace(title)) {
             setTitleError('Titulli nuk mund të jetë bosh');
             isValid = false;
         }
-        if (!company_name.trim()) {
-            setCompanyNameError('Emri i kompanisë nuk mund të jetë bosh');
-            isValid = false;
-        }
-        if (!start_date.trim()) {
+        if (isEmptyOrWhitespace(start_date)) {
             setStartDateError('Data e fillimit nuk mund të jetë bosh');
             isValid = false;
         }
-        if (!end_date.trim()) {
+        if (isEmptyOrWhitespace(end_date)) {
             setEndDateError('Data e përfundimit nuk mund të jetë bosh');
             isValid = false;
         }
-        if (!deadline.trim()) {
+        if (isEmptyOrWhitespace(deadline)) {
             setDeadlineError('Afati i dorëzimit nuk mund të jetë bosh');
             isValid = false;
         }
-        if (!requirements.trim()) {
+        if (isEmptyOrWhitespace(requirements)) {
             setRequirementsError('Njohuritë e nevojshme nuk mund të jenë boshe');
             isValid = false;
         }
-        if (!location.trim()) {
+        if (isEmptyOrWhitespace(locationName)) {
             setLocationError('Lokacioni nuk mund të jetë bosh');
             isValid = false;
         }
-        if (!type.trim()) {
+        if (isEmptyOrWhitespace(industriaName)) {
             setTypeError('Tipi i punës nuk mund të jetë bosh');
             isValid = false;
         }
 
         if (isValid) {
-            const updatedInternship = { tittle, company_name, description, start_date, end_date, requirements, location, type, deadline };
+            const updatedInternship = { title, company_name, description, start_date, end_date, requirements, locationName, industriaName, deadline };
             if (id) {
-                const token=localStorage.getItem('token');
+                const token = localStorage.getItem('token');
                 InterService.updateInternship(id, updatedInternship, token)
                     .then((response) => {
                         console.log(response.data);
@@ -111,23 +157,6 @@ const EditInternship = () => {
         }
     }
 
-    const locationOptions = [
-        'Deçan', 'Dragash', 'Drenas', 'Ferizaj', 'Fushë Kosovë', 'Gjakovë', 'Gjilan', 'Burim',
-        'Kaçanik', 'Dardanë', 'Klinë', 'Lipjan', 'Malishevë', 'Mitrovicë', 'Kastriot', 'Pejë',
-        'Besianë', 'Prishtinë', 'Prizren', 'Rahovec', 'Skenderaj', 'Suharekë', 'Shtërpcë', 'Shtime',
-        'Viti', 'Vushtrri'
-    ];
-
-    const categoryOptions = [
-        'Administratë', 'Arkitekturë', 'Art dhe Kulturë', 'Banka', 'Industria Automobilistike',
-        'Retail dhe Distribuim', 'Ndërtimtari & Patundshmëri', 'Mbështetje e Konsumatorëve, Call Center',
-        'Ekonomi, Financë, Kontabilitet', 'Edukim, Shkencë & Hulumtim', 'Punë të Përgjithshme',
-        'Burime Njerëzore', 'Teknologji e Informacionit', 'Gazetari, Shtyp & Media', 'Ligj & Legjislacion',
-        'Menaxhment', 'Marketing, Reklamim & PR', 'Inxhinieri', 'Shëndetësi, Medicinë', 'Industri Farmaceutike',
-        'Prodhim', 'Siguri & Mbrojtje', 'Industri të Shërbimit', 'Telekomunikim', 'Tekstil, Lëkurë, Industri Veshëmbathjeje',
-        'Menaxhment Ekzekutiv', 'Gastronomi, Hoteleri, Turizëm', 'Përkthim, Interpretim', 'Transport, Logjistikë',
-        'Industri e Përpunimit të Drurit'
-    ];
 
     return (
         <>
@@ -140,10 +169,10 @@ const EditInternship = () => {
                             <div className="col-xl-7 col-lg-8">
                                 <div className="single-job-items mb-50">
                                     <div className="job-items">
-                                        <div className="job-tittle">
+                                        <div className="job-title">
                                             <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Titulli</h4>
                                             <p style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>
-                                                <input type="text" value={tittle} onChange={(e) => setTittle(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width:'400px' }} />
+                                                <input type="text" value={title} onChange={(e) => settitle(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width:'400px' }} />
                                                 {titleError && <div style={{ color: 'red' }}>{titleError}</div>}
                                             </p>
                                         </div>
@@ -151,13 +180,13 @@ const EditInternship = () => {
                                 </div>
                                 <div className="job-post-details">
                                     <div className="post-details1 mb-50">
-                                        <div className="small-section-tittle">
+                                        <div className="small-section-title">
                                             <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Pershkrimi</h4>
                                         </div>
                                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '100%', height: '200px', resize: 'none' }}></textarea>
                                     </div>
                                     <div className="post-details2 mb-50">
-                                        <div className="small-section-tittle">
+                                        <div className="small-section-title">
                                             <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Njohurite e nevojshme</h4>
                                         </div>
                                         <textarea value={requirements} onChange={(e) => setRequirements(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '100%', height: '200px', resize: 'none' }}></textarea>
@@ -167,34 +196,34 @@ const EditInternship = () => {
                             </div>
                             <div className="col-xl-4 col-lg-4">
                                 <div className="post-details3 mb-4">
-                                    <div className="small-section-tittle">
+                                    <div className="small-section-title">
                                         <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Informatat e pergjithshme</h4>
                                     </div>
                                     <ul style={{ listStyle: 'none' }}>
                                         <li>Lokacioni:
                                             <select
-                                                value={location}
+                                                value={locationName}
                                                 onChange={(e) => setLocation(e.target.value)}
                                                 className="form-control"
                                                 style={{ width: '100%' }}
                                             >
                                                 <option value="">Zgjidh Lokacionin</option>
-                                                {locationOptions.map((loc, index) => (
-                                                    <option key={index} value={loc}>{loc}</option>
+                                                {locations.map(location => (
+                                                    <option key={location.name} value={location.name}>{location.name}</option>
                                                 ))}
                                             </select><br/>
                                             {locationError && <div style={{ color: 'red' }}>{locationError}</div>}
                                         </li>
                                         <li>Tipi i punes:
                                             <select
-                                                value={type}
-                                                onChange={(e) => setType(e.target.value)}
+                                                value={industriaName}
+                                                onChange={(e) => setIndustria(e.target.value)}
                                                 className="form-control"
                                                 style={{ width: '100%' }}
                                             >
                                                 <option value="">Zgjidh Kategorinë</option>
-                                                {categoryOptions.map((cat, index) => (
-                                                    <option key={index} value={cat}>{cat}</option>
+                                                {industries.map(industry => (
+                                                    <option key={industry.name} value={industry.name}>{industry.name}</option>
                                                 ))}
                                             </select><br/>
                                             {typeError && <div style={{ color: 'red' }}>{typeError}</div>}
@@ -208,8 +237,8 @@ const EditInternship = () => {
                                     </ul>
                                 </div>
                                 <div className="post-details4 mb-4">
-                                    <div className="small-section-tittle">
-                                        <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Company Information</h4>
+                                    <div className="small-section-title">
+                                        <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Informacioni lidhur me kompaninë</h4>
                                     </div>
                                     <ul style={{ listStyle: 'none' }}>
                                         <li>Emri i kompanise: <input type="text" value={company_name} onChange={(e) => setCompany_name(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px' }} /></li>

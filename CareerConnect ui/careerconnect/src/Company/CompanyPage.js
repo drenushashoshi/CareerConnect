@@ -22,14 +22,15 @@ import CompanyService from '../Services/CompanyService';
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
-  const isCompany=CompanyService.isCompany();
-  
-
+  const [showSpinner, setShowSpinner] = useState(false); 
+  const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
 
   useEffect(() => {
     fetchProfileInfo();
   }, []);
+
+  
 
   const fetchProfileInfo = async () => {
     try {
@@ -48,9 +49,14 @@ const CompanyPage = () => {
   const removeCompany = async (id) => {
     try {
       const token = localStorage.getItem('token');
+      setShowSpinner(true); 
       await CompanyService.deleteCompany(id, token);
-      navigator('/');
+      setTimeout(() => {
+        setShowSpinner(false); 
+        navigator('/');
+      }, 4000);
     } catch (error) {
+      setShowSpinner(false); 
       console.error('Error deleting company ', error);
     }
   };
@@ -62,15 +68,35 @@ const CompanyPage = () => {
     event.preventDefault();
     handleShowModal();
   };
-  const handelLogOut=()=>{
+
+  const handelLogOut = () => {
     CompanyService.logout();
   }
-
-  
 
   return (
     <>
       <CustomNavbar />
+      {showSpinner && ( 
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1060 
+        }}>
+          <div className="text-center text-white">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="mt-3">Te dhenat e juaja po fshihen...</div>
+          </div>
+        </div>
+      )}
       <div style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -83,7 +109,7 @@ const CompanyPage = () => {
           <div className="container d-flex justify-content-between align-items-center">
             <h4 style={{ fontWeight: 'bold', padding: '10px', marginLeft: '15px' }}>{profileInfo.name}</h4>
             {isCompany && (
-            <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
+            <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
               <NavDropdown.Item onClick={() => updateCompany()} href="#">Ndrysho Profilin</NavDropdown.Item>
               <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
               <NavDropdown.Item href="/Rate">Na Vlerësoni</NavDropdown.Item>
@@ -138,8 +164,6 @@ const CompanyPage = () => {
                         <MDBCardText className="text-muted">{profileInfo.opening_year}</MDBCardText>
                       </MDBCol>
                     </MDBRow><br />
-
-
                   </div>
                 </MDBCardBody>
               </MDBCard>
@@ -161,16 +185,14 @@ const CompanyPage = () => {
             <CompanysInternships companyId={profileInfo.id} /><br />
           </>
         )}
-
         <Footer />
       </div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Body className='text-center custom-font'>
+        <Modal.Body className='text-center custom-font' style={{ zIndex: 1050 }}>
           <h5 className='mt-3'>Me fshirjen e profilit, të gjitha të dhënat e juaja do të fshihen. A doni të vazhdoni?</h5>
           <div className='mt-4 mb-4'>
             <Link to='' className='btn ' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
-
-            <Link to='' onClick={() => removeCompany(profileInfo?.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link>
+            <Link to='' onClick={() => removeCompany(profileInfo.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link>
           </div>
         </Modal.Body>
       </Modal>

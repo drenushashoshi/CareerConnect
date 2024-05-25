@@ -17,6 +17,12 @@ const EditCompanyProfile = () => {
   const navigator = useNavigate();
   const { id } = useParams();
 
+  useEffect(() => {
+    if (!CompanyService.isCompany()) {
+        navigator('/');
+    }
+  }, [navigator]);
+
   const [companyData, setCompanyData] = useState({
     name: '',
     email: '',
@@ -26,9 +32,21 @@ const EditCompanyProfile = () => {
     description: ''
   });
 
+  
+  const [validations, setValidations] = useState({
+    name: true,
+    email: true,
+    address: true,
+    phone_number: true,
+    opening_year: true,
+    description: true
+  });
+
   useEffect(() => {
     fetchCompanyDataById(id);
   }, [id]);
+
+  
 
   const fetchCompanyDataById = async (id) => {
     try {
@@ -52,6 +70,11 @@ const EditCompanyProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const areValid = validateForm();
+    if (!areValid) {
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       await CompanyService.updateCompany(id, companyData, token);
@@ -61,6 +84,58 @@ const EditCompanyProfile = () => {
       alert(error)
     }
   };
+
+  const validateForm = () => {
+    const validationsCopy = { ...validations };
+    let isValid = true;
+  
+    
+    if (!companyData.name.trim()) {
+      validationsCopy.name = false;
+      isValid = false;
+    } else {
+      validationsCopy.name = true;
+    }
+  
+    if (!companyData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(companyData.email)) {
+      validationsCopy.email = false;
+      isValid = false;
+    } else {
+      validationsCopy.email = true;
+    }
+  
+    if (!companyData.address.trim()) {
+      validationsCopy.address = false;
+      isValid = false;
+    } else {
+      validationsCopy.address = true;
+    }
+  
+    if (!companyData.phone_number.trim()) {
+      validationsCopy.phone_number = false;
+      isValid = false;
+    } else {
+      validationsCopy.phone_number = true;
+    }
+  
+    if (!companyData.opening_year.toString().trim()) { // Convert to string before trim()
+      validationsCopy.opening_year = false;
+      isValid = false;
+    } else {
+      validationsCopy.opening_year = true;
+    }
+  
+    if (!companyData.description.trim()) {
+      validationsCopy.description = false;
+      isValid = false;
+    } else {
+      validationsCopy.description = true;
+    }
+  
+    setValidations(validationsCopy);
+    return isValid;
+  };
+  
 
   return (
     <>
@@ -80,7 +155,9 @@ const EditCompanyProfile = () => {
                       name="name"
                       value={companyData.name}
                       onChange={handelInputChange}
+                      invalid={!validations.name}
                     />
+                    {!validations.name && <div className="text-danger">Shkruani emrin</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -94,7 +171,9 @@ const EditCompanyProfile = () => {
                       name="address"
                       value={companyData.address}
                       onChange={handelInputChange}
+                      invalid={!validations.address}
                     />
+                    {!validations.address && <div className="text-danger">Shkruani adresën</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -108,7 +187,9 @@ const EditCompanyProfile = () => {
                       name="email"
                       value={companyData.email}
                       onChange={handelInputChange}
+                      invalid={!validations.email}
                     />
+                    {!validations.email && <div className="text-danger">Email adresë jo-valide</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -122,7 +203,9 @@ const EditCompanyProfile = () => {
                       name="phone_number"
                       value={companyData.phone_number}
                       onChange={handelInputChange}
+                      invalid={!validations.phone_number}
                     />
+                    {!validations.phone_number && <div className="text-danger">Shkruani numrin kontaktues</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -136,7 +219,9 @@ const EditCompanyProfile = () => {
                       name="opening_year"
                       value={companyData.opening_year}
                       onChange={handelInputChange}
+                      invalid={!validations.opening_year}
                     />
+                    {!validations.opening_year && <div className="text-danger">Shkruani vitin e hapjes</div>}
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -162,7 +247,9 @@ const EditCompanyProfile = () => {
                         transition: 'box-shadow 0.15s ease-in-out',
                       }}
                     />
+                    {!validations.description && <div className="text-danger">Përshkrimi është i nevojshëm</div>}
                   </MDBCol>
+
                 </MDBRow><br />
                 <MDBRow className="mb-3 justify-content-center">
                   <MDBCol sm="6">

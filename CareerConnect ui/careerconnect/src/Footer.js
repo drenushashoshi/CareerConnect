@@ -1,4 +1,7 @@
-import React from "react"
+import React from "react";
+import { FaInstagram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaFacebook } from "react-icons/fa";
 
 const Footer = () => (
   <footer className="page-footer font-small blue pt-4" style={{ backgroundColor: '#e3f2fd' }}>
@@ -6,23 +9,23 @@ const Footer = () => (
       <div className="row justify-content-between">
         <div className="col-md-4 mt-md-0 mt-3">
           <h5>CareerConnect</h5>
-          <p>The best offer for your business!</p>
+          <p>Oferta më e mirë për biznesin dhe karierën tuaj!</p>
         </div>
 
         <div className="col-md-4 mb-md-0 mb-3">
-          <h5>Follow us on social media</h5>
+          <h5>Na ndiqni në rrjetet sociale:</h5>
           <ul className="list-unstyled">
-            <li><a href="#!">Instagram</a></li>
-            <li><a href="#!">X</a></li>
-            <li><a href="#!">Facebook</a></li>
+            <li><a href="#!" style={{ fontSize: '24px' }}><FaInstagram /></a></li>
+            <li><a href="#!" style={{ fontSize: '24px' }}><FaXTwitter /></a></li>
+            <li><a href="#!" style={{ fontSize: '24px' }}><FaFacebook /></a></li>
           </ul>
         </div>
 
         <div className="col-md-4 mb-md-0 mb-3">
-          <h5>Come at out office</h5>
+          <h5>Na vizitoni në zyret tona:</h5>
           <ul className="list-unstyled">
-            <li><p>Address: Dragodan, Prishtine</p></li>
-            <li><p>Email: careerconnect@gmail.com</p></li>
+            <li><p>Adresa: Dragodan, Prishtine</p></li>
+            <li><p>Email adresa: careerconnect@gmail.com</p></li>
           </ul>
         </div>
       </div>

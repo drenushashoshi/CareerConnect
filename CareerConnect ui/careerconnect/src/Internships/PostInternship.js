@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from 'react';
 import CostumNavbar from "../CustomNavbar";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg'; 
 import Footer from '../Footer';
 import { getLocations } from '../Services/LocationService';
 import { getIndustries } from '../Services/IndustriaService';
+import CompanyService from '../Services/CompanyService';
 
 function PostInternship() {
     const [title, setTitle] = useState('');
@@ -22,7 +23,15 @@ function PostInternship() {
     const [locations, setLocations] = useState([]);
     const [industries, setIndustries] = useState([]);
 
+    const navigator = useNavigate();
+
     const  companyId =sessionStorage.getItem('companyId');
+
+    useEffect(() => {
+        if (!CompanyService.isCompany()) {
+            navigator('/');
+        }
+    }, [navigator]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -100,7 +109,16 @@ function PostInternship() {
                 const internship = { title, company_name, description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
                 const token = localStorage.getItem('token');
                 await InterService.createInternship(internship, token);
-                setSuccessMessage("Internship posted successfully!");
+                setSuccessMessage("Praktika u postua me sukses!");
+                setTitle('');
+                setCompany_name('');
+                setDescription('');
+                setStart_date('');
+                setEnd_date('');
+                setRequirements('');
+                setLocation('');
+                setIndustria('');
+                setDeadline('');
             } else {
                 setErrors(errors);
             }
@@ -109,41 +127,42 @@ function PostInternship() {
         }
     };
     
+    
 
     const validateForm = () => {
         const errors = {};
         if (!title.trim()) {
-            errors.title = 'Titulli is required';
+            errors.title = 'Shkruani titullin';
         }
         if (!company_name.trim()) {
-            errors.company_name = 'Emri i Kompanise is required';
+            errors.company_name = 'Shkruani emrin e kompanisë';
         }
         if (!description.trim()) {
-            errors.description = 'Pershkrimi is required';
+            errors.description = 'Shkruani përshkrimin e praktikës';
         }
         if (!start_date) {
-            errors.start_date = 'Data e fillimit te praktikes is required';
+            errors.start_date = 'Vendosni datën e fillimit të praktikës';
         } else if (new Date(start_date) < new Date()) {
-            errors.start_date = 'Data e fillimit te praktikes nuk mund te jete ne te kaluaren';
+            errors.start_date = 'Data e fillimit te praktikës nuk mund të jetë në të kaluarën';
         }
         if (!end_date) {
-            errors.end_date = 'Data e perfundimit te praktikes is required';
+            errors.end_date = 'Vendosni datën e përfundimit të praktikës';
         } else if (new Date(end_date) < new Date()) {
-            errors.end_date = 'Data e perfundimit te praktikes nuk mund te jete ne te kaluaren';
+            errors.end_date = 'Data e perfundimit të praktikës nuk mund te jetë në të kaluarën';
         }
         if (!requirements.trim()) {
-            errors.requirements = 'Kerkesat is required';
+            errors.requirements = 'Shkruani kërkesat';
         }
         if (!locationName) {
-            errors.locationName = 'Lokacioni is required';
+            errors.locationName = 'Zgjedhni lokacionin';
         }
         if (!industriaName) {
-            errors.industriaName = 'Kategoria is required';
+            errors.industriaName = 'Zgjedhni kategorinë';
         }
         if (!deadline) {
-            errors.deadline = 'Deadline is required';
+            errors.deadline = 'Vendosni afatin e fundit për aplikim';
         } else if (new Date(deadline) < new Date()) {
-            errors.deadline = 'Afati i dorezimit nuk mund te jete ne te kaluaren';
+            errors.deadline = 'Afati i dorëzimit nuk mund te jetë në të kaluarën';
         }
         return errors;
     };
@@ -220,11 +239,12 @@ function PostInternship() {
                     <button industria="submit" className="btn btn-primary" style={{ cursor: 'pointer', width: '50%', marginTop: '10px' }}>Posto</button>
                 </form><br/><br/>
                     {successMessage && (
-                        <div className="success-message">
-                            {successMessage}
-                            <br />
-                            <Link to="/CompanyPage">Click here to see all your posted internships</Link>
-                        </div>
+                        <div className="success-message" style={{ fontSize: '18px' }}>
+                        {successMessage}
+                        <br />
+                        <Link to="/CompanyPage" style={{ fontSize: '18px' }}>Klikoni këtu për të parë të gjitha shpalljet e postuara.</Link><br/>
+                      </div> 
+                      
                     )}
                 
             </div>
