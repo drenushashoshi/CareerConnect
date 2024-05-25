@@ -68,12 +68,12 @@ function Login() {
       <div className='d-flex flex-column align-items-center'>
         <h1 className="custom-margin"><b>CareerConnect</b></h1>
         <p className='w-50 mt-3'>
-          Discover, apply, and excel with our all-in-one web app designed for job seekers and recruiters alike.
-          Easily browse and apply for available jobs, courses, and internships tailored to your needs.
-          Streamline your hiring process as a company by posting job openings, managing applications, and scheduling
-          interviews effortlessly. Our intuitive platform ensures seamless connectivity between talented individuals and
-          rewarding opportunities. From job search to onboarding, we've got you covered every step of the way.
-          Join our community today and take the next leap in your career journey!
+        Zbuloni, aplikoni dhe shkëlqeni me aplikacionin tonë të gjithanshëm në internet të krijuar për kërkuesit e punës dhe rekrutuesit.
+        Shfletoni dhe aplikoni lehtësisht për vendet e punës, kurset dhe praktikat në dispozicion të përshtatura për nevojat tuaja.
+        Thjeshtoni procesin tuaj të punësimit si kompani duke postuar vende të lira pune, duke menaxhuar aplikimet dhe duke planifikuar
+        intervistat pa mundim. Platforma jonë intuitive siguron lidhje të përsosur midis individëve të talentuar dhe
+        mundësive të shpërblyese. Nga kërkimi i punës deri te integrimi, ne ju mbështesim në çdo hap të rrugës.
+        Bashkohuni me komunitetin tonë sot dhe bëni hapin e ardhshëm në karrierën tuaj!
         </p>
         <div className='w-40 p-3 bg-transparent'>
           <form onSubmit={handleSubmit}>
@@ -99,17 +99,17 @@ function Login() {
               <button type="submit" className='btn btn-primary'>Sign in</button>
             </div>
             <p className='text-start mt-2'>
-              <a href="" className='ms-2' onClick={handleSignUpClick}>Sign up</a>
+              <a href="" className='ms-2' onClick={handleSignUpClick}>Regjistrohu</a>
             </p>
           </form>
         </div>
       </div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Body className='text-center custom-font'>
-          <h5 className='mt-3'>What do you want to signup as?</h5>
+          <h5 className='mt-3'>Regjistrohu si?</h5>
           <div className='mt-4 mb-4'>
-            <Link to='/signup' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Company</Link>
-            <Link to='/EmployeeSignUp' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Worker</Link>
+            <Link to='/signup' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Kompani</Link>
+            <Link to='/EmployeeSignUp' className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff' }}>Punëtor</Link>
           </div>
         </Modal.Body>
       </Modal>

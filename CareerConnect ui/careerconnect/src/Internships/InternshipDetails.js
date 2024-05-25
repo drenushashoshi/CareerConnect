@@ -40,8 +40,8 @@ const InternshipDetails = () => {
               setEnd_date(response.end_date);
               setRequirements(response.requirements);
               setDescription(response.description);
-              setLocation(response.location);
-              setType(response.type);
+              setLocation(response.locationName);
+              setType(response.industriaName);
               setDeadline(response.deadline);
               setCompanyId(response.companyId);
             
@@ -56,7 +56,7 @@ const InternshipDetails = () => {
         const token =localStorage.getItem('token');
         InterService.deleteInternship(id,token) 
             .then(() => {
-                navigator('/InternshipsList'); 
+                navigator('/Companypage'); 
             })
             .catch(error => {
                 console.error(error);

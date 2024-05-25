@@ -22,17 +22,17 @@ const CompanyStaff = ({ companyId }) => {
         let isValid = true;
     
         if (!name.trim()) {
-            setNameError('Please enter your name.');
+            setNameError('Shkruani emrin');
             isValid = false;
         }
     
         if (!surname.trim()) {
-            setSurnameError('Please enter your surname.');
+            setSurnameError('Shkruani mbiemrin');
             isValid = false;
         }
     
         if (!role.trim()) {
-            setRoleError('Please enter your role.');
+            setRoleError('Shkruani rolin');
             isValid = false;
         }
     

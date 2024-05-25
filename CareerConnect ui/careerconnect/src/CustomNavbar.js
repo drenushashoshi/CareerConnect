@@ -75,9 +75,7 @@ function CustomNavbar() {
                         </NavDropdown>
                     )}
                 </Nav>
-                <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>
-                    Your Profile<i className="fa fa-arrow-right ms-3"></i>
-                </Button>
+                <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Profili juaj<i className="fa fa-arrow-right ms-3"></i></Button>
             </Navbar.Collapse>
         </Navbar>
     );

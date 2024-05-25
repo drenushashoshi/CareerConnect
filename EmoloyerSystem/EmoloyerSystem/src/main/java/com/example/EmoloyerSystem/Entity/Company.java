@@ -46,10 +46,10 @@ public class Company implements UserDetails {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Internship> internships;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<CompanyStaff> staff;
 
 
