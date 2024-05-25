@@ -9,11 +9,11 @@ public interface RateService {
 
     RateDto getRateById(Integer rateDto);
 
-    List<RateDto>getAllRates();
+    List<RateDto>getAllRates(int rateId);
 
     RateDto updateRate(Integer rateId,RateDto updatedRate);
 
-    void deleteRate(Long rateId);
+    void deleteRate(Integer rateId);
 
 
 

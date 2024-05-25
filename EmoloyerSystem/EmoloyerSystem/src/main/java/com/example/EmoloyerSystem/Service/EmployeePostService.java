@@ -11,7 +11,7 @@ public interface EmployeePostService {
 
     EmployeePostDto getEmployeePostById(Long employeePostId);
 
-    List <EmployeePostDto>getAllEmployeePost();
+    List <EmployeePostDto>getAllEmployeePost(int employeeId);
 
     EmployeePostDto updateEmployeePost(Long employeePostId,EmployeePostDto updatedEmployeePost);
 

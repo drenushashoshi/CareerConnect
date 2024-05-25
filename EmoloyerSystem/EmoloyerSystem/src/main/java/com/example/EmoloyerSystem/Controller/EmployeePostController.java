@@ -2,44 +2,43 @@ package com.example.EmoloyerSystem.Controller;
 
 import com.example.EmoloyerSystem.Service.EmployeePostService;
 import com.example.EmoloyerSystem.dto.EmployeePostDto;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
-@AllArgsConstructor
 @RestController
-@RequestMapping("/api/employeesPost")
+
 public class EmployeePostController {
+@Autowired
+    private  EmployeePostService employeePostService;
 
-    private final EmployeePostService employeePostService;
-
-    // Add Employee REST API
-    @PostMapping
+    
+    @PostMapping("/employee/registerPost")
     public ResponseEntity<EmployeePostDto> createEmployeePost(@RequestBody EmployeePostDto employeePostDto) {
-        EmployeePostDto savedEmployeePost = employeePostService.createEmployeePost(employeePostDto);
-        return new ResponseEntity<>(savedEmployeePost, HttpStatus.CREATED);
+        return  ResponseEntity.ok(employeePostService.createEmployeePost(employeePostDto));
     }
 
-    // Get Employee REST API
-    @GetMapping("{id}")
+    
+    @GetMapping("/employee/getPost/{id}")
     public ResponseEntity<EmployeePostDto> getEmployeePostById(@PathVariable("id") Long employeePostId) {
         EmployeePostDto employeePostDto = employeePostService.getEmployeePostById(employeePostId);
         return ResponseEntity.ok(employeePostDto);
     }
 
-    // Get All Employee REST API
-    @GetMapping
-    public ResponseEntity<List<EmployeePostDto>> getAllEmployeePost() {
-        List<EmployeePostDto> employeePost = employeePostService.getAllEmployeePost();
-        return ResponseEntity.ok(employeePost);
+    
+    @GetMapping("/employee/EmployeePost")
+    public ResponseEntity<List<EmployeePostDto>> getAllEmployeePost(@RequestParam(required = false)int employeeId) {
+        List<EmployeePostDto> employeePosts = null;
+        if (employeeId !=0){
+            employeePosts=employeePostService.getAllEmployeePost(employeeId);
+        }
+        return ResponseEntity.ok(employeePosts);
     }
 
     // Update Employee REST API
-    @PutMapping("{id}")
+    @PutMapping("/employee/updatePost/{id}")
     public ResponseEntity<EmployeePostDto> updateEmployeePost(@PathVariable("id") Long employeePostId,
                                                       @RequestBody EmployeePostDto updatedEmployeePost) {
         EmployeePostDto employeePostDto = employeePostService.updateEmployeePost(employeePostId, updatedEmployeePost);
@@ -47,7 +46,7 @@ public class EmployeePostController {
     }
 
     // Delete Employee REST API
-    @DeleteMapping("{id}")
+    @DeleteMapping("/employee/deletePost/{id}")
     public ResponseEntity<String> deleteEmployeePost(@PathVariable("id") Long employeePostId) {
         employeePostService.deleteEmployeePost(Math.toIntExact(employeePostId));
         return ResponseEntity.ok("Employee post deleted successfully");
