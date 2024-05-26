@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Mapper;
 
+import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Entity.Rate;
 import com.example.EmoloyerSystem.dto.RateDto;
 
@@ -9,16 +10,19 @@ public class RateMapper {
                 rate.getId(),
                 rate.getVleresimi(),
                 rate.getKomenti(),
-                rate.getDataKrijimit()
+                rate.getDataKrijimit(),
+                rate.getEmployee().getId()
         );
     }
-    public static Rate mapToRate(RateDto rateDto){
-        return new Rate(
-                rateDto.getId(),
-                rateDto.getVleresimi(),
-                rateDto.getKomenti(),
-                rateDto.getData_krijimit()
+    public static Rate mapToRate(RateDto rateDto, Employee employee){
+        Rate rate=new Rate();
 
-        );
+        rate.setId(rateDto.getId());
+        rate.setVleresimi(rateDto.getVleresimi());
+        rate.setKomenti(rateDto.getKomenti());
+        rate.setDataKrijimit(rateDto.getData_krijimit());
+        rate.setEmployee(employee);
+
+        return rate;
     }
 }

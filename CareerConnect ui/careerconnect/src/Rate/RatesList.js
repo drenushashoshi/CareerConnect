@@ -1,83 +1,82 @@
-import React,{useEffect,useState} from "react";
- import {deleteRate, listRates} from '../Services/RateService';
- import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
- import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Card, Button } from 'react-bootstrap'; 
+import { FaStar } from 'react-icons/fa';
+import RateService from "../Services/RateService";
+import SideNavBar from "../SideNavBar";
+import EmployeeService from "../Services/EmployeeService";
+import { useNavigate } from "react-router-dom";
 
-
- const RatesList=()=>{
-     const [rate,setRate]=useState([])
-
-     const navigator = useNavigate();
-
-     useEffect(()=>{
-         listRates().then((response)=>{
-             setRate(response.data);
-         }).catch(error=>{
-             console.error(error);
-         })
-     },[])
-     function removeRate(id) {
-        deleteRate(id)
-          .then((response) => {
-            navigator('/RatesList');
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
-     
-
-
-     return(
-         <div className='container'>
-            <h2>Lista e Vleresimeve:</h2>
-            <table className='table table-bordered'>
-                <thead>
-                    <tr>
-                        <th>RatesId</th>
-                        <th>Vleresimi</th>
-                        <th>Komenti</th>
-                        <th>Data e Krijimit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                
-            
-
-            <tbody>
-                {
-                    rate.map(rate=>
-                    <tr key={rate.id}>
-                        <td>{rate.id}</td>
-                        <td>{rate.vleresimi}</td>
-                        <td>{rate.komenti}</td>
-                        <td>{rate.dataKrijimit}</td>
-                        <td><button onClick={() => removeRate(rate.id)}>Delete</button></td>
-                    </tr>
-                    )
-                }
-            </tbody>
-            </table>
-         </div>
-     )
-
-
-
-
+const RatesList = () => {
+  const [rates, setRates] = useState([]);
+  const [error, setError] = useState(null);
+  const navigator=useNavigate();
+  useEffect(() => {
+    if (!EmployeeService.isAdmin()) {
+        navigator('/');
     }
+  }, [navigator]);
+
+  useEffect(() => {
+    fetchRates();
+  }, []);
+
+  const fetchRates = async () => {
+    try {
+      const response = await RateService.getAllRates();
+      setRates(response);
+    } catch (error) {
+      setError('Error fetching rates');
+      console.error(error);
+    }
+  };
+
+  const deleteRate = async (id) => {
+    try {
+      await RateService.deleteRate(id);
+      fetchRates(); 
+    } catch (error) {
+      setError('Error deleting rate');
+      console.error(error);
+    }
+  };
+
+  const renderStars = (vleresimi) => {
+    return (
+      <div>
+        {[...Array(5)].map((_, index) => (
+          <FaStar
+            key={index}
+            color={index < vleresimi ? '#ffc107' : '#e4e5e9'}
+            size={20}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="d-flex justify-content-center"> 
+      <SideNavBar />
+      <div className="container" style={{ marginLeft: "300px", marginTop:"50px" }}>
+        <h2>Lista e Vlerësimeve:</h2><br/>
+        {rates.map(rate => (
+          <div key={rate.id} className="col-md-6 mb-4">
+            <Card className="text-center">
+              <Card.Body>
+                <Card.Title>{renderStars(rate.vleresimi)}</Card.Title>
+                <Card.Text>
+                  <strong>Komenti:</strong> {rate.komenti}<br />
+                  <strong>Data e Krijimit:</strong> {rate.data_krijimit}
+                </Card.Text>
+                <Button variant="danger" onClick={() => deleteRate(rate.id)}>Fshij komentin</Button>
+              </Card.Body>
+            </Card>
+          </div>
+        ))}
+        {error && <p className="text-danger">{error}</p>}
+      </div>
+    </div>
+  );
+};
 
 export default RatesList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

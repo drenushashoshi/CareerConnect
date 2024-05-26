@@ -13,30 +13,29 @@ public class RateController {
     private RateService rateService;
 
     
-    @PostMapping("/rate/registerRate")
+    @PostMapping("/public/createRate")
     public ResponseEntity<RateDto>createRate(@RequestBody RateDto rateDto){
         return  ResponseEntity.ok(rateService.createRate(rateDto));
     }
 
     
-    @GetMapping("rate/getRate/{id}")
+    @GetMapping("/admin/getRate/{id}")
     public ResponseEntity<RateDto>getRateById(@PathVariable("id") Integer rateId){
         RateDto rateDto=rateService.getRateById(rateId);
         return ResponseEntity.ok(rateDto);
     }
 
     
-    @GetMapping("/rate/Rate")
-    public ResponseEntity<List<RateDto>>getAllRates(@RequestParam(required=false)int rateId){
+    @GetMapping("/public/getAllRates")
+    public ResponseEntity<List<RateDto>>getAllRates(){
         List<RateDto>rates=null;
-        if(rateId !=0){
-            rates=rateService.getAllRates(rateId);
-        }
+            rates=rateService.getAllRates();
+
         return ResponseEntity.ok(rates);
     }
 
     //Update Rate REST API
-    @PutMapping("/rate/updateRate/{id}")
+    @PutMapping("/admin/updateRate/{id}")
     public ResponseEntity<RateDto>updateRate(@PathVariable("id")Integer rateId,
                                             @RequestBody RateDto updatedRate){
         RateDto rateDto=rateService.updateRate(rateId,updatedRate);
@@ -44,9 +43,9 @@ public class RateController {
     }
 
     //Delete Rate REST API
-    @DeleteMapping("/rate/deleteRate{id}")
+    @DeleteMapping("/public/deleteRate/{id}")
     public ResponseEntity<String>deleteRate(@PathVariable("id") Long rateId){
-        rateService.deleteRate(Math.toIntExact(rateId));
+        rateService.deleteRate((long) Math.toIntExact(rateId));
         return ResponseEntity.ok("Rate Deleted");
     }
 

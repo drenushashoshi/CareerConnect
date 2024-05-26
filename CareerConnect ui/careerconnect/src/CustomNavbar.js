@@ -6,15 +6,17 @@ import EmployeeService from './Services/EmployeeService';
 
 function CustomNavbar() {
     const [profileInfo, setProfileInfo] = useState({});
+    const [showNavbar, setShowNavbar] = useState(false); 
     const isAuthenticated = CompanyService.isAuthenticated();
     const isCompany = CompanyService.isCompany();
     const isEmployee = EmployeeService.isEmployee();
+    const companyId=sessionStorage.getItem('companyId');
 
     const navigate = useNavigate();
 
     const handleProfileButtonClick = () => {
         if (isAuthenticated && isCompany) {
-            navigate('/CompanyPage');
+            navigate(`/CompanyPage/${companyId}`);
         } else if (isAuthenticated && isEmployee) {
             navigate('/EmployeePage');
         } else {
@@ -23,8 +25,12 @@ function CustomNavbar() {
     };
 
     useEffect(() => {
-        fetchProfileInfo();
-    }, []);
+        
+        if (isCompany || isEmployee) {
+            setShowNavbar(true); 
+            fetchProfileInfo(); 
+        }
+    }, [isCompany, isEmployee]);
 
     const fetchProfileInfo = async () => {
         try {
@@ -49,7 +55,8 @@ function CustomNavbar() {
         }
     };
 
-    return (
+    
+    return showNavbar && (
         <Navbar expand="lg" bg="white" variant="light" className="shadow sticky-top p-0">
             <Navbar.Brand href="#" className="d-flex align-items-center text-center py-0 px-4 px-lg-5">
                 <h1 className="m-0 text-primary">CareerConnect</h1>
@@ -71,7 +78,7 @@ function CustomNavbar() {
                     {isCompany && (
                         <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
                             <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                            <NavDropdown.Item href="../PostInternship">Posto Praktike</NavDropdown.Item>
+                            <NavDropdown.Item href={`../PostInternship/${companyId}`}>Posto Praktike</NavDropdown.Item>
                         </NavDropdown>
                     )}
                 </Nav>

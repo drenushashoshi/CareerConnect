@@ -44,7 +44,6 @@ const InternshipDetails = () => {
               setType(response.industriaName);
               setDeadline(response.deadline);
               setCompanyId(response.companyId);
-            
             })
             .catch(error => {
               console.error(error);
@@ -52,11 +51,13 @@ const InternshipDetails = () => {
         }
     }, [id]);
 
+    
+
     function handleDeleteInternship() {
         const token =localStorage.getItem('token');
         InterService.deleteInternship(id,token) 
             .then(() => {
-                navigator('/Companypage'); 
+                navigator(`/Companypage/${companyId}`); 
             })
             .catch(error => {
                 console.error(error);
@@ -114,7 +115,12 @@ const InternshipDetails = () => {
                                         <li>Kompania: <span>{company_name}</span></li>
                                     </ul>
                                     <div className="d-flex justify-content-center"> 
-                                        {isEmployee &&(<Link to={`/CompanyPage/${companyId}`} style={{  textDecoration: 'none', color: '#007bff', borderColor:'#007bff' }}className="btn">Shiko Kompaninë</Link>)}
+                                    {isEmployee && (
+                                        <Link to={`/CompanyPage/${companyId}`} style={{ textDecoration: 'none', color: '#007bff', borderColor: '#007bff', cursor: 'pointer' }} className="btn">
+                                            Shiko Kompaninë
+                                        </Link>
+                                        )}
+
                                     </div><br/>
                                     <div className="apply-btn2 d-flex justify-content-center"> 
                                     {isEmployee &&(<Link to="/applications" className="btn btn-primary">Apliko</Link>)}

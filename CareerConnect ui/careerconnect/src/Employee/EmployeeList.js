@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import EmployeeService from '../Services/EmployeeService';
 import SideNavBar from '../SideNavBar';
+import { useNavigate } from 'react-router-dom';
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
+    const navigator=useNavigate();
+
+    useEffect(() => {
+        if (!EmployeeService.isAdmin()) {
+            navigator('/');
+        }
+    }, [navigator]);
 
     useEffect(() => {
         fetchEmployees();
@@ -23,19 +31,19 @@ const EmployeeList = () => {
         <div className="d-flex">
             <SideNavBar />
             <div className='container-fluid' style={{ marginLeft: '250px',marginTop:'100px', paddingTop: '20px' }}>
-                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LIST OF EMPLOYEES:</h2><br/>
+                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LISTA E PUNONJËSVE TË REGJISTRUAR:</h2><br/>
                 <div className="table-responsive">
                     <table className='table table-striped table-bordered'>
                         <thead className="thead-dark">
                             <tr>
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Age</th>
-                                <th>Address</th>
+                                <th>Emri</th>
+                                <th>Mbiemri</th>
+                                <th>Mosha</th>
+                                <th>Adresa</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Job Preferences</th>
-                                <th>Skills</th>
+                                <th>Numri kontaktues</th>
+                                <th>Preferencat për punë</th>
+                                <th>Aftësitë</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -30,11 +30,9 @@ class CompanyService{
             throw err;
         }
     }
-    static async getAllCompanyStaff(companyId, token){
+    static async getAllCompanyStaff(companyId){
         try{
-            const response= await axios.get(`${CompanyService.BASE_URL}/company/CompanyStaff?companyId=${companyId}`, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
+            const response= await axios.get(`${CompanyService.BASE_URL}/public/CompanyStaff?companyId=${companyId}`)
             return response.data;
         }catch(err){
             throw err;
@@ -59,11 +57,9 @@ class CompanyService{
             throw err;
         }
     }
-    static async getCompany(id, token){
+    static async getCompany(id){
         try{
-            const response= await axios.get(`${CompanyService.BASE_URL}/public/getCompany/${id}`, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
+            const response= await axios.get(`${CompanyService.BASE_URL}/public/getCompany/${id}`)
             return response.data;
         }catch(err){
             throw err;
@@ -121,18 +117,20 @@ class CompanyService{
         }
     }
 
-    static logout(){
-        localStorage.removeItem('token')
-        localStorage.removeItem('role')
-    
+    static logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        sessionStorage.clear();
+        window.history.pushState(null, '', '/');
     }
+    
     static isAuthenticated(){
         const token=localStorage.getItem('token')
         return !!token
     }
     static isAdmin(){
         const role=localStorage.getItem('role')
-        return role==='Admin'
+        return role==='ADMIN'
     }
     static isCompany(){
         const role=localStorage.getItem('role')

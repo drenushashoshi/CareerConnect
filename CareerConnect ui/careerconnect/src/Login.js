@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CompanyService from './Services/CompanyService';
-import EmployeeService from './Services/EmployeeService'; 
+import EmployeeService from './Services/EmployeeService';
 import backgroundImage from './login-test2.avif';
 import Modal from 'react-bootstrap/Modal';
 import './styles.css';
 
 function Login() {
   const navigator = useNavigate();
-
+  
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,6 +23,7 @@ function Login() {
     handleShowModal();
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,7 +34,8 @@ function Login() {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
           sessionStorage.setItem('companyId', data.id);
-          navigator('/CompanyPage');
+          const id = (data.id);
+          navigator(`/CompanyPage/${id}`);
         } else {
           setError(data.message);
         }
@@ -43,6 +45,7 @@ function Login() {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
           sessionStorage.setItem('employeeId', data.id);
+          console.log(data.role)
           
           if (data.role === 'Employee') {
             navigator('/EmployeePage');

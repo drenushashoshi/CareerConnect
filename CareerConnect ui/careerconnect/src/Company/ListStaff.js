@@ -12,6 +12,7 @@ import { ReactComponent as EditButton } from './pencil.svg';
 import { ReactComponent as DeleteButton } from './trash.svg';
 import Modal from 'react-bootstrap/Modal';
 import CompanyService from '../Services/CompanyService';
+const isCompany = CompanyService.isCompany();
 
 const ListStaff = ({ companyId }) => {
   const [companyStaff, setCompanyStaff] = useState([]);
@@ -31,8 +32,7 @@ const ListStaff = ({ companyId }) => {
 
   const fetchStaff = async (companyId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await CompanyService.getAllCompanyStaff(companyId, token);
+      const response = await CompanyService.getAllCompanyStaff(companyId);
       setCompanyStaff(response);
     } catch (error) {
       console.log('Error fetching staff', error);
@@ -115,30 +115,36 @@ const ListStaff = ({ companyId }) => {
           <div key={staff.id} className="col mb-4">
             <MDBCard className="h-100 position-relative" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
               <MDBCardBody className="text-center">
-                <div className="position-absolute top-0 end-0 mt-2 me-2">
-                  <button
-                    onClick={() => handleShowModal(staff.id)}
-                    style={{
-                      border: 'none',
-                      background: 'none',
-                      padding: 0,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <EditButton />
-                  </button><br />
-                  <button
-                    onClick={() => deleteStaff(staff.id)}
-                    style={{
-                      border: 'none',
-                      background: 'none',
-                      padding: 0,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <DeleteButton />
-                  </button>
-                </div>
+              <div className="position-absolute top-0 end-0 mt-2 me-2">
+                {isCompany && (
+                  <>
+                    <button
+                      onClick={() => handleShowModal(staff.id)}
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        padding: 0,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <EditButton />
+                    </button>
+                    <br />
+                    <button
+                      onClick={() => deleteStaff(staff.id)}
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        padding: 0,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <DeleteButton />
+                    </button>
+                  </>
+                )}
+              </div>
+
                 <MDBRow>
                   <MDBCardText>{staff.name} {staff.surname}</MDBCardText>
                 </MDBRow>

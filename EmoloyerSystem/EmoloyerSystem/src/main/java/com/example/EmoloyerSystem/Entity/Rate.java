@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,6 +28,10 @@ public class Rate {
 
     @Column(name="data_krijimit",nullable = false)
     private String dataKrijimit;
+
+    @ManyToOne
+    @JoinColumn(name = "employee")
+    private Employee employee;
 
 
 

@@ -83,7 +83,7 @@ function Signup() {
           localStorage.setItem('role', role);
           sessionStorage.setItem('companyId', data.id);
           setLoading(false);
-          navigator('/CompanyPage');
+          navigator(`/CompanyPage/${data.id}`);
         }, 4000);
       } else {
         setLoading(false);

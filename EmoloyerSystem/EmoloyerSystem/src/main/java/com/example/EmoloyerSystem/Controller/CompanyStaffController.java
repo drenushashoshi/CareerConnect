@@ -24,7 +24,7 @@ public class CompanyStaffController {
         return ResponseEntity.ok(companyStaffDto);
     }
 
-    @GetMapping("/company/CompanyStaff")
+    @GetMapping("/public/CompanyStaff")
     public ResponseEntity<List<CompanyStaffDto>> getAllCompanyStaff(@RequestParam(required = false) int companyId) {
         List<CompanyStaffDto> companyStaffs = null;
         if (companyId != 0) {

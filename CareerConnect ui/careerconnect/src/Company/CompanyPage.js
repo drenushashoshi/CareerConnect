@@ -7,7 +7,7 @@ import {
   MDBCardBody,
   MDBCardText
 } from 'mdb-react-ui-kit';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
 import CompanyStaff from './CompanyStaff';
@@ -22,20 +22,22 @@ import CompanyService from '../Services/CompanyService';
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
-  const [showSpinner, setShowSpinner] = useState(false); 
+  const [showSpinner, setShowSpinner] = useState(false);
   const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
+  const { id } = useParams();
+
 
   useEffect(() => {
     fetchProfileInfo();
-  }, []);
+  }, [id]);
 
   
 
   const fetchProfileInfo = async () => {
+
     try {
-      const token = localStorage.getItem('token');
-      const response = await CompanyService.getProfile(token);
+      const response = await CompanyService.getCompany(id);
       setProfileInfo(response.company);
     } catch (error) {
       console.log('Error fetching profile data ', error);
@@ -49,14 +51,14 @@ const CompanyPage = () => {
   const removeCompany = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      setShowSpinner(true); 
+      setShowSpinner(true);
       await CompanyService.deleteCompany(id, token);
       setTimeout(() => {
-        setShowSpinner(false); 
+        setShowSpinner(false);
         navigator('/');
       }, 4000);
     } catch (error) {
-      setShowSpinner(false); 
+      setShowSpinner(false);
       console.error('Error deleting company ', error);
     }
   };
@@ -76,7 +78,7 @@ const CompanyPage = () => {
   return (
     <>
       <CustomNavbar />
-      {showSpinner && ( 
+      {showSpinner && (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -87,7 +89,7 @@ const CompanyPage = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 1060 
+          zIndex: 1060
         }}>
           <div className="text-center text-white">
             <div className="spinner-border text-primary" role="status">
@@ -109,12 +111,11 @@ const CompanyPage = () => {
           <div className="container d-flex justify-content-between align-items-center">
             <h4 style={{ fontWeight: 'bold', padding: '10px', marginLeft: '15px' }}>{profileInfo.name}</h4>
             {isCompany && (
-            <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
-              <NavDropdown.Item onClick={() => updateCompany()} href="#">Ndrysho Profilin</NavDropdown.Item>
-              <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
-              <NavDropdown.Item href="/Rate">Na Vlerësoni</NavDropdown.Item>
-              <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
-            </NavDropdown>
+              <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
+                <NavDropdown.Item onClick={() => updateCompany()} href="#">Ndrysho Profilin</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
+                <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
+              </NavDropdown>
             )}
           </div>
         </div>
@@ -176,6 +177,7 @@ const CompanyPage = () => {
         {profileInfo && (
           <>
             <ListStaff companyId={profileInfo.id} />
+            
             {isCompany && (
               <CompanyStaff companyId={profileInfo.id} />
             )}<br/>

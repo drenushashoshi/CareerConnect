@@ -57,6 +57,9 @@ public class Employee implements UserDetails {
     @Column(name = "role", nullable = false)
     private String role="Employee";
 
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Rate> rates;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));

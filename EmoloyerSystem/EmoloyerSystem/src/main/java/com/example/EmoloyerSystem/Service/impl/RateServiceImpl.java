@@ -1,8 +1,11 @@
 package com.example.EmoloyerSystem.Service.impl;
 
+import com.example.EmoloyerSystem.Entity.Company;
+import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Entity.Rate;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.RateMapper;
+import com.example.EmoloyerSystem.Repository.EmployeeRepository;
 import com.example.EmoloyerSystem.Repository.RateRepository;
 import com.example.EmoloyerSystem.Service.RateService;
 import com.example.EmoloyerSystem.dto.RateDto;
@@ -21,13 +24,17 @@ import org.springframework.stereotype.Service;
 
 public class RateServiceImpl implements RateService{
     private final RateRepository rateRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public RateDto createRate(RateDto rateDto){
-        Rate rate =RateMapper.mapToRate(rateDto);
-        Rate savedRate=rateRepository.save(rate);
+        Employee employee = employeeRepository.findById(rateDto.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + rateDto.getEmployeeId()));
+        Rate rate = RateMapper.mapToRate(rateDto, employee);
+        Rate savedRate = rateRepository.save(rate);
         return RateMapper.mapToRateDto(savedRate);
     }
+
 
     @Override
     public RateDto getRateById(Integer rateId) {

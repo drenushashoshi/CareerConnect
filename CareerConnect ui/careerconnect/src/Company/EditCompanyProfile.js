@@ -70,6 +70,8 @@ const EditCompanyProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    
     
     const areValid = validateForm();
     if (!areValid) {
@@ -78,7 +80,7 @@ const EditCompanyProfile = () => {
     try {
       const token = localStorage.getItem('token');
       await CompanyService.updateCompany(id, companyData, token);
-      navigator('/CompanyPage');
+      navigator(`/CompanyPage/${id}`);
     } catch (error) {
       console.error('error updating company profile ', error);
       alert(error)
@@ -118,7 +120,7 @@ const EditCompanyProfile = () => {
       validationsCopy.phone_number = true;
     }
   
-    if (!companyData.opening_year.toString().trim()) { // Convert to string before trim()
+    if (!companyData.opening_year.toString().trim()) { 
       validationsCopy.opening_year = false;
       isValid = false;
     } else {

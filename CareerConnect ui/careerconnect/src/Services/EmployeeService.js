@@ -42,9 +42,7 @@ class EmployeeService{
     }
     static async getEmployeeById(id, token){
         try{
-            const response= await axios.get(`${EmployeeService.BASE_URL}/employee/getEmployee/${id}`, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
+            const response= await axios.get(`${EmployeeService.BASE_URL}/public/getEmployee/${id}`)
             return response.data;
         }catch(err){
             throw err;
@@ -83,7 +81,7 @@ class EmployeeService{
     }
     static isAdmin(){
         const role=localStorage.getItem('role')
-        return role==='Admin'
+        return role==='ADMIN'
     }
     static isEmployee(){
         const role=localStorage.getItem('role')

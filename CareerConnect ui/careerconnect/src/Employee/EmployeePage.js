@@ -83,10 +83,10 @@ const EmployeePage = () => {
               {profileInfo.name} {profileInfo.surname}
             </h4>
             {isEmployee && (
-              <NavDropdown title={<><GearIcon /> Settings</>} id="basic-nav-dropdown" className="nav-item dropdown">
+              <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={() => updateEmployee(profileInfo.id)} href="#">Ndrysho Profilin</NavDropdown.Item>
                 <NavDropdown.Item onClick={handleShowModal} href="#">Fshij Profilin</NavDropdown.Item>
-                <NavDropdown.Item href="/Rate">Na vlerësoni</NavDropdown.Item>
+                <NavDropdown.Item href={`/Rate/${profileInfo.id}`}>Na vlerësoni</NavDropdown.Item>
                 <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
               </NavDropdown>
             )}
@@ -99,7 +99,7 @@ const EmployeePage = () => {
                 <MDBCardBody>
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Age</MDBCardText>
+                      <MDBCardText>Mosha</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.age}</MDBCardText>
@@ -108,7 +108,7 @@ const EmployeePage = () => {
                   <hr />
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Address</MDBCardText>
+                      <MDBCardText>Adresa</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.address}</MDBCardText>
@@ -117,7 +117,7 @@ const EmployeePage = () => {
                   <hr />
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Email</MDBCardText>
+                      <MDBCardText>Email-adresa</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.email}</MDBCardText>
@@ -126,7 +126,7 @@ const EmployeePage = () => {
                   <hr />
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Phone</MDBCardText>
+                      <MDBCardText>Numri kontaktues</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.phone}</MDBCardText>
@@ -135,7 +135,7 @@ const EmployeePage = () => {
                   <hr />
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Skills</MDBCardText>
+                      <MDBCardText>Aftësitë</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.skills}</MDBCardText>
@@ -144,7 +144,7 @@ const EmployeePage = () => {
                   <hr />
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Job Preferences</MDBCardText>
+                      <MDBCardText>Preferencat pë punë</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
                       <MDBCardText className="text-muted">{profileInfo.jobPreferences}</MDBCardText>
@@ -158,7 +158,7 @@ const EmployeePage = () => {
       </div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Body className='text-center custom-font'>
-          <h5 className='mt-3'>By deleting your profile, all your data will be removed. Do you want to continue?</h5>
+          <h5 className='mt-3'>Me fshirjen e profilit, të dhënat e juaja do fshihen. Doni të vazhdoni?</h5>
           <div className='mt-4 mb-4'>
             <Link to='' className='btn' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
             <Link to='' onClick={() => removeEmployee(profileInfo.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link> 

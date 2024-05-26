@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import CostumNavbar from "../CustomNavbar";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate, useParams} from "react-router-dom";
 import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg'; 
 import Footer from '../Footer';
@@ -24,8 +24,7 @@ function PostInternship() {
     const [industries, setIndustries] = useState([]);
 
     const navigator = useNavigate();
-
-    const  companyId =sessionStorage.getItem('companyId');
+    const {companyId}=useParams();
 
     useEffect(() => {
         if (!CompanyService.isCompany()) {
@@ -126,6 +125,7 @@ function PostInternship() {
             console.error("Error posting internship: ", error);
         }
     };
+    
     
     
 
@@ -242,7 +242,7 @@ function PostInternship() {
                         <div className="success-message" style={{ fontSize: '18px' }}>
                         {successMessage}
                         <br />
-                        <Link to="/CompanyPage" style={{ fontSize: '18px' }}>Klikoni këtu për të parë të gjitha shpalljet e postuara.</Link><br/>
+                        <Link to={`/CompanyPage/${companyId}`} style={{ fontSize: '18px' }}>Klikoni këtu për të parë të gjitha shpalljet e postuara.</Link><br/>
                       </div> 
                       
                     )}

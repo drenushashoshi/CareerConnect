@@ -70,6 +70,7 @@ function App() {
           <Route path='/EmployeePostSignup' element={<EmployeePostSignup/>}></Route>
           <Route path='/EmployeePostList' element={<EmployeePostList/>}></Route>
           <Route path='/Rate' element={<Rate/>}></Route>
+          <Route path='/Rate/:employeeId' element={<Rate/>}></Route>
           <Route path='/ListStaff' element={<ListStaff/>}></Route>
           <Route path='/RatesList' element={<RatesList/>}></Route>
           <Route path='/PostInternship' element={<PostInternship/>}></Route>

@@ -29,11 +29,11 @@ public class EmployeePostController {
 
     
     @GetMapping("/employee/EmployeePost")
-    public ResponseEntity<List<EmployeePostDto>> getAllEmployeePost(@RequestParam(required = false)int employeeId) {
+    public ResponseEntity<List<EmployeePostDto>> getAllEmployeePost() {
         List<EmployeePostDto> employeePosts = null;
-        if (employeeId !=0){
-            employeePosts=employeePostService.getAllEmployeePost(employeeId);
-        }
+
+        employeePosts=employeePostService.getAllEmployeePost();
+
         return ResponseEntity.ok(employeePosts);
     }
 

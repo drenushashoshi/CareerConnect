@@ -1,10 +1,43 @@
 import axios from "axios";
 
-const REST_API_BASE_URL='http://localhost:8080/api/Rate';
+class RateService{
+    static BASE_URL="http://localhost:8080"
 
-export const listRates=()=>axios.get(REST_API_BASE_URL);
-export const getRates=()=>axios.get(REST_API_BASE_URL);
-export const createRate=(rate)=> axios.post(REST_API_BASE_URL,rate);
-export const getRate=(rateId)=> axios.get(REST_API_BASE_URL+'/'+rateId);
-export const updateRate=(rateId,rate)=>axios.put(REST_API_BASE_URL+'/'+rateId,rate);
-export const deleteRate=(rateId)=>axios.delete(REST_API_BASE_URL+'/'+rateId);
+    static async createRate(rateData){
+        try{
+            const response= await axios.post(`${RateService.BASE_URL}/public/createRate`, rateData)
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    static async getAllRates(token){
+        try{
+            const response= await axios.get(`${RateService.BASE_URL}/public/getAllRates`)
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async getRateById(id, token){
+        try{
+            const response= await axios.get(`${RateService.BASE_URL}/admin/getRate/${id}`,{
+                headers:{Authorization: `Bearer ${token}`}
+            })
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+    static async deleteRate(id){
+        try{
+            const response= await axios.delete(`${RateService.BASE_URL}/public/deleteRate/${id}`)
+            return response.data;
+        }catch(err){
+            throw err;
+        }
+    }
+
+}
+export default RateService;

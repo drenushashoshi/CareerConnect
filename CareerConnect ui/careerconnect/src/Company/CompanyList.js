@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import CompanyService from '../Services/CompanyService';
 import SideNavBar from '../SideNavBar';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        if (!CompanyService.isAdmin()) {
+            navigator('/');
+        }
+      }, [navigator]);
 
     useEffect(() => {
         fetchCompanies();
@@ -19,22 +27,23 @@ const CompanyList = () => {
         }
     };
 
+
     return (
         <div className="d-flex">
             <SideNavBar />
             <div className='container-fluid' style={{ marginLeft: '250px', marginTop: '100px', paddingTop: '20px', fontFamily: 'Arial, sans-serif' }}>
-                <h2>LIST OF COMPANIES REGISTERED:</h2><br/>
+                <h2>LISTA E KOMPANIVE TË REGJISTRUARA:</h2><br/>
                 <div className="table-responsive">
                     <table className='table table-striped table-bordered'>
                         <thead className="thead-dark">
                             <tr>
-                                <th>Name</th>
+                                <th>Emri</th>
                                 <th>Email</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Opening Year</th>
-                                <th style={{ minWidth: '250px' }}>Description</th>
-                                <th>Check:</th>
+                                <th>Adresa</th>
+                                <th>Numri kontaktues</th>
+                                <th>Viti i hapjes</th>
+                                <th style={{ minWidth: '250px' }}>Përshkrimi</th>
+                                <th>Shiko:</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +56,13 @@ const CompanyList = () => {
                                     <td>{company.opening_year}</td>
                                     <td>{company.description}</td>
                                     <td>
-                                        <a href={`./CompanyPage/${company.id}`} className="btn-link mr-2">Company's Page</a>
+                                        <a href={`/CompanyPage/${company.id}`}
+                                            
+                                            className="btn btn-link"
+                                            style={{ padding: 0, textDecoration: 'none', color: '#007bff' }}
+                                        >
+                                            Profili i kompanisë
+                                        </a>
                                     </td>
                                 </tr>
                             ))}

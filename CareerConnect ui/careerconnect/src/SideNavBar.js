@@ -14,14 +14,14 @@ const SideNavBar = () => {
         <br />
         <Navbar.Brand href="/Dashboard"><b>CareerConnect</b></Navbar.Brand>
         <Nav className="flex-column">
-          <NavDropdown title="Registered Users" id="basic-nav-dropdown" className="list-group">
-            <NavDropdown.Item as={Link} to="/EmployeeList" className="list-group-item">Employees</NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/CompanyList" className="list-group-item">Companies</NavDropdown.Item>
+          <NavDropdown title="Përdoruesit e regjistruar" id="basic-nav-dropdown" className="list-group">
+            <NavDropdown.Item as={Link} to="/EmployeeList" className="list-group-item">Punonjësit</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/CompanyList" className="list-group-item">Kompanitë</NavDropdown.Item>
           </NavDropdown>
-          <Nav.Link as={Link} to="/RatesList" className="list-group">Rates</Nav.Link>
-          <NavDropdown title="Control" id="control-nav-dropdown" className="list-group">
-            <NavDropdown.Item as={Link} to="/Cities" className="list-group-item">Cities</NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/Industries" className="list-group-item">Industries</NavDropdown.Item>
+          <Nav.Link as={Link} to="/RatesList" className="list-group">Vlerësimet</Nav.Link>
+          <NavDropdown title="Kontrollo" id="control-nav-dropdown" className="list-group">
+            <NavDropdown.Item as={Link} to="/Cities" className="list-group-item">Qytetet</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/Industries" className="list-group-item">Industritë</NavDropdown.Item>
           </NavDropdown>
           <Nav.Link as={Link} to="/" onClick={handleLogOut} className="list-group">Logout</Nav.Link>
         </Nav>
