@@ -18,5 +18,5 @@ public class JobDto {
     private String salary;
     private String IndustriaName;
     private String deadline;
-
+    private int companyId;
 }

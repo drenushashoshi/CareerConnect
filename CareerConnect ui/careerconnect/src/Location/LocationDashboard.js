@@ -1,69 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import { getLocations, createLocation, deleteLocation } from '../Services/LocationService';
+import SideNavBar from "../SideNavBar";
 
 const LocationDashboard = () => {
     const [locations, setLocations] = useState([]);
-    const [locationForm, setLocationForm] = useState({ name: '' });
+    const [newLocationName, setNewLocationName] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchLocations();
     }, []);
 
     const fetchLocations = async () => {
-        const response = await getLocations();
-        setLocations(response.data);
+        setLoading(true);
+        try {
+            const response = await getLocations();
+            console.log('Response:', response);
+            if (Array.isArray(response)) {
+                setLocations(response);
+            } else if (response.data && Array.isArray(response.data)) {
+                setLocations(response.data);
+            } else {
+                throw new Error('Invalid response format');
+            }
+        } catch (error) {
+            setError('Error fetching locations');
+            console.error('Error fetching locations:', error);
+        }
+        setLoading(false);
     };
 
-    const handleLocationSubmit = async (e) => {
+    const handleCreateLocation = async (e) => {
         e.preventDefault();
-        console.log("Submitting form with locationForm:", locationForm);
-
-        if (locationForm.name.trim() === '') return;
-
-        try {
-            await createLocation({ name: locationForm.name });
-            console.log("Location created successfully");
-        } catch (error) {
-            console.error("Failed to create location:", error);
+        if (!newLocationName.trim()) {
+            setError('Please enter a valid location name');
+            return;
         }
 
-        // Reset the form state after submission
-        setLocationForm({ name: '' });
-        await fetchLocations();
+        setLoading(true);
+        try {
+            await createLocation({ name: newLocationName });
+            setNewLocationName('');
+            await fetchLocations();
+        } catch (error) {
+            setError('Error creating location');
+            console.error('Error creating location:', error);
+        }
+        setLoading(false);
     };
 
-    const handleLocationDelete = async (name) => {
+    const handleDeleteLocation = async (name) => {
+        setLoading(true);
         try {
             await deleteLocation(name);
-            console.log("Location deleted successfully");
+            await fetchLocations();
         } catch (error) {
-            console.error("Failed to delete location:", error);
+            setError('Error deleting location');
+            console.error('Error deleting location:', error);
         }
-        await fetchLocations();
+        setLoading(false);
     };
 
     return (
-        <div>
-            <h1>Location Dashboard</h1>
+        <div className="d-flex">
+            <SideNavBar />
+            <div className='container-fluid' style={{ marginLeft: '250px', marginTop: '100px', paddingTop: '20px' }}>
+                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LIST OF LOCATIONS:</h2><br />
+                <div className="table-responsive">
+                    <table className='table table-striped table-bordered'>
+                        <thead className="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {locations.map(location => (
+                            <tr key={location.name}>
+                                <td>{location.name}</td>
+                                <td><button onClick={() => handleDeleteLocation(location.name)}>Delete</button></td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
 
-            <h2>Manage Locations</h2>
-            <form onSubmit={handleLocationSubmit}>
-                <input
-                    type="text"
-                    placeholder="Location Name"
-                    value={locationForm.name}
-                    onChange={(e) => setLocationForm({ ...locationForm, name: e.target.value })}
-                />
-                <button type="submit">Create</button>
-            </form>
-            <ul>
-                {locations.map((location) => (
-                    <li key={location.name}>
-                        {location.name}
-                        <button onClick={() => handleLocationDelete(location.name)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+                <h2>Add New Location:</h2>
+                <form onSubmit={handleCreateLocation}>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Location Name"
+                            value={newLocationName}
+                            onChange={(e) => setNewLocationName(e.target.value)}
+                        />
+                    </div>
+                    <button type="submit">Add Location</button>
+                    {error && <p>{error}</p>}
+                </form>
+            </div>
         </div>
     );
 };

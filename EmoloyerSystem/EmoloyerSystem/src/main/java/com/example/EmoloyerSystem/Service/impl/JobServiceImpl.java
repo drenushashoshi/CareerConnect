@@ -1,10 +1,9 @@
 package com.example.EmoloyerSystem.Service.impl;
 
-import com.example.EmoloyerSystem.Entity.Industria;
-import com.example.EmoloyerSystem.Entity.Job;
-import com.example.EmoloyerSystem.Entity.Location;
+import com.example.EmoloyerSystem.Entity.*;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.JobMapper;
+import com.example.EmoloyerSystem.Repository.CompanyRepository;
 import com.example.EmoloyerSystem.Repository.IndustriaRepository;
 import com.example.EmoloyerSystem.Repository.JobRepository;
 import com.example.EmoloyerSystem.Repository.LocationRepository;
@@ -22,16 +21,20 @@ public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
     private final LocationRepository locationRepository;
     private final IndustriaRepository IndustriaRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public JobDto createJob(JobDto jobDto) {
+        Company company=companyRepository.findById(jobDto.getCompanyId())
+                .orElseThrow(()->new ResourceNotFoundException("Company not found with id: "+jobDto.getCompanyId()));
+
         Location location = locationRepository.findByName(jobDto.getLocationName())
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found with id: " + jobDto.getLocationName()));
 
         Industria Industria = IndustriaRepository.findByName(jobDto.getIndustriaName())
                 .orElseThrow(() -> new ResourceNotFoundException("Industria not found with id: " + jobDto.getIndustriaName()));
 
-        Job job = JobMapper.mapToJob(jobDto, location, Industria);
+        Job job = JobMapper.mapToJob(jobDto, location, Industria, company);
         Job savedJob = jobRepository.save(job);
         return JobMapper.mapToJobDto(savedJob);
     }
@@ -48,6 +51,14 @@ public class JobServiceImpl implements JobService {
     public List<JobDto> getAllJobs() {
         List<Job> jobs = jobRepository.findAll();
         return jobs.stream()
+                .map(JobMapper::mapToJobDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<JobDto> getAllCompanyJobs(int companyId) {
+        List<Job> companyJobs = jobRepository.findByCompanyId(companyId);
+        return companyJobs.stream()
                 .map(JobMapper::mapToJobDto)
                 .collect(Collectors.toList());
     }
@@ -117,6 +128,4 @@ public class JobServiceImpl implements JobService {
                 .map(JobMapper::mapToJobDto)
                 .collect(Collectors.toList());
     }
-
-
 }

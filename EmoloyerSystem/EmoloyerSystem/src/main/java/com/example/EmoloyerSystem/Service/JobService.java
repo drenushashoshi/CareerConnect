@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Service;
 
+import com.example.EmoloyerSystem.dto.CompanyDto;
 import com.example.EmoloyerSystem.dto.JobDto;
 
 import java.util.List;
@@ -10,6 +11,8 @@ public interface JobService {
     JobDto getJobById(Integer jobId);
 
     List<JobDto> getAllJobs();
+
+    List<JobDto> getAllCompanyJobs(int companyId);
 
     JobDto updateJob(Integer jobId, JobDto updatedJob);
 

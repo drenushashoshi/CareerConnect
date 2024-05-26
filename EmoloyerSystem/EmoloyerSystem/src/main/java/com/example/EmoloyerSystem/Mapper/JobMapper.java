@@ -1,8 +1,10 @@
 package com.example.EmoloyerSystem.Mapper;
 
+import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Job;
 import com.example.EmoloyerSystem.Entity.Location;
+import com.example.EmoloyerSystem.dto.CompanyDto;
 import com.example.EmoloyerSystem.dto.JobDto;
 
 public class JobMapper {
@@ -15,11 +17,12 @@ public class JobMapper {
                 job.getLocation().getName(),
                 job.getSalary(),
                 job.getIndustria().getName(),
-                job.getDeadline()
+                job.getDeadline(),
+                job.getCompany().getId()
         );
     }
 
-    public static Job mapToJob(JobDto jobDto, Location location, Industria industria) {
+    public static Job mapToJob(JobDto jobDto, Location location, Industria industria, Company company) {
         Job job = new Job();
         job.setId(jobDto.getId());
         job.setTitle(jobDto.getTitle());
@@ -29,6 +32,7 @@ public class JobMapper {
         job.setSalary(jobDto.getSalary());
         job.setIndustria(industria);
         job.setDeadline(jobDto.getDeadline());
+        job.setCompany(company);
         return job;
     }
 }

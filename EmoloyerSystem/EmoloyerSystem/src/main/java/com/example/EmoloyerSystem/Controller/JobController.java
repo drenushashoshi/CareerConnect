@@ -14,33 +14,43 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/public/jobs")
+@RequestMapping
 public class JobController {
     private JobService jobService;
 
     // Create Job REST API
-    @PostMapping
+    @PostMapping("/company/createJob")
     public ResponseEntity<JobDto> createJob(@RequestBody JobDto jobDto) {
         JobDto savedJob = jobService.createJob(jobDto);
         return new ResponseEntity<>(savedJob, HttpStatus.CREATED);
     }
 
     // Read Job by id REST API
-    @GetMapping("{id}")
+    @GetMapping("/public/readJob/{id}")
     public ResponseEntity<JobDto> getJobById(@PathVariable("id") Integer jobId) {
         JobDto jobDto = jobService.getJobById(jobId);
         return ResponseEntity.ok(jobDto);
     }
 
     // Read All Jobs REST API
-    @GetMapping
+    @GetMapping("/public/getAllJobs")
     public ResponseEntity<List<JobDto>> getAllJobs() {
         List<JobDto> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);
     }
 
+    //Read Jobs of the Company
+    @GetMapping("/public/companyJobs")
+    public ResponseEntity<List<JobDto>> getAllCompanyJobs(@RequestParam(required = false) Integer companyId) {
+        List<JobDto> companyJobs = null;
+        if (companyId != 0) {
+            companyJobs = jobService.getAllCompanyJobs(companyId);
+        }
+        return ResponseEntity.ok(companyJobs);
+    }
+
     // Update Job REST API
-    @PutMapping("{id}")
+    @PutMapping("/company/updateJob/{id}")
     public ResponseEntity<JobDto> updateJob(@PathVariable("id") Integer jobId,
                                             @RequestBody JobDto updatedJob) {
         JobDto jobDto = jobService.updateJob(jobId, updatedJob);
@@ -48,14 +58,14 @@ public class JobController {
     }
 
     // Delete Job REST API
-    @DeleteMapping("{id}")
+    @DeleteMapping("/company/deleteJob/{id}")
     public ResponseEntity<String> deleteJob(@PathVariable("id") Integer jobId) {
         jobService.deleteJob(jobId);
         return ResponseEntity.ok("Job Deleted");
     }
 
     // Search Jobs REST API
-    @GetMapping("/search")
+    @GetMapping("/public/searchJobs")
     public ResponseEntity<List<JobDto>> searchJobs(
             @RequestParam(value = "query", required = false) String query,
             @RequestParam(value = "location", required = false) String locationName,

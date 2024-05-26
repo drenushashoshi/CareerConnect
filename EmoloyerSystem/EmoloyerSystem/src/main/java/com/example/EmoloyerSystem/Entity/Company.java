@@ -52,6 +52,9 @@ public class Company implements UserDetails {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<CompanyStaff> staff;
 
+    @OneToMany(mappedBy = "company")
+    private Collection<Job> jobs;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

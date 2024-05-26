@@ -46,9 +46,8 @@ function AllJobs() {
                                         🕒 {job.deadline}
                                     </Card.Text>
                                     <div className="d-flex justify-content-between">
-                                        <Link to={`/job/${job.id}`} className="btn btn-primary">Si e shohin te tjeret</Link>
+                                        <Link to={`/job/${job.id}`} className="btn btn-primary">Detajet e punes</Link>
                                         <Button variant="danger" onClick={() => handleDelete(job.id)}>Delete</Button>
-                                        <Link to={`/edit-job/${job.id}`} className="btn btn-secondary">Edit</Link>
                                     </div>
                                 </Card.Body>
                             </Card>

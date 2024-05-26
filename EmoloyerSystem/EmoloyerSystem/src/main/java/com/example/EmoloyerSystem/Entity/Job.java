@@ -40,4 +40,7 @@ public class Job {
     @JoinColumn(name = "location")
     private Location location;
 
+    @ManyToOne
+    @JoinColumn(name = "company")
+    private Company company;
 }
