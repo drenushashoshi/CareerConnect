@@ -40,6 +40,7 @@ class WorkExperienceService {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("Updating with:",response.data);
             return response.data;
         } catch (error) {
             throw error;

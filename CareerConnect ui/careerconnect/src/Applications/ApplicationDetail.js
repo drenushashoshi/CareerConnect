@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { getApplication, saveApplication } from '../Services/ApplicationService';
+import ApplicationService from '../Services/ApplicationService';
 import Application from './Application';
 import { Prev } from 'react-bootstrap/esm/PageItem';
 
@@ -21,7 +21,7 @@ const ApplicationDetail = (updateApplication,updateResume) => {
     const fetchApplication = async (id) =>
     {
         try{
-            const {data} = await getApplication(id);
+            const {data} = await ApplicationService.getApplication(id);
             setApplication(data);
         }
         catch(error)

@@ -1,30 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import WorkExperienceService from '../Services/WorkExperienceService';
-import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
-import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
+import editSvg from '../assets/edit-svg.svg';
+import deleteSvg from '../assets/delete-svg.svg';
 
-
-const WorkExperienceShort = ({ workExperiences }) => {
+const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
   const { ID } = useParams();
   const idAsInteger = parseInt(ID, 10);
-  const { experience_id, companyname, startingyear, lastyear,street,city,jobposition,description,CV } = workExperiences || {};
+  const [workExperience, setWorkExperience] = useState(initialWorkExperience);
+  const { experience_id, companyname, startingyear, lastyear, street, city, jobposition, description, CV } = workExperience || {};
+  
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [formData, setFormData] = useState(
-    {
-      experience_id:experience_id,
-      startingyear: '' || startingyear,
-      lastyear: '' || lastyear,
-      companyname: '' || companyname,
-      street: '' || street,
-      city: '' || city,
-      jobposition: '' || jobposition,
-      description: '' || description,
+  const [formData, setFormData] = useState({
+    experience_id: experience_id || '',
+    startingyear: startingyear || '',
+    lastyear: lastyear || '',
+    companyname: companyname || '',
+    street: street || '',
+    city: city || '',
+    jobposition: jobposition || '',
+    description: description || '',
+    CV: CV || idAsInteger
+  });
+
+  useEffect(() => {
+    setFormData({
+      experience_id: experience_id || '',
+      startingyear: startingyear || '',
+      lastyear: lastyear || '',
+      companyname: companyname || '',
+      street: street || '',
+      city: city || '',
+      jobposition: jobposition || '',
+      description: description || '',
       CV: CV || idAsInteger
-    }
-  );
+    });
+  }, [workExperience]);
+
   const iconStyle = {
     height: '30px',
     width: '30px',
@@ -39,58 +53,50 @@ const WorkExperienceShort = ({ workExperiences }) => {
   const handleMouseLeave = (e) => {
     e.currentTarget.style.filter = 'brightness(1)';
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleEditClick = () => {
-    setShowEditModal(true)
-    setFormData({
-      experience_id:experience_id,
-      startingyear: startingyear,
-      lastyear: lastyear,
-      companyname: companyname,
-      street: street,
-      city: city,
-      jobposition: jobposition,
-      description: description,
-      CV: CV
-    });
-  }
+    setShowEditModal(true);
+  };
+
   const handleConfirmDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await WorkExperienceService.deleteWorkExperience(experience_id);
-      setShowDeleteModal(false);
-    }
-    catch (error) {
-      console.error('Error creating reference:', error);
+      await WorkExperienceService.deleteWorkExperience(experience_id);
+      window.location.reload(); // Reload the page after successful update
+      // Optionally, handle the state update or callback after deletion
+    } catch (error) {
+      console.error('Error deleting work experience:', error);
     }
   };
+
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
   };
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
-  };
-  const handleCloseEditModal = () => {
     setShowEditModal(false);
-  }
+  };
+
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Updating with data:', formData); // Debugging log
-      const { data } = await WorkExperienceService.updateWorkExperience(experience_id, formData); // Send formData including cvid
-      console.log('Update response:', data); // Debugging log
+      const updatedExperience = await WorkExperienceService.updateWorkExperience(experience_id, formData);
+      setWorkExperience(updatedExperience); // Update local state with new data
       setShowEditModal(false);
     } catch (error) {
-      console.error('Error creating reference:', error);
+      console.error('Error updating work experience:', error);
     }
-  }
+  };
+
   return (
     <div className="container">
-      <hr/>
+      <hr />
       <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-start">
           <div>
@@ -119,15 +125,13 @@ const WorkExperienceShort = ({ workExperiences }) => {
           />
         </div>
       </div>
-      <hr/>
+      <hr />
       {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want to delete?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
@@ -137,8 +141,8 @@ const WorkExperienceShort = ({ workExperiences }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/*Edit Modal*/}
-      <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
+      {/* Edit Modal */}
+      <Modal show={showEditModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Work Experience</Modal.Title>
         </Modal.Header>
@@ -188,7 +192,7 @@ const WorkExperienceShort = ({ workExperiences }) => {
         </Modal.Footer>
       </Modal>
     </div>
-  )
+  );
 };
 
 export default WorkExperienceShort;

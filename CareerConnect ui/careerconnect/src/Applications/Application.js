@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { getApplications, createApplication, updateResume, uploadResume } from '../Services/ApplicationService';
+import ApplicationService from '../Services/ApplicationService';
 import { useNavigate } from 'react-router-dom';
 
 const Application = () => {
@@ -20,8 +20,8 @@ const Application = () => {
         event.preventDefault();
         try {
             console.log(values);
-            const { data } = await createApplication(values);
-            navigator(`/CvCreate/`);
+            const { data } = await ApplicationService.createApplication(values);
+            navigator(``);
         } catch (error) {
             console.log(error);
         }

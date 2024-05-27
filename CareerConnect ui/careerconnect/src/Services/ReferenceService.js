@@ -39,6 +39,7 @@ class ReferenceService {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("Updated data",response.data);
             return response.data;
         } catch (error) {
             throw error;

@@ -1,34 +1,25 @@
-<<<<<<< Updated upstream
-import React, {useState }from 'react';
-=======
 import React, { useState } from 'react';
->>>>>>> Stashed changes
 import { Button, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import ReferenceService from '../Services/ReferenceService';
 import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
 import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
 
-
-
-const ReferenceShort = ({ reference }) => {
-  const { ID } = useParams();
-  const idAsInteger = parseInt(ID, 10);
-  const { CV,reference_id, companyname, name, surname,jobposition,phone_nr, email} = reference || {};
+const ReferenceShort = ({ reference: initialReference }) => {
+  const [reference, setReference] = useState(initialReference);
+  const { reference_id, companyname, name, surname, jobposition, phone_nr, email } = reference || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [formData, setFormData] = useState(
-    {
-      reference_id:reference_id,
-      name: '' || name,
-      surname: '' || surname,
-      jobposition: '' || jobposition,
-      companyname: '' || companyname,
-      phone_nr: '' || phone_nr,
-      email: '' || email,
-      CV: CV || idAsInteger
-    }
-  );
+  const [formData, setFormData] = useState({
+    reference_id: reference_id || '',
+    name: name || '',
+    surname: surname || '',
+    jobposition: jobposition || '',
+    companyname: companyname || '',
+    phone_nr: phone_nr || '',
+    email: email || '',
+  });
+
   const iconStyle = {
     height: '30px',
     width: '30px',
@@ -43,58 +34,49 @@ const ReferenceShort = ({ reference }) => {
   const handleMouseLeave = (e) => {
     e.currentTarget.style.filter = 'brightness(1)';
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleEditClick = () => {
-    setShowEditModal(true)
-    setFormData({
-      reference_id:reference_id,
-      name: name,
-      surname: surname,
-      jobposition: jobposition,
-      companyname:  companyname,
-      phone_nr: phone_nr,
-      email: email,
-      CV: CV
-    })
-  }
+    setShowEditModal(true);
+  };
+
   const handleConfirmDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await ReferenceService.deleteReference(reference_id);
-      setShowDeleteModal(false);
-    }
-    catch (error) {
-      console.error('Error creating reference:', error);
+      await ReferenceService.deleteReference(reference_id);
+      window.location.reload(); // Reload the page after successful deletion
+    } catch (error) {
+      console.error('Error deleting reference:', error);
     }
   };
+
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
   };
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
-  };
-  const handleCloseEditModal = () => {
     setShowEditModal(false);
-  }
+  };
+
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Updating with data:', formData); // Debugging log
-      const { data } = await ReferenceService.updateReference(reference_id, formData); // Send formData including cvid
-      console.log('Update response:', data); // Debugging log
+      const updatedReference = await ReferenceService.updateReference(reference_id, formData);
+      setReference(updatedReference); // Update local state with new data
       setShowEditModal(false);
     } catch (error) {
-      console.error('Error creating reference:', error);
+      console.error('Error updating reference:', error);
     }
-  }
+  };
 
   return (
     <div className="container">
-      <hr/>
+      <hr />
       <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-between border-right">
           <div>
@@ -123,15 +105,13 @@ const ReferenceShort = ({ reference }) => {
           />
         </div>
       </div>
-      <hr/>
+      <hr />
       {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want to delete?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
@@ -141,8 +121,8 @@ const ReferenceShort = ({ reference }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/*Edit Modal*/}
-      <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
+      {/* Edit Modal */}
+      <Modal show={showEditModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Reference</Modal.Title>
         </Modal.Header>
@@ -155,7 +135,7 @@ const ReferenceShort = ({ reference }) => {
               </div>
               <div className="form-group">
                 <label>Surname:</label>
-                <input type="text" name="surname" value={formData.surname} onChange={handleChange} className="form-control" />
+                <input type="text"               name="surname" value={formData.surname} onChange={handleChange} className="form-control" />
               </div>
               <div className="form-group">
                 <label>Job Position:</label>
@@ -188,7 +168,8 @@ const ReferenceShort = ({ reference }) => {
         </Modal.Footer>
       </Modal>
     </div>
-  )
+  );
 };
 
 export default ReferenceShort;
+

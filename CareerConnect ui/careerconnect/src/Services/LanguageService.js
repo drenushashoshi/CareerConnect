@@ -39,6 +39,7 @@ class LanguageService {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("updating with:",response.data)
             return response.data;
         } catch (error) {
             throw error;

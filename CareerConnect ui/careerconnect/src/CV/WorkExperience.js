@@ -63,9 +63,9 @@ const WorkExperience = () => {
     <div className="reference-form p-4">
       <hr />
       {workExperience && workExperience.length > 0 ? (
-                workExperience.map((workExperiences, index) => (
+                workExperience.map((workExperience, index) => (
                     <div key={index}>
-                        <WorkExperienceShort workExperiences={workExperiences} />
+                        <WorkExperienceShort workExperience={workExperience} />
                     </div>
                 ))
             ) : (

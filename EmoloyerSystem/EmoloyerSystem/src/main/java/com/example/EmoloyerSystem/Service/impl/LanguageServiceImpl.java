@@ -55,7 +55,9 @@ public class LanguageServiceImpl implements LanguageService {
        Language.setLevel(updatedLanguage.getLevel());
        Language.getCvid().setCvid((updatedLanguage.getCvid()));
 
-       return LanguageMapper.MapToLanguageDto(Language);
+       Language updateLanguage = LanguageRepository.save(Language);
+
+       return LanguageMapper.MapToLanguageDto(updateLanguage);
    }
    @Override
    public void deleteLanguage(int id)

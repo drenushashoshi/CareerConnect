@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Button, Dropdown, DropdownButton, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import LanguageService from '../Services/LanguageService';
-import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
-import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
+import editSvg from '../assets/edit-svg.svg';
+import deleteSvg from '../assets/delete-svg.svg';
 
-const LanguageShort = ({ language }) => {
-  const { ID } = useParams();
-  const idAsInteger = parseInt(ID, 10);
-  const { language: lang, level, cvid, languageID } = language || {}; // Destructure with default values
+const LanguageShort = ({ initialLanguage }) => {
+  const { id } = useParams();
+  const idAsInteger = parseInt(id, 10);
+  const [Language, setLanguage] = useState(initialLanguage);
+  const { language: lang, level, languageID } = Language || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
-    cvid: cvid || idAsInteger,
+    cvid: idAsInteger,
     language: lang || '',
     level: level || '',
     languageID: languageID
@@ -40,19 +41,13 @@ const LanguageShort = ({ language }) => {
 
   const handleEditClick = () => {
     setShowEditModal(true);
-    setFormData({
-      cvid: cvid,
-      language: lang,
-      level: level,
-      languageID:languageID
-    });
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await LanguageService.deleteLanguage(languageID); // Use languageID for deletion
+      await LanguageService.deleteLanguage(languageID);
       setShowDeleteModal(false);
-      // Optionally trigger a refresh of the language list in the parent component
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting language:', error);
     }
@@ -64,9 +59,6 @@ const LanguageShort = ({ language }) => {
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
-  };
-
-  const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
 
@@ -77,9 +69,9 @@ const LanguageShort = ({ language }) => {
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Updating with data:', formData); // Debugging log
-      const { data } = await LanguageService.updateLanguage(languageID, formData); // Use languageID for update
-      console.log('Update response:', data); // Debugging log
+      console.log('Updating with data:', formData);
+      const updatedLanguage = await LanguageService.updateLanguage(languageID, formData);
+      setLanguage(updatedLanguage);
       setShowEditModal(false);
     } catch (error) {
       console.error('Error updating language:', error);
@@ -118,7 +110,6 @@ const LanguageShort = ({ language }) => {
         </div>
       </div>
       <hr/>
-      {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
@@ -135,8 +126,7 @@ const LanguageShort = ({ language }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* Edit Modal */}
-      <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
+      <Modal show={showEditModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Language</Modal.Title>
         </Modal.Header>
@@ -167,7 +157,7 @@ const LanguageShort = ({ language }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>
+          <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
           <Button variant="primary" onClick={handleConfirmEdit}>

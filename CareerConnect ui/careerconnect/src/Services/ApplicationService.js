@@ -6,7 +6,7 @@ class ApplicationService {
     static async createApplication(Application, id) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.post(`${LanguageService.BASE_URL}/employee/createApplication/${id}`, Application, {
+            const response = await axios.post(`${ApplicationService.BASE_URL}/employee/createApplication/${id}`, Application, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -21,19 +21,19 @@ class ApplicationService {
     
 
     static async getApplications() {
-        const response = await axios.get(`${LanguageService.BASE_URL}/employee/getAll/applications`);
+        const response = await axios.get(`${ApplicationService.BASE_URL}/employee/getAll/applications`);
         return response.data;
     }
 
     static async getApplication(id) {
-        const response = await axios.get(`${LanguageService.BASE_URL}/employee/Application/${id}`);
+        const response = await axios.get(`${ApplicationService.BASE_URL}/employee/Application/${id}`);
         return response.data;
     }
 
     static async updateApplication(id, Application) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put(`${LanguageService.BASE_URL}/employee/updateApplication/${id}`, Application, {
+            const response = await axios.put(`${ApplicationService.BASE_URL}/employee/updateApplication/${id}`, Application, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ class ApplicationService {
     static async deleteApplication(id) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete(`${LanguageService.BASE_URL}/employee/deleteApplication/${id}`, {
+            const response = await axios.delete(`${ApplicationService.BASE_URL}/employee/deleteApplication/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

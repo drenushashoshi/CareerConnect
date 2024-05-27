@@ -61,9 +61,9 @@ const Language = () => {
         <div className="Language-form p-4">
             <hr />
             {languages && languages.length > 0 ? (
-                languages.map((language, index) => (
+                languages.map((initialLanguage, index) => (
                     <div key={index}>
-                        <LanguageShort language={language} />
+                        <LanguageShort initialLanguage={initialLanguage} />
                     </div>
                 ))
             ) : (
