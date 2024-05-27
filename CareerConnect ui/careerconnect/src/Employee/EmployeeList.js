@@ -47,7 +47,7 @@ const EmployeeList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.map(employee => (
+                            {employees?.map(employee => (
                                 <tr key={employee.id}>
                                     <td>{employee.name}</td>
                                     <td>{employee.surname}</td>

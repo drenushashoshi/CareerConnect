@@ -67,7 +67,16 @@ function Login() {
   }
   
   return (
-    <div className='login template d-flex justify-content-center align-items-center 100-w vh-100 bg-primary text-white' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', opacity: 0.85 }}>
+    <div className='login template d-flex justify-content-center align-items-center bg-primary text-white' style={{ 
+      backgroundImage: `url(${backgroundImage})`, 
+      backgroundSize: 'cover', 
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      opacity: 0.85,
+      width: '100%',
+      minHeight: '100vh', 
+  }}>
+  
       <div className='d-flex flex-column align-items-center'>
         <h1 className="custom-margin"><b>CareerConnect</b></h1>
         <p className='w-50 mt-3'>
