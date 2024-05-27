@@ -30,6 +30,7 @@ class CvService {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            console.log("API Response:", response.data);  // Log the entire response
             return response.data;
         } catch (error) {
             throw error;

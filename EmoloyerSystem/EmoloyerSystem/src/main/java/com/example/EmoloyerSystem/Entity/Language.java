@@ -16,16 +16,17 @@ import java.util.*;
 @Table(name = "Language")
 public class Language {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
     private int LanguageID;
     
-    @Column(name = "Language", nullable = false)
+    @Column(name = "Language", nullable = true)
     private String Language;
 
-    @Column(name = "Level", nullable = false)
+    @Column(name = "Level", nullable = true)
     private String Level;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Cv_id")
-    private CV CV;
+    @JoinColumn(name = "cvid")
+    private CV cvid;
 }

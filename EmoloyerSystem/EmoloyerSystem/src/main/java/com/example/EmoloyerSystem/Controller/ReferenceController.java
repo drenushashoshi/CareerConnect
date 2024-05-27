@@ -12,48 +12,47 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/public/References")
 @RequiredArgsConstructor
 public class ReferenceController {
 
     private final ReferenceService ReferenceService;
 
-    @PostMapping()
-    public ResponseEntity<ReferenceDto> createReference(@RequestBody ReferenceDto Reference, @RequestBody CV CV)
+    @PostMapping("/employee/createReference/{id}")
+    public ResponseEntity<ReferenceDto> createReference(@RequestBody ReferenceDto Reference, @PathVariable int id)
     {
-        ReferenceDto savedReference = ReferenceService.createReference(Reference,CV);
+        ReferenceDto savedReference = ReferenceService.createReference(Reference,id);
         return new ResponseEntity<ReferenceDto>(savedReference, HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping("/employee/getall/References")
     public ResponseEntity<List<ReferenceDto>> getAllReferences()
     {
         List<ReferenceDto>References=ReferenceService.getAllReferences();
         return ResponseEntity.ok(References);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReferenceDto> getReferenceById(@PathVariable(value = "ID") Integer ID)
+    @GetMapping("/employee/Reference/{id}")
+    public ResponseEntity<ReferenceDto> getReferenceById(@PathVariable int id)
     {
-        ReferenceDto Reference= ReferenceService.getReferenceById(ID);
+        ReferenceDto Reference= ReferenceService.getReferenceById(id);
         return ResponseEntity.ok(Reference);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/employee/updateReference/{id}")
     public ResponseEntity<ReferenceDto> updateReference(@PathVariable("id") Integer ReferenceID,
                                                         @RequestBody ReferenceDto updatedReference){
         ReferenceDto Reference=ReferenceService.updateReference(ReferenceID, updatedReference);
         return ResponseEntity.ok(Reference);
 
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/employee/deleteReference/{id}")
     public ResponseEntity<String> deleteReference(@PathVariable("id") Integer ReferenceID){
         ReferenceService.deleteReference(ReferenceID);
         return ResponseEntity.ok("Reference Deleted");
     }
-    @GetMapping("/cv/{id}")
-   public ResponseEntity<List<Reference>> getReferenceByCvId(@PathVariable(value = "ID") Integer ID)
+    @GetMapping("/employee/References/cv/{id}")
+   public ResponseEntity<List<ReferenceDto>> getReferenceByCvId(@PathVariable int id)
    {
-       List<Reference> Reference =ReferenceService.getReferenceByCvId(ID);
+       List<ReferenceDto> Reference =ReferenceService.getReferenceByCvId(id);
        return ResponseEntity.ok(Reference);
    }
 }

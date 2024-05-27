@@ -41,7 +41,7 @@ public class CvServiceImpl implements CvService{
 
    @Override
    public CVDto getCvById(int CvID) {
-       CV Cv=CvRepository.findByCvid(CvID)
+       CV Cv=CvRepository.findById(CvID)
                .orElseThrow(()->
                        new ResourceNotFoundException("Cv does not exist"));
 

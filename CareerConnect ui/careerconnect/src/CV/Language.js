@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import CvService from '../Services/CvService';
 import LanguageService from '../Services/LanguageService';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LanguageShort from './LanguageShort';
 
 const Language = () => {
-
     const { id } = useParams();
+    const [languages, setLanguages] = useState([]);
     const idAsInteger = parseInt(id, 10);
-    const [Cv, setCv] = useState();
     const [values, setValues] = useState({
-        Language: "",
-        Level: "",
-        CV:null
+        language: '',
+        level: ''
     });
-
-    useEffect(() => {
-        const fetchCV = async () => {
-            const { data } = await CvService.getCVById(id);
-            setCv(data);
-            console.log(data);
-        };
-        fetchCV();
-    }, [idAsInteger]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,44 +21,74 @@ const Language = () => {
     };
 
     const handleSelect = (e) => {
-        setValues({ ...values, Level: e });
+        setValues({ ...values, level: e });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            console.log(Cv);
-            console.log(values);
+            console.log("Form values:", values);
 
-            const { data: Language } = await LanguageService.createLanguage(values, Cv); // Send formData including cvid
+            await LanguageService.createLanguage(values, idAsInteger);
 
             setValues({
-                Language: '',
-                Level: '',
-                CV:null
+                language: '',
+                level: '',
             });
+
+            // Fetch the updated languages after adding a new one
+            fetchLanguage(); // Ensure the updated list is fetched after submitting
         } catch (error) {
-            console.error('Error creating reference:', error);
+            console.error('Error creating language:', error);
         }
     };
+
+    const fetchLanguage = async () => {
+        try {
+            const response = await LanguageService.getLanguageByCvId(idAsInteger);
+            console.log('Fetched languages:', response); // Debugging line
+            setLanguages(response || []); // Ensure languages is an array
+        } catch (error) {
+            console.error('Error fetching languages:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchLanguage();
+    }, [idAsInteger]);
 
     return (
         <div className="Language-form p-4">
             <hr />
+            {languages && languages.length > 0 ? (
+                languages.map((language, index) => (
+                    <div key={index}>
+                        <LanguageShort language={language} />
+                    </div>
+                ))
+            ) : (
+                <p>No Languages</p>
+            )}
             <form onSubmit={handleSubmit}>
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                         <div className="form-group">
                             <label>Language:</label>
-                            <input type="text" name="Language" value={values.Language} onChange={handleChange} className="form-control" />
+                            <input
+                                type="text"
+                                name="language"
+                                value={values.language}
+                                onChange={handleChange}
+                                className="form-control"
+                            />
                         </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <div className="form-group">
                             <label>Level:</label>
                             <DropdownButton
                                 id="dropdown-basic-button"
-                                title={values.Level || "Select Level"}
+                                title={values.level || "Select Level"}
                                 onSelect={handleSelect}
                             >
                                 <Dropdown.Item eventKey="Beginner">Beginner</Dropdown.Item>

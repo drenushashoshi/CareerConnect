@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
+import com.example.EmoloyerSystem.Mapper.LanguageMapper;
 import com.example.EmoloyerSystem.Mapper.WorkExperienceMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,10 @@ public class WorkExperienceServiceImpl implements WorkExperienceService{
    private CvRepository CvRepository;
 
    @Override
-   public WorkExperienceDto createWorkExperience(WorkExperienceDto WorkExperienceDto,CV CV) {
-       WorkExperience WorkExperience= WorkExperienceMapper.mapToWorkExperience(WorkExperienceDto,CV);
+   public WorkExperienceDto createWorkExperience(WorkExperienceDto WorkExperienceDto,int id) {
+    CV Cv = CvRepository.findById(id).orElseThrow(()->
+    new ResourceNotFoundException("Cv does not exist"));
+        WorkExperience WorkExperience= WorkExperienceMapper.mapToWorkExperience(WorkExperienceDto,Cv);
        WorkExperience savedWorkExperience=WorkExperienceRepository.save(WorkExperience);
        return WorkExperienceMapper.mapToWorkExperienceDto(savedWorkExperience);
    }
@@ -40,12 +43,13 @@ public class WorkExperienceServiceImpl implements WorkExperienceService{
        return WorkExperienceMapper.mapToWorkExperienceDto(WorkExperience);
    }
    @Override
-   public List<WorkExperience> getWorkExperienceByCvId(int CvId) {
-        CV CV = CvRepository.findById(CvId).orElseThrow(()-> new ResourceNotFoundException("Reference does not exist"));
-       List<WorkExperience> WorkExperience = WorkExperienceRepository.findByCV(CV).orElseThrow(
+   public List<WorkExperienceDto> getWorkExperienceByCvId(int CvId) {
+       List<WorkExperience> WorkExperience = WorkExperienceRepository.findByCVCvid(CvId).orElseThrow(
                ()-> new ResourceNotFoundException("WorkExperience does not exist")
        );
-       return WorkExperience;
+       return WorkExperience.stream()
+                .map(WorkExperienceMapper::mapToWorkExperienceDto)
+                .collect(Collectors.toList());
    }
 
    @Override

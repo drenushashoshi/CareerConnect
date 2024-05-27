@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { deleteWorkExperience, updateWorkExperience } from '../Services/WorkExperienceService';
+import WorkExperienceService from '../Services/WorkExperienceService';
+import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
+import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
 
-const WorkExperienceShort = ({ workExperience }) => {
+
+const WorkExperienceShort = ({ workExperiences }) => {
   const { ID } = useParams();
   const idAsInteger = parseInt(ID, 10);
-  const { id, companyname, startingyear, lastyear } = workExperience;
+  const { experience_id, companyname, startingyear, lastyear,street,city,jobposition,description,CV } = workExperiences || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState(
     {
-      startingyear: '',
-      lastyear: '',
-      companyname: '',
-      street: '',
-      city: '',
-      jobposition: '',
-      description: '',
-      cv: idAsInteger
+      experience_id:experience_id,
+      startingyear: '' || startingyear,
+      lastyear: '' || lastyear,
+      companyname: '' || companyname,
+      street: '' || street,
+      city: '' || city,
+      jobposition: '' || jobposition,
+      description: '' || description,
+      CV: CV || idAsInteger
     }
   );
   const iconStyle = {
@@ -41,16 +45,27 @@ const WorkExperienceShort = ({ workExperience }) => {
   };
   const handleEditClick = () => {
     setShowEditModal(true)
+    setFormData({
+      experience_id:experience_id,
+      startingyear: startingyear,
+      lastyear: lastyear,
+      companyname: companyname,
+      street: street,
+      city: city,
+      jobposition: jobposition,
+      description: description,
+      CV: CV
+    });
   }
   const handleConfirmDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await deleteWorkExperience(id);
+      const { data } = await WorkExperienceService.deleteWorkExperience(experience_id);
+      setShowDeleteModal(false);
     }
     catch (error) {
       console.error('Error creating reference:', error);
     }
-    setShowDeleteModal(false);
   };
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
@@ -65,39 +80,29 @@ const WorkExperienceShort = ({ workExperience }) => {
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
     try {
-
-      // Include cvId in the request data
-      const { data } = await updateWorkExperience(id, formData); // Send formData including cvid
-
-      setFormData({
-        startingyear: '',
-        lastyear: '',
-        companyname: '',
-        street: '',
-        city: '',
-        jobposition: '',
-        description: '',
-        cv: idAsInteger
-      });
+      console.log('Updating with data:', formData); // Debugging log
+      const { data } = await WorkExperienceService.updateWorkExperience(experience_id, formData); // Send formData including cvid
+      console.log('Update response:', data); // Debugging log
       setShowEditModal(false);
     } catch (error) {
       console.error('Error creating reference:', error);
     }
   }
   return (
-    <div className="container mt-5">
-      <div className="row border p-3">
+    <div className="container">
+      <hr/>
+      <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-start">
           <div>
-            <p>{companyname}</p>
+            <label>{companyname}</label>
           </div>
           <div>
-            <p>{startingyear} - {lastyear}</p>
+            <label>{startingyear} - {lastyear}</label>
           </div>
         </div>
         <div className="col-md-6 d-flex justify-content-end align-items-center">
           <img
-            src="c:\\Users\\MobiShop Selfie\\Downloads\\edit-2-svgrepo-com.svg"
+            src={editSvg}
             style={iconStyle}
             alt="Edit"
             onMouseEnter={handleMouseEnter}
@@ -105,7 +110,7 @@ const WorkExperienceShort = ({ workExperience }) => {
             onClick={handleEditClick}
           />
           <img
-            src="c:\\Users\\MobiShop Selfie\\Downloads\\delete-svgrepo-com.svg"
+            src={deleteSvg}
             style={iconStyle}
             alt="Delete"
             onMouseEnter={handleMouseEnter}
@@ -114,6 +119,7 @@ const WorkExperienceShort = ({ workExperience }) => {
           />
         </div>
       </div>
+      <hr/>
       {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>

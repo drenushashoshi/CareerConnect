@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.EmoloyerSystem.Entity.CV;
 
 public interface CvRepository extends JpaRepository<CV,Integer>{
-   Optional<CV> findByCvid(int id);
+   Optional<CV> findById(int id);
 }

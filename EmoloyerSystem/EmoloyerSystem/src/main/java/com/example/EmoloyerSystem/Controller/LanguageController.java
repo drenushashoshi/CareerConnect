@@ -11,16 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.EmoloyerSystem.Entity.CV;
-import com.example.EmoloyerSystem.Entity.Language;
 import com.example.EmoloyerSystem.Service.LanguageService;
-import com.example.EmoloyerSystem.Service.ReferenceService;
 import com.example.EmoloyerSystem.dto.LanguageDto;
-import com.example.EmoloyerSystem.dto.ReferenceDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,12 +25,12 @@ public class LanguageController {
     
     private final LanguageService LanguageService;
 
-    @PostMapping("/employee/createlanguage")
-    public ResponseEntity<LanguageDto> createLanguage(@RequestBody LanguageDto Language,@RequestBody CV CV)
-    {
-        LanguageDto savedLanguage = LanguageService.createLanguage(Language,CV);
-        return new ResponseEntity<LanguageDto>(savedLanguage, HttpStatus.CREATED);
+    @PostMapping("/employee/createlanguage/{id}")
+    public ResponseEntity<LanguageDto> createLanguage(@RequestBody LanguageDto language, @PathVariable int id) {
+        LanguageDto savedLanguage = LanguageService.createLanguage(language, id);
+        return new ResponseEntity<>(savedLanguage, HttpStatus.CREATED);
     }
+    
     @GetMapping("/employee/getall/languages")
     public ResponseEntity<List<LanguageDto>> getLanguages()
     {
@@ -50,9 +44,9 @@ public class LanguageController {
         return ResponseEntity.ok(Language);
     }
     @PutMapping("/employee/updateLanguage/{id}")
-    public ResponseEntity<LanguageDto> updateLanguage(@PathVariable("id") Integer ID,
+    public ResponseEntity<LanguageDto> updateLanguage(@PathVariable("id") Integer id,
                                                         @RequestBody LanguageDto updatedLanguage){
-        LanguageDto Language=LanguageService.updateLanguage(ID, updatedLanguage);
+        LanguageDto Language=LanguageService.updateLanguage(id, updatedLanguage);
         return ResponseEntity.ok(Language);
 
     }
@@ -62,9 +56,9 @@ public class LanguageController {
         return ResponseEntity.ok("Language Deleted");
     }
     @GetMapping("/employee/languages/cv/{id}")
-    public ResponseEntity<List<Language>> getLanguageByCvId(@RequestBody Integer id)
+    public ResponseEntity<List<LanguageDto>> getLanguageByCvId(@PathVariable int id)
     {
-        List<Language> Languages =LanguageService.getLanguagesByCvId(id);
+        List<LanguageDto> Languages =LanguageService.getLanguagesByCvid(id);
         return ResponseEntity.ok(Languages);
     }
 }

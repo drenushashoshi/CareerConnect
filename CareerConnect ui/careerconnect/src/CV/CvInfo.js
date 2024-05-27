@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import EmployeeService from '../Services/CvService';
 import CvService from '../Services/CvService';
 
 const CvInfo = () => {
@@ -30,7 +29,7 @@ const CvInfo = () => {
         try {
             console.log(values);
             const createdCv = await CvService.createCv(values);
-            const cvId = createdCv.cv_id;
+            const cvId = createdCv.cvid;
             console.log(cvId);
             const formData = new FormData();
             formData.append('file', file, file.name);

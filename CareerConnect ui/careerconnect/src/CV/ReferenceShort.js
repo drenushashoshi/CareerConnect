@@ -1,24 +1,32 @@
+<<<<<<< Updated upstream
 import React, {useState }from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> Stashed changes
 import { Button, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { deleteReference, updateReference } from '../Services/ReferenceService';
+import ReferenceService from '../Services/ReferenceService';
+import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
+import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
+
 
 
 const ReferenceShort = ({ reference }) => {
   const { ID } = useParams();
   const idAsInteger = parseInt(ID, 10);
-  const { id, companyname, name } = reference;
+  const { CV,reference_id, companyname, name, surname,jobposition,phone_nr, email} = reference || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState(
     {
-      name: '',
-      surname: '',
-      jobposition: '',
-      companyname: '',
-      phone_nr: '',
-      email: '',
-      cv: idAsInteger
+      reference_id:reference_id,
+      name: '' || name,
+      surname: '' || surname,
+      jobposition: '' || jobposition,
+      companyname: '' || companyname,
+      phone_nr: '' || phone_nr,
+      email: '' || email,
+      CV: CV || idAsInteger
     }
   );
   const iconStyle = {
@@ -41,16 +49,26 @@ const ReferenceShort = ({ reference }) => {
   };
   const handleEditClick = () => {
     setShowEditModal(true)
+    setFormData({
+      reference_id:reference_id,
+      name: name,
+      surname: surname,
+      jobposition: jobposition,
+      companyname:  companyname,
+      phone_nr: phone_nr,
+      email: email,
+      CV: CV
+    })
   }
   const handleConfirmDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await deleteReference(id);
+      const { data } = await ReferenceService.deleteReference(reference_id);
+      setShowDeleteModal(false);
     }
     catch (error) {
       console.error('Error creating reference:', error);
     }
-    setShowDeleteModal(false);
   };
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
@@ -65,19 +83,9 @@ const ReferenceShort = ({ reference }) => {
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
     try {
-
-      // Include cvId in the request data
-      const { data } = await updateReference(id, formData); // Send formData including cvid
-
-      setFormData({
-        name: '',
-        surname: '',
-        jobposition: '',
-        companyname: '',
-        phone_nr: '',
-        email: '',
-        cv: idAsInteger
-      });
+      console.log('Updating with data:', formData); // Debugging log
+      const { data } = await ReferenceService.updateReference(reference_id, formData); // Send formData including cvid
+      console.log('Update response:', data); // Debugging log
       setShowEditModal(false);
     } catch (error) {
       console.error('Error creating reference:', error);
@@ -85,19 +93,20 @@ const ReferenceShort = ({ reference }) => {
   }
 
   return (
-    <div className="container mt-5">
-      <div className="row border p-3">
+    <div className="container">
+      <hr/>
+      <div className="row">
         <div className="col-md-6 d-flex flex-column justify-content-between border-right">
           <div>
-            <p>{companyname}</p>
+            <label>{companyname}</label>
           </div>
           <div>
-            <p>{name}</p>
+            <label>{name}</label>
           </div>
         </div>
         <div className="col-md-6 d-flex justify-content-end align-items-center">
           <img
-            src="c:\\Users\\MobiShop Selfie\\Downloads\\edit-2-svgrepo-com.svg"
+            src={editSvg}
             style={iconStyle}
             alt="Edit"
             onMouseEnter={handleMouseEnter}
@@ -105,7 +114,7 @@ const ReferenceShort = ({ reference }) => {
             onClick={handleEditClick}
           />
           <img
-            src="c:\\Users\\MobiShop Selfie\\Downloads\\delete-svgrepo-com.svg"
+            src={deleteSvg}
             style={iconStyle}
             alt="Delete"
             onMouseEnter={handleMouseEnter}
@@ -114,6 +123,7 @@ const ReferenceShort = ({ reference }) => {
           />
         </div>
       </div>
+      <hr/>
       {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>

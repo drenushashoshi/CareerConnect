@@ -14,5 +14,5 @@ public class LanguageDto {
     private int LanguageID;
     private String Language;
     private String Level;
-    private int CV;
+    private int cvid;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { createWorkExperience, getWorkExperienceByCvId } from '../Services/WorkExperienceService';
+import WorkExperienceService from '../Services/WorkExperienceService';
 import WorkExperienceShort from './WorkExperienceShort';
 
 const WorkExperience = () => {
@@ -15,24 +15,26 @@ const WorkExperience = () => {
     city: '',
     jobposition: '',
     description: '',
-    cv: idAsInteger
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const fetchWorkExperience = async () => {
+    try {
+        const response = await WorkExperienceService.getWorkExperienceByCvId(idAsInteger);
+        console.log('Fetched experience:', response); // Debugging line
+        setWorkExperience(response || []); // Ensure languages is an array
+    } catch (error) {
+        console.error('Error fetching experience:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchWorkExperience = async () => {
-      try {
-        const { data } = await getWorkExperienceByCvId(idAsInteger);
-        setWorkExperience(data);
-      } catch (error) {
-        console.error('Error fetching references:', error);
-      }
-    };
     fetchWorkExperience();
   }, [idAsInteger]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -40,7 +42,7 @@ const WorkExperience = () => {
       console.log(formData);
 
       // Include cvId in the request data
-      const { data: Reference } = await createWorkExperience(formData); // Send formData including cvid
+      const { data: Reference } = await WorkExperienceService.createWorkExperience(formData,idAsInteger); // Send formData including cvid
 
       setFormData({
         startingyear: '',
@@ -50,21 +52,25 @@ const WorkExperience = () => {
         city: '',
         jobposition: '',
         description: '',
-        cv: idAsInteger
       });
+      fetchWorkExperience();
     } catch (error) {
-      console.error('Error creating reference:', error);
+      console.error('Error creating experience:', error);
     }
   };
 
   return (
     <div className="reference-form p-4">
       <hr />
-      {workExperience.map((workExperience, index) => (
-        <div key={index}>
-          <WorkExperienceShort workExperience={workExperience} />
-        </div>
-      ))}
+      {workExperience && workExperience.length > 0 ? (
+                workExperience.map((workExperiences, index) => (
+                    <div key={index}>
+                        <WorkExperienceShort workExperiences={workExperiences} />
+                    </div>
+                ))
+            ) : (
+                <p>No Work Experience</p>
+            )}
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">

@@ -23,8 +23,10 @@ public class ReferenceServiceImpl implements ReferenceService{
    private CvRepository CvRepository;
 
    @Override
-   public ReferenceDto createReference(ReferenceDto ReferenceDto, CV CV) {
-       Reference Reference= ReferenceMapper.mapToReference(ReferenceDto,CV);
+   public ReferenceDto createReference(ReferenceDto ReferenceDto, int id) {
+    CV Cv = CvRepository.findById(id).orElseThrow(()->
+       new ResourceNotFoundException("Language does not exist"));   
+    Reference Reference= ReferenceMapper.mapToReference(ReferenceDto,Cv);
        Reference savedReference=ReferenceRepository.save(Reference);
        return ReferenceMapper.mapToReferenceDto(savedReference);
    }
@@ -62,12 +64,13 @@ public class ReferenceServiceImpl implements ReferenceService{
        return ReferenceMapper.mapToReferenceDto(updateReferencen);
    }
    @Override
-   public List<Reference> getReferenceByCvId(int CvId) {
-    CV CV = CvRepository.findById(CvId).orElseThrow(()-> new ResourceNotFoundException("Reference does not exist"));
-       List<Reference> References = ReferenceRepository.findByCV(CV).orElseThrow(
+   public List<ReferenceDto> getReferenceByCvId(int CvId) {
+       List<Reference> References = ReferenceRepository.findByCVCvid(CvId).orElseThrow(
                ()-> new ResourceNotFoundException("Reference does not exist")
        );
-       return References;
+       return References.stream()
+       .map(ReferenceMapper::mapToReferenceDto)
+       .collect(Collectors.toList());
    }
 
    @Override

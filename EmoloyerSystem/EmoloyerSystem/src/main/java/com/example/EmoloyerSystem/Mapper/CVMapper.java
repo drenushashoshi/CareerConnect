@@ -24,7 +24,7 @@ public class CVMapper {
     public static CV mapToCv(CVDto Cv)
     {
         CV CV = new CV();
-        CV.setCvid(Cv.getCv_id());
+        CV.setCvid(Cv.getCvid());
         CV.setProfilepic(Cv.getProfilepic());
         CV.setName(Cv.getName());
         CV.setSurname(Cv.getSurname());

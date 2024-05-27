@@ -1,10 +1,81 @@
 import axios from "axios";
 
-const REST_API_BASE_URL='http://localhost:8080/api/WorkExperiences';
+class WorkExperienceService {
+    static BASE_URL = "http://localhost:8080";
 
-export const getAllWorkExperiences=()=>axios.get(REST_API_BASE_URL);
-export const createWorkExperience=(WorkExperience)=> axios.post(REST_API_BASE_URL, WorkExperience);
-export const getWorkExperienceById=(WorkExperienceId)=>axios.get(REST_API_BASE_URL+'/'+WorkExperienceId);
-export const updateWorkExperience=(WorkExperienceId, WorkExperience)=>axios.put(REST_API_BASE_URL +'/'+WorkExperienceId, WorkExperience);
-export const deleteWorkExperience=(WorkExperienceId)=>axios.put(REST_API_BASE_URL+'/'+WorkExperienceId);
-export const getWorkExperienceByCvId=(id)=>axios.get(REST_API_BASE_URL+'/cv/'+id);
+    static async createWorkExperience(WorkExperience, cvId) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.post(`${WorkExperienceService.BASE_URL}/employee/createWorkExperience/${cvId}`, WorkExperience, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    
+
+    static async getAllWorkExperiences() {
+        const response = await axios.get(`${WorkExperienceService.BASE_URL}/employee/getall/WorkExperiences`);
+        return response.data;
+    }
+
+    static async getWorkExperienceById(id) {
+        const response = await axios.get(`${WorkExperienceService.BASE_URL}/employee/WorkExperience/${id}`);
+        return response.data;
+    }
+
+    static async updateWorkExperience(id, WorkExperience) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.put(`${WorkExperienceService.BASE_URL}/employee/updateWorkExperience/${id}`, WorkExperience, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async deleteWorkExperience(id) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.delete(`${WorkExperienceService.BASE_URL}/employee/deleteWorkExperience/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+    static async getWorkExperienceByCvId(id)
+    {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get(`${WorkExperienceService.BASE_URL}/employee/WorkExperiences/cv/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+}
+
+export default WorkExperienceService;

@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.EmoloyerSystem.Entity.CV;
 import com.example.EmoloyerSystem.Entity.Language;
-import com.example.EmoloyerSystem.Entity.Reference;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.LanguageMapper;
 import com.example.EmoloyerSystem.Repository.CvRepository;
 import com.example.EmoloyerSystem.Repository.LanguageRepository;
-import com.example.EmoloyerSystem.Repository.ReferenceRepository;
 import com.example.EmoloyerSystem.Service.LanguageService;
 import com.example.EmoloyerSystem.dto.LanguageDto;
 
@@ -25,8 +23,10 @@ public class LanguageServiceImpl implements LanguageService {
     private CvRepository CvRepository;
     
     @Override
-   public LanguageDto createLanguage(LanguageDto LanguageDto,CV CV) {
-       Language Language= LanguageMapper.MapToLanguage(LanguageDto,CV);
+   public LanguageDto createLanguage(LanguageDto LanguageDto,int id) {
+       CV Cv = CvRepository.findById(id).orElseThrow(()->
+       new ResourceNotFoundException("Cv does not exist"));
+       Language Language= LanguageMapper.MapToLanguage(LanguageDto,Cv);
        Language savedLanguage=LanguageRepository.save(Language);
        return LanguageMapper.MapToLanguageDto(savedLanguage);
    }
@@ -48,12 +48,12 @@ public class LanguageServiceImpl implements LanguageService {
    @Override
    public LanguageDto updateLanguage(int id, LanguageDto updatedLanguage) {
        Language Language=LanguageRepository.findById(id).orElseThrow(
-               ()-> new ResourceNotFoundException("Work Experience does not exist")
+               ()-> new ResourceNotFoundException("Language does not exist")
        );
        Language.setLanguageID(updatedLanguage.getLanguageID());
        Language.setLanguage(updatedLanguage.getLanguage());
        Language.setLevel(updatedLanguage.getLevel());
-       Language.getCV().setCvid((updatedLanguage.getCV()));
+       Language.getCvid().setCvid((updatedLanguage.getCvid()));
 
        return LanguageMapper.MapToLanguageDto(Language);
    }
@@ -62,17 +62,16 @@ public class LanguageServiceImpl implements LanguageService {
    {
     Language language = LanguageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Language not found"));
-
-        // Delete associated jobs
-        LanguageRepository.deleteById(id);
+        LanguageRepository.delete(language);
    }
    @Override
-   public List<Language> getLanguagesByCvId(int id)
+   public List<LanguageDto> getLanguagesByCvid(int id)
    {
-    CV CV = CvRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Reference does not exist"));
-       List<Language> languages = LanguageRepository.findByCV(CV).orElseThrow(
+       List<Language> languages = LanguageRepository.findByCvidCvid(id).orElseThrow(
                ()-> new ResourceNotFoundException("Language does not exist")
        );
-       return languages;
+       return languages.stream()
+                .map(LanguageMapper::MapToLanguageDto)
+                .collect(Collectors.toList());
    }
 }

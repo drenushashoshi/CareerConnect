@@ -11,7 +11,7 @@ public class LanguageMapper {
             Language.getLanguageID(),
             Language.getLanguage(),
             Language.getLevel(),
-            Language.getCV().getCvid()
+            Language.getCvid().getCvid()
         );
     }
     public static Language MapToLanguage(LanguageDto Language,CV CV)
@@ -20,7 +20,7 @@ public class LanguageMapper {
             language.setLanguageID(Language.getLanguageID());
             language.setLanguage(Language.getLanguage());
             language.setLevel(Language.getLevel());
-            language.setCV(CV);
+            language.setCvid(CV);
         return language;
     }
 }

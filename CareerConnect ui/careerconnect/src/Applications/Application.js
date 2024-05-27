@@ -22,7 +22,6 @@ const Application = () => {
             console.log(values);
             const { data } = await createApplication(values);
             navigator(`/CvCreate/`);
-
         } catch (error) {
             console.log(error);
         }

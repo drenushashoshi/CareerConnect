@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CVDto{
 
-    private int cv_id;
+    private int cvid;
     private String profilepic;
     private String name;
     private String surname;

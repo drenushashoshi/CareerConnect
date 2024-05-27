@@ -60,6 +60,6 @@ public class CV{
     @OneToMany(mappedBy = "CV")
     private List<WorkExperience> workExperiences;
 
-    @OneToMany(mappedBy = "CV")
+    @OneToMany(mappedBy = "cvid")
     private List<Language> Language;
 }

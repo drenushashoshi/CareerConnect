@@ -1,11 +1,65 @@
 import axios from "axios";
 
-const REST_API_BASE_URL='http://localhost:8080/api/applications';
+class ApplicationService {
+    static BASE_URL = "http://localhost:8080";
 
-export const getApplications=()=>axios.get(REST_API_BASE_URL);
-export const createApplication=(Application)=> axios.post(REST_API_BASE_URL, Application);
-export const getApplication=(ApplicationID)=>axios.get(REST_API_BASE_URL+'/'+ApplicationID);
-export const updateApplication=(ApplicationID, Application)=>axios.put(REST_API_BASE_URL +'/'+ApplicationID, Application);
-export const uploadResume=(file)=>axios.put(REST_API_BASE_URL+'/CV',file);
-export const getResume=(file)=>axios.get(REST_API_BASE_URL+'/resume/'+file);
-export const deleteApplication=(ApplicationID)=>axios.delete(REST_API_BASE_URL+'/'+ApplicationID);
+    static async createApplication(Application, id) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.post(`${LanguageService.BASE_URL}/employee/createApplication/${id}`, Application, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    
+
+    static async getApplications() {
+        const response = await axios.get(`${LanguageService.BASE_URL}/employee/getAll/applications`);
+        return response.data;
+    }
+
+    static async getApplication(id) {
+        const response = await axios.get(`${LanguageService.BASE_URL}/employee/Application/${id}`);
+        return response.data;
+    }
+
+    static async updateApplication(id, Application) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.put(`${LanguageService.BASE_URL}/employee/updateApplication/${id}`, Application, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async deleteApplication(id) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.delete(`${LanguageService.BASE_URL}/employee/deleteApplication/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+   
+}
+
+export default ApplicationService;

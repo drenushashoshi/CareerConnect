@@ -3,13 +3,13 @@ import axios from "axios";
 class LanguageService {
     static BASE_URL = "http://localhost:8080";
 
-    static async createLanguage(language, cv) {
+    static async createLanguage(language, cvId) {
         const token = localStorage.getItem('token');
         try {
-            const requestBody = { ...language, cv };
-            const response = await axios.post(LanguageService.BASE_URL + '/employee/createlanguage', requestBody, {
+            const response = await axios.post(`${LanguageService.BASE_URL}/employee/createlanguage/${cvId}`, language, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             });
             return response.data;
@@ -17,6 +17,7 @@ class LanguageService {
             throw error;
         }
     }
+    
     
 
     static async getLanguages() {
@@ -30,17 +31,49 @@ class LanguageService {
     }
 
     static async updateLanguage(id, language) {
-        const response = await axios.put(`${LanguageService.BASE_URL}/employee/updateLanguage/${id}`, language);
-        return response.data;
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.put(`${LanguageService.BASE_URL}/employee/updateLanguage/${id}`, language, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async deleteLanguage(id) {
-        const response = await axios.delete(`${LanguageService.BASE_URL}/employee/deleteLanguage/${id}`);
-        return response.data;
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.delete(`${LanguageService.BASE_URL}/employee/deleteLanguage/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
     static async getLanguageByCvId(id)
     {
-        const response = await axios.get(`${LanguageService.BASE_URL}/employee/languages/cv/${id}`)
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get(`${LanguageService.BASE_URL}/employee/languages/cv/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createReference, getReferenceByCvId } from '../Services/ReferenceService';
+import ReferenceService from '../Services/ReferenceService';
 import { useParams } from 'react-router-dom';
 import ReferenceShort from './ReferenceShort';
 
@@ -22,26 +22,28 @@ const Reference = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  useEffect(() => {
-    const fetchReferences = async () => {
-      try {
-        const { data } = await getReferenceByCvId(idAsInteger);
-        setReferences(data);
-      } catch (error) {
-        console.error('Error fetching references:', error);
-      }
-    };
-    fetchReferences();
-  }, [idAsInteger]);
+  const fetchReference = async () => {
+    try {
+        const response = await ReferenceService.getReferenceByCvId(idAsInteger);
+        console.log('Fetched languages:', response); // Debugging line
+        setReferences(response || []); // Ensure languages is an array
+    } catch (error) {
+        console.error('Error fetching languages:', error);
+    }
+};
+
+useEffect(() => {
+    fetchReference();
+}, [idAsInteger]);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(id);
       console.log(formData);
 
       // Include cvId in the request data
-      const { data } = await createReference(formData); // Send formData including cvid
+      const { data } = await ReferenceService.createReference(formData,idAsInteger); // Send formData including cvid
 
       setFormData({
         name: '',
@@ -52,6 +54,7 @@ const Reference = () => {
         email: '',
         cv: idAsInteger
       });
+      fetchReference();
     } catch (error) {
       console.error('Error creating reference:', error);
     }
@@ -60,11 +63,15 @@ const Reference = () => {
   return (
     <div className="reference-form p-4">
       <hr />
-      {references.map((reference, index) => (
-        <div key={index}>
-          <ReferenceShort reference={reference} />
-        </div>
-      ))}
+      {references && references.length > 0 ? (
+                references.map((reference, index) => (
+                    <div key={index}>
+                        <ReferenceShort reference={reference} />
+                    </div>
+                ))
+            ) : (
+                <p>No References</p>
+            )}
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
