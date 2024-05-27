@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import CustomNavbar from '../CustomNavbar';
 import { deleteJob, listJobs } from '../Services/JobService';
 
 function AllJobs() {
@@ -31,8 +30,6 @@ function AllJobs() {
 
     return (
         <>
-            <CustomNavbar />
-
             {/* Job Listing Start */}
             <div className="container mt-5">
                 <div className="row">

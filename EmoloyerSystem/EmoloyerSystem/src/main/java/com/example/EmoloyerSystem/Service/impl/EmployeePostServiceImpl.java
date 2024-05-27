@@ -1,3 +1,4 @@
+/*
 package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Entity.EmployeePost;
@@ -22,12 +23,19 @@ public class EmployeePostServiceImpl implements EmployeePostService {
 
     @Override
     public EmployeePostDto createEmployeePost(EmployeePostDto employeePostDto) {
+        // Create EmployeePost entity from DTO
+        EmployeePost employeePost = new EmployeePost();
+        employeePost.setTitle(employeePostDto.getTitle());
+        employeePost.setContent(employeePostDto.getContent());
 
-        EmployeePost employeePost = EmployeePostMapper.mapToEmployeePost(employeePostDto);
-        EmployeePost savedEmployeePost = employeePostRepository.save(employeePost);
+        // Initialize postDate with current date and time
+        employeePost.setPostDate(employeePostDto.getPostDate());
 
+        // Save the entity
+        employeePost = employeePostRepository.save(employeePost);
 
-        return EmployeePostMapper.mapToEmployeePostDto(savedEmployeePost);
+        // Convert the saved entity back to DTO and return
+        return EmployeePostMapper.mapToEmployeePostDto(employeePost);
     }
 
     @Override
@@ -73,3 +81,4 @@ public class EmployeePostServiceImpl implements EmployeePostService {
 
 
 }
+*/

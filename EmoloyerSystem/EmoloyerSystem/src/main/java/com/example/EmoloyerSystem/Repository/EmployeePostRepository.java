@@ -1,3 +1,4 @@
+/*
 package com.example.EmoloyerSystem.Repository;
 
 import com.example.EmoloyerSystem.Entity.EmployeePost;
@@ -8,3 +9,4 @@ import java.util.List;
 public interface  EmployeePostRepository extends JpaRepository<EmployeePost ,Integer>{
 //    List<EmployeePost> findEmployeePostId(int EmployeePostId);
 }
+*/

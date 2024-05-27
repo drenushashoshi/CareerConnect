@@ -131,14 +131,17 @@ const EditJob = () => {
         }
 
         if (isValid) {
-            const updatedJob = { title, description, requirements, locationName, salary, industriaName, deadline };
-            updateJob(id, updatedJob)
-                .then(() => {
-                    navigate(`/job/${id}`);
-                })
-                .catch(error => {
-                    console.error('Error updating job:', error);
-                });
+            const updatedJob = {title, description, requirements, locationName, salary, industriaName, deadline};
+            if (id) {
+                const token = localStorage.getItem('token');
+                updateJob(id, updatedJob, token)
+                    .then(() => {
+                        navigate(`/Job/${id}`);
+                    })
+                    .catch(error => {
+                        console.error('Error updating job:', error);
+                    });
+            }
         }
     };
 

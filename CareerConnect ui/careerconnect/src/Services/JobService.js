@@ -28,11 +28,13 @@ export const getAllCompanyJobs = async (companyId) =>{
 
 export const updateJob = async (jobId, updatedJobData, token) => {
     try {
-        const response = await axios.put(`${REST_API_BASE_URL}/company/updateJob/${jobId}`, updatedJobData,{
-            headers:{Authorization: `Bearer ${token}`}
+        const response = await axios.put(`${REST_API_BASE_URL}/company/updateJob/${jobId}`, updatedJobData, {
+            headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('Data:', response.data);
         return response.data;
     } catch (error) {
+        console.error('Error updating job:', error);
         throw error;
     }
 }

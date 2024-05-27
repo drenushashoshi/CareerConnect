@@ -113,20 +113,6 @@ const JobDetails = () => {
                                         <div className="apply-btn2 d-flex justify-content-center">
                                             {isEmployee &&<Link to="/applications" className="btn btn-primary">Apply</Link>}
                                         </div>
-                                        <div className="post-details4 mb-4">
-                                            <div className="small-section-tittle">
-                                                <h4>Company Information</h4>
-                                            </div>
-                                            {company ? (
-                                                <ul>
-                                                    <li>Name: {company.name}</li>
-                                                    <li>Email: {company.email}</li>
-                                                    <li>Phone Number: {company.phone_number}</li>
-                                                </ul>
-                                            ) : (
-                                                <p>Loading company information...</p>
-                                            )}
-                                        </div>
                                         <div className="d-flex justify-content-center">
                                             <Link to={`/CompanyPage/${job.companyId}`} style={{
                                                 textDecoration: 'none',

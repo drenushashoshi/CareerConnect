@@ -1,3 +1,4 @@
+/*
 package com.example.EmoloyerSystem.dto;
 
 
@@ -19,8 +20,7 @@ public class EmployeePostDto {
     private String title;
     private String content;
     private Date postDate;
-    private List<String> attachments;
-
-    public EmployeePostDto(int id, String title, String content, List<String> attachments) {
-    }
+    private int employeeId;
+   // private List<String> attachments;
 }
+*/

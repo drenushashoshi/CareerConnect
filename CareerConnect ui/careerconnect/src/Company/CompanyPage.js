@@ -18,6 +18,7 @@ import CompanysInternships from '../Internships/CompanysInternships';
 import CustomNavbar from '../CustomNavbar';
 import backgroundImage from './background.jpg';
 import CompanyService from '../Services/CompanyService';
+import AllJobs from '../Jobs/AllJobs'
 
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -228,6 +229,7 @@ const CompanyPage = () => {
               <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Shpalljet e Postuara</h2>
             </div>
             <CompanysInternships companyId={profileInfo.id} />
+            <AllJobs companyId={profileInfo.id} />
           </>
         )}
         <Footer />

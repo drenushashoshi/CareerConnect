@@ -1,3 +1,4 @@
+/*
 package com.example.EmoloyerSystem.Entity;
 
 
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="EmployeePost")
+@Table(name="employee_post")
 
 
 public class EmployeePost {
@@ -29,15 +30,15 @@ public class EmployeePost {
     @Column(name="content",nullable = false)
     private String content;
 
-    @Column(name = "postDate",nullable = false)
+    @Column(name = "post_date",nullable = false)
     private Date postDate;
 
-    @ElementCollection // Specifies a collection of basic types (in this case, Strings)
-    @CollectionTable(name = "post_attachments", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "attachment")
-    private List<String> attachments; // Add a List to store attachment paths or URLs
+    @Column(name = "employee")
+    private Employee employee;
+   // @ElementCollection // Specifies a collection of basic types (in this case, Strings)
+    //@CollectionTable(name = "post_attachments", joinColumns = @JoinColumn(name = "post_id"))
+    //@Column(name = "attachment")
+    //private List<String> attachments; // Add a List to store attachment paths or URLs
 
-
-    public EmployeePost(int id, String title, String content, List<String> attachments) {
-    }
 }
+*/
