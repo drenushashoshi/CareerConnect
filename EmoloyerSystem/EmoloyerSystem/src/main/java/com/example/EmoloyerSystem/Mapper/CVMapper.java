@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.Mapper;
 
 import com.example.EmoloyerSystem.Entity.CV;
+import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.dto.CVDto;
 
 public class CVMapper {
@@ -18,10 +19,11 @@ public class CVMapper {
             Cv.getDescription(),
             Cv.getCollege(),
             Cv.getDegree(),
-            Cv.getHighschool()
+            Cv.getHighschool(),
+            Cv.getEmployee().getId()
         );
     }
-    public static CV mapToCv(CVDto Cv)
+    public static CV mapToCv(CVDto Cv,Employee Employee)
     {
         CV CV = new CV();
         CV.setCvid(Cv.getCvid());
@@ -36,6 +38,7 @@ public class CVMapper {
         CV.setCollege(Cv.getCollege());
         CV.setDegree(Cv.getDegree());
         CV.setHighschool(Cv.getHighschool());
+        CV.setEmployee(Employee);
         return CV;
     }
 }

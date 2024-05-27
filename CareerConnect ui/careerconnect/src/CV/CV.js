@@ -5,6 +5,7 @@ import CvService from '../Services/CvService';
 import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
+import CustomNavbar from '../CustomNavbar';
 
 const CV = () => {
     const { id } = useParams();
@@ -16,7 +17,7 @@ const CV = () => {
 
     const fetchCV = async () => {
         try {
-            const response = await CvService.getCVById(idAsInteger);
+            const response = await CvService.getCvByEmployeeId(idAsInteger);
             console.log('Fetched Cv:', response); // Debugging line
             setCv(response);
         } catch (error) {
@@ -69,12 +70,13 @@ const CV = () => {
         fetchLanguages();
     }, [idAsInteger]);
 
-    
     console.log("CV:",Cv);
     console.log("References:",references);
     console.log("Languages:",languages);
     console.log("Experiences:",workExperiences);
     return (
+        <>
+        <CustomNavbar/>
         <div className="container">
             {Cv && references && workExperiences && languages && (
                 <div className="d-flex " style={{ minHeight: '100vh' }}>
@@ -139,6 +141,7 @@ const CV = () => {
                 </div>
             )}
         </div>
+        </>
     );
 }
 

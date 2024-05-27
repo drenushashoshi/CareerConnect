@@ -13,6 +13,7 @@ function CustomNavbar() {
     const companyId=sessionStorage.getItem('companyId');
 
     const navigate = useNavigate();
+    const employeeId=sessionStorage.getItem('employeeId')
 
     const handleProfileButtonClick = () => {
         if (isAuthenticated && isCompany) {
@@ -66,9 +67,10 @@ function CustomNavbar() {
                 <Nav className="ms-auto p-4 p-lg-0">
                     {isEmployee && (
                         <>
-                            <button type="button" className="bg-light border-0" onClick={handleCvClick}>
-                                Create Cv<i className="fa fa-arrow-right ms-3"></i>
-                            </button>
+                            <NavDropdown title="Cv" id="basic-nav-dropdown" className="nav-item dropdown">
+                                <NavDropdown.Item href={`../CvCreate/${employeeId}`}>Krijo Cv</NavDropdown.Item>
+                                <NavDropdown.Item href={`../Cv/${employeeId}`}>Shiko Cv</NavDropdown.Item>
+                            </NavDropdown>
                             <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown">
                                 <NavDropdown.Item href="../JobListing">Pune</NavDropdown.Item>
                                 <NavDropdown.Item href="../InternshipsList">Praktike</NavDropdown.Item>

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import WorkExperience from './WorkExperience';
 import Language from './Language';
 import { useNavigate, useParams } from 'react-router-dom';
+import CustomNavbar from '../CustomNavbar'
 
 const AdditionalInfo = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const AdditionalInfo = () => {
 
   return (
     <>
+          <CustomNavbar />
       <div className='mt-5 text-center'><h1>Your Info</h1></div>
       <div className="container mt-3">
         <div className="row justify-content-center">

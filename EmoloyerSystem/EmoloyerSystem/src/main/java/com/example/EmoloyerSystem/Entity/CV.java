@@ -62,4 +62,9 @@ public class CV{
 
     @OneToMany(mappedBy = "cvid")
     private List<Language> Language;
+
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "employeeid")
+    private Employee employee;
+
 }

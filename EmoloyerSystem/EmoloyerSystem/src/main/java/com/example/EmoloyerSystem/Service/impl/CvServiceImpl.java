@@ -2,11 +2,18 @@ package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.CVMapper;
+import com.example.EmoloyerSystem.Mapper.LanguageMapper;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.EmoloyerSystem.Entity.CV;
+import com.example.EmoloyerSystem.Entity.Employee;
+import com.example.EmoloyerSystem.Entity.Language;
 import com.example.EmoloyerSystem.Repository.CvRepository;
+import com.example.EmoloyerSystem.Repository.EmployeeRepository;
+import com.example.EmoloyerSystem.Repository.LanguageRepository;
 import com.example.EmoloyerSystem.dto.CVDto;
+import com.example.EmoloyerSystem.dto.LanguageDto;
 import com.example.EmoloyerSystem.Service.CvService;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -31,10 +38,13 @@ import java.io.IOException;
 public class CvServiceImpl implements CvService{
 
    private  CvRepository CvRepository;
+   private EmployeeRepository EmployeeRepository;
 
    @Override
    public CVDto createCv(CVDto CvDto) {
-       CV Cv= CVMapper.mapToCv(CvDto);
+    Employee employee = EmployeeRepository.findById(CvDto.getEmployee()).orElseThrow(()->
+    new ResourceNotFoundException("Cv does not exist"));
+       CV Cv= CVMapper.mapToCv(CvDto,employee);
        CV savedCv=CvRepository.save(Cv);
        return CVMapper.mapToCvDto(savedCv);
    }
@@ -83,21 +93,29 @@ public class CvServiceImpl implements CvService{
        return Cvs.stream().map(CVMapper::mapToCvDto)
                .collect(Collectors.toList());
    }
-
-   public String uploadPicture(Integer Id, MultipartFile resume) {
-       CVDto CvDto = getCvById(Id);
-       CV Cv = CVMapper.mapToCv(CvDto);
-
-       try {
-           String resumeContent = new String(resume.getBytes()); // Convert MultipartFile to string
-           Cv.setProfilepic(resumeContent); // Set the document content to the string
-           CvRepository.save(Cv); // Save the updated Cv entity
-       } catch (IOException e) {
-           throw new RuntimeException("Unable to read resume content", e);
-       }
-
-       return "Resume uploaded successfully";
+   @Override
+   public CVDto getCvByEmployeeId(int id)
+   {
+       CV CV = CvRepository.findByEmployeeId(id).orElseThrow(
+               ()-> new ResourceNotFoundException("Employee does not exist")
+       );
+       return CVMapper.mapToCvDto(CV);
    }
+
+//    public String uploadPicture(Integer Id, MultipartFile resume) {
+//        CVDto CvDto = getCvById(Id);
+//        CV Cv = CVMapper.mapToCv(CvDto);
+
+//        try {
+//            String resumeContent = new String(resume.getBytes()); // Convert MultipartFile to string
+//            Cv.setProfilepic(resumeContent); // Set the document content to the string
+//            CvRepository.save(Cv); // Save the updated Cv entity
+//        } catch (IOException e) {
+//            throw new RuntimeException("Unable to read resume content", e);
+//        }
+
+//        return "Resume uploaded successfully";
+//    }
 
 
 

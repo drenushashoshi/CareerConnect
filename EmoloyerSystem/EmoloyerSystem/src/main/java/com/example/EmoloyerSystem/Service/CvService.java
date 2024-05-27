@@ -15,5 +15,6 @@ public interface CvService {
    CVDto getCvById(int id);
    List<CVDto>getAllCvs();
    void deleteCv(int id);
-   String uploadPicture(Integer cvId, MultipartFile file);
+   CVDto getCvByEmployeeId(int id);
+   // String uploadPicture(Integer cvId, MultipartFile file);
 }

@@ -44,8 +44,13 @@ public class CvController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/employee/Cv/Employee/{id}")
+    public ResponseEntity<CVDto> getCvByEmployeeId(@PathVariable int id)
+    {
+        CVDto Cvs = CVService.getCvByEmployeeId(id);
+        return ResponseEntity.ok(Cvs);
+    }
     
-
     @PutMapping("/employee/{id}")
     public ResponseEntity<CVDto> updateCv(@PathVariable("id") Integer CVID, @RequestBody CVDto updatedCV) {
         CVDto CV = CVService.updateCv(CVID, updatedCV);
@@ -58,10 +63,10 @@ public class CvController {
         return ResponseEntity.ok("CV Deleted");
     }
 
-    @PostMapping("/employee/upload")
-    public ResponseEntity<String> uploadPicture(@RequestParam("id") Integer cvId, @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok().body(CVService.uploadPicture(cvId, file));
-    }
+    // @PostMapping("/employee/upload")
+    // public ResponseEntity<String> uploadPicture(@RequestParam("id") Integer cvId, @RequestParam("file") MultipartFile file) {
+    //     return ResponseEntity.ok().body(CVService.uploadPicture(cvId, file));
+    // }
 
     @GetMapping("/employee/image/{filename}")
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {

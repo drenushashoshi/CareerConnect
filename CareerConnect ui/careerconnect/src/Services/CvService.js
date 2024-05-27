@@ -6,7 +6,7 @@ class CvService {
     static async createCv(cv) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.post(CvService.BASE_URL+'/employee/create', cv, {
+            const response = await axios.post(CvService.BASE_URL + '/employee/create', cv, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -16,6 +16,7 @@ class CvService {
             throw error;
         }
     }
+    
 
     static async getAllCVs() {
         const response = await axios.get(`${CvService.BASE_URL}/employee/getall`);
@@ -33,6 +34,25 @@ class CvService {
             console.log("API Response:", response.data);  // Log the entire response
             return response.data;
         } catch (error) {
+            throw error;
+        }
+    }
+    static async getCvByEmployeeId(id)
+    {
+        const token = localStorage.getItem('token');
+        try
+        {
+            const response = await axios.get(`${CvService.BASE_URL}/employee/Cv/Employee/${id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            console.log("Api Response:",response.data);
+            return response.data;
+        }catch(error)
+        {
             throw error;
         }
     }

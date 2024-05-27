@@ -27,13 +27,6 @@ const Application = () => {
         }
 
     }
-    const uploadResume = async (formData) => {
-        try {
-            const { data: Resume } = await uploadResume(formData);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     return (
         <>
             <div className="container">

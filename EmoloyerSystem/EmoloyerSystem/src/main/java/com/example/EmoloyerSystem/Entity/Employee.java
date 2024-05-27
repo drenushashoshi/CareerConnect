@@ -60,6 +60,9 @@ public class Employee implements UserDetails {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Rate> rates;
 
+    @OneToOne(mappedBy = "employee")
+    private CV Cvid;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
