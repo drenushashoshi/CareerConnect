@@ -1,10 +1,7 @@
 package com.example.EmoloyerSystem.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -24,6 +21,10 @@ public class CompanyStaff {
 
     @Column(name="role", nullable = false)
     private String role;
+
+    @Lob
+    @Column(name="image")
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "company")

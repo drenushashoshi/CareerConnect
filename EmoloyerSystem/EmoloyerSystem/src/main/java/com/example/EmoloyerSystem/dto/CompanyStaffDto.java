@@ -14,7 +14,6 @@ public class CompanyStaffDto {
     private String name;
     private String surname;
     private String role;
-
     private int companyId;
-
+    private byte[] image;
 }

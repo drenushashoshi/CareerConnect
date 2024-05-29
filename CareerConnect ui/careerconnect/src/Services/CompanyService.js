@@ -12,6 +12,18 @@ class CompanyService{
             throw err;
         }
     }
+    static async downloadImage(staffId, token) {
+        try {
+          const response = await axios.get(`${CompanyService.BASE_URL}/company/downloadImage/${staffId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: 'arraybuffer' 
+          });
+          return response.data;
+        } catch (err) {
+          throw err;
+        }
+      }
+    
     static async register(companyData){
         try{
             const response= await axios.post(`${CompanyService.BASE_URL}/auth/register`, companyData, )
@@ -20,16 +32,20 @@ class CompanyService{
             throw err;
         }
     }
-    static async createCompanyStaff(companyStaffData, token){
-        try{
-            const response= await axios.post(`${CompanyService.BASE_URL}/company/registerStaff`, companyStaffData, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
+    static async createCompanyStaff(formData, token) {
+        try {
+            const response = await axios.post(`${CompanyService.BASE_URL}/company/registerStaff`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             return response.data;
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
+    
     static async getAllCompanyStaff(companyId){
         try{
             const response= await axios.get(`${CompanyService.BASE_URL}/public/CompanyStaff?companyId=${companyId}`)
@@ -106,17 +122,20 @@ class CompanyService{
             throw err;
         }
     }
-    static async updateStaff(id,staffData, token){
-        try{
-            const response= await axios.put(`${CompanyService.BASE_URL}/company/updateStaff/${id}`, staffData, {
-                headers:{Authorization: `Bearer ${token}`}
-            })
-            return response.data;
-        }catch(err){
-            throw err;
+    static async updateStaff(id, formData, token) {
+        try {
+          const response = await axios.put(`${CompanyService.BASE_URL}/company/updateStaff/${id}`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+          return response.data;
+        } catch (err) {
+          throw err;
         }
-    }
-
+      }
+      
     static logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');

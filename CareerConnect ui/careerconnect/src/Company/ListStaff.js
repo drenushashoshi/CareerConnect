@@ -12,6 +12,7 @@ import { ReactComponent as EditButton } from './pencil.svg';
 import { ReactComponent as DeleteButton } from './trash.svg';
 import Modal from 'react-bootstrap/Modal';
 import CompanyService from '../Services/CompanyService';
+
 const isCompany = CompanyService.isCompany();
 
 const ListStaff = ({ companyId }) => {
@@ -25,18 +26,42 @@ const ListStaff = ({ companyId }) => {
   const [surnameError, setSurnameError] = useState('');
   const [roleError, setRoleError] = useState('');
   const [staffChanges, setStaffChanges] = useState(0);
+  const [images, setImages] = useState({});
+  const [modalImage, setModalImage] = useState(null); // State for modal image
+  const [selectedFile, setSelectedFile] = useState(null); // State for selected file
 
   useEffect(() => {
     fetchStaff(companyId);
-  }, [companyId, staffChanges]); 
+  }, [companyId, staffChanges]);
 
   const fetchStaff = async (companyId) => {
     try {
       const response = await CompanyService.getAllCompanyStaff(companyId);
       setCompanyStaff(response);
+      fetchImages(response);
     } catch (error) {
       console.log('Error fetching staff', error);
     }
+  };
+
+  const fetchImages = async (staffList) => {
+    const token = localStorage.getItem('token');
+    const imagePromises = staffList.map(staff => 
+      CompanyService.downloadImage(staff.id, token)
+        .then(imageData => {
+          const blob = new Blob([imageData], { type: 'image/jpeg' });
+          const url = URL.createObjectURL(blob);
+          return { id: staff.id, url };
+        })
+        .catch(error => {
+          console.error(`Error fetching image for staff id ${staff.id}:`, error);
+          return { id: staff.id, url: null };
+        })
+    );
+    
+    const imageResults = await Promise.all(imagePromises);
+    const imageMap = imageResults.reduce((acc, img) => ({ ...acc, [img.id]: img.url }), {});
+    setImages(imageMap);
   };
 
   const handleShowModal = (id) => {
@@ -53,11 +78,24 @@ const ListStaff = ({ companyId }) => {
       .catch(error => {
         console.error(error);
       });
+
+    // Fetch image for the selected staff member
+    CompanyService.downloadImage(id, token)
+      .then(imageData => {
+        const blob = new Blob([imageData], { type: 'image/jpeg' });
+        const url = URL.createObjectURL(blob);
+        setModalImage(url);
+      })
+      .catch(error => {
+        console.error(`Error fetching image for staff id ${id}:`, error);
+        setModalImage(null); // Reset modal image in case of error
+      });
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setCompanyStaffId(null);
+    setModalImage(null); // Reset modal image when closing modal
   };
 
   const handleSubmit = (event) => {
@@ -82,13 +120,18 @@ const ListStaff = ({ companyId }) => {
     }
 
     if (isValid) {
-      const staffData = { name, surname, role };
+      const formData = new FormData();
+      formData.append('companyStaff', JSON.stringify({ name, surname, role }));
+      if (selectedFile) {
+        formData.append('image', selectedFile);
+      }
+
       const token = localStorage.getItem('token');
-      CompanyService.updateStaff(companyStaffId, staffData, token)
+      CompanyService.updateStaff(companyStaffId, formData, token)
         .then((response) => {
           console.log(response);
           handleCloseModal();
-          setStaffChanges(prev => prev + 1); 
+          setStaffChanges(prev => prev + 1);
         })
         .catch(error => {
           console.error("Error updating staff:", error);
@@ -101,7 +144,7 @@ const ListStaff = ({ companyId }) => {
     CompanyService.deleteStaff(staffId, token)
       .then((response) => {
         console.log(response);
-        setStaffChanges(prev => prev + 1); 
+        setStaffChanges(prev => prev + 1);
       })
       .catch(error => {
         console.error(error);
@@ -115,35 +158,41 @@ const ListStaff = ({ companyId }) => {
           <div key={staff.id} className="col mb-4">
             <MDBCard className="h-100 position-relative" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
               <MDBCardBody className="text-center">
-              <div className="position-absolute top-0 end-0 mt-2 me-2">
-                {isCompany && (
-                  <>
-                    <button
-                      onClick={() => handleShowModal(staff.id)}
-                      style={{
-                        border: 'none',
-                        background: 'none',
-                        padding: 0,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <EditButton />
-                    </button>
-                    <br />
-                    <button
-                      onClick={() => deleteStaff(staff.id)}
-                      style={{
-                        border: 'none',
-                        background: 'none',
-                        padding: 0,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <DeleteButton />
-                    </button>
-                  </>
+                <div className="position-absolute top-0 end-0 mt-2 me-2">
+                  {isCompany && (
+                    <>
+                      <button
+                        onClick={() => handleShowModal(staff.id)}
+                        style={{
+                          border: 'none',
+                          background: 'none',
+                          padding: 0,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <EditButton />
+                      </button>
+                      <br />
+                      <button
+                        onClick={() => deleteStaff(staff.id)}
+                        style={{
+                          border: 'none',
+                          background: 'none',
+                          padding: 0,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <DeleteButton />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {images[staff.id] ? (
+                  <img src={images[staff.id]} alt={`${staff.name} ${staff.surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '100px', height: '100px' }} />
+                ) : (
+                  <div className="placeholder rounded-circle mb-2" style={{ width: '100px', height: '100px', backgroundColor: '#f0f0f0' }}></div>
                 )}
-              </div>
 
                 <MDBRow>
                   <MDBCardText>{staff.name} {staff.surname}</MDBCardText>
@@ -159,6 +208,11 @@ const ListStaff = ({ companyId }) => {
           <MDBCard className="mb-4" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
             <form onSubmit={handleSubmit}>
               <MDBCardBody className="text-center">
+                {modalImage ? (
+                  <img src={modalImage} alt={`${name} ${surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '100px', height: '100px' }} />
+                ) : (
+                  <div className="placeholder rounded-circle mb-2" style={{ width: '100px', height: '100px', backgroundColor: '#f0f0f0' }}></div>
+                )}
                 <MDBRow>
                   <MDBCol>
                     <MDBInput
@@ -194,9 +248,14 @@ const ListStaff = ({ companyId }) => {
                     setRoleError('');
                   }}
                 />
-                {roleError && <div style={{ color: 'red' }}>{roleError}</div>}
-              </MDBCardBody>
-              <div className="d-flex justify-content-center">
+                {roleError && <div style={{ color: 'red' }}>{roleError}</div>}<br />
+                
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+                
                 <MDBBtn
                   className='mb-3 btn-primary'
                   type="submit"
@@ -208,13 +267,13 @@ const ListStaff = ({ companyId }) => {
                 >
                   Ruaj Ndryshimet
                 </MDBBtn>
-              </div>
+              </MDBCardBody>
             </form>
           </MDBCard>
         </Modal.Body>
       </Modal>
     </div>
   );
-}
+};
 
 export default ListStaff;

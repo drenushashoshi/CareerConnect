@@ -18,8 +18,6 @@ class ApplicationService {
         }
     }
     
-    
-
     static async getApplications() {
         const response = await axios.get(`${ApplicationService.BASE_URL}/employee/getAll/applications`);
         return response.data;

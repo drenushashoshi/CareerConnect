@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MDBCard, MDBCardBody, MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
 import CompanyService from '../Services/CompanyService';
-import { useNavigate } from 'react-router-dom';
 
 const CompanyStaff = ({ companyId }) => {
     const [name, setName] = useState('');
@@ -10,48 +9,57 @@ const CompanyStaff = ({ companyId }) => {
     const [nameError, setNameError] = useState('');
     const [surnameError, setSurnameError] = useState('');
     const [roleError, setRoleError] = useState('');
-    const navigator = useNavigate();
+    const [image, setImage] = useState(null); 
+
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]); 
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         setNameError('');
         setSurnameError('');
         setRoleError('');
-    
+
         let isValid = true;
-    
+
         if (!name.trim()) {
             setNameError('Shkruani emrin');
             isValid = false;
         }
-    
+
         if (!surname.trim()) {
             setSurnameError('Shkruani mbiemrin');
             isValid = false;
         }
-    
+
         if (!role.trim()) {
             setRoleError('Shkruani rolin');
             isValid = false;
         }
-    
+
         if (!isValid) {
             return;
         }
-    
+
         const companyStaff = { name, surname, role, companyId };
-        console.log(companyStaff);
+
+        const formData = new FormData();
+        formData.append('companyStaff', JSON.stringify(companyStaff));
+        if (image) {
+            formData.append('image', image);
+        }
+
         const token = localStorage.getItem('token');
         try {
-            const response = await CompanyService.createCompanyStaff(companyStaff, token);
+            const response = await CompanyService.createCompanyStaff(formData, token);
             console.log(response.data);
             window.location.reload();
         } catch (error) {
             console.error(error);
         }
     };
-    
 
     return (
         <div className="container">
@@ -85,8 +93,25 @@ const CompanyStaff = ({ companyId }) => {
                                     placeholder='Pozita e punes (p.sh CEO)'
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                />
+                                /><br/>
                                 {roleError && <div className="text-danger">{roleError}</div>}
+                                <div className="mb-3">
+                                    <label 
+                                        htmlFor="fileInput" 
+                                        className="btn btn-outline-primary"
+                                        style={{ display: 'block', cursor: 'pointer' }}
+                                    >
+                                        Foto
+                                    </label>
+                                    <input 
+                                        id="fileInput" 
+                                        type="file" 
+                                        accept="image/*" 
+                                        onChange={handleImageChange} 
+                                        style={{ display: 'none' }}
+                                    />
+                                    {image && <div className="mt-2">{image.name}</div>}
+                                </div>
                             </MDBCardBody>
                             <div className="d-flex justify-content-center">
                                 <MDBBtn
