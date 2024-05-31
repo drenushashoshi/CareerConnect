@@ -31,10 +31,10 @@ public class Reference {
     @Column(name = "companyname", nullable = false)
     private String companyname;
 
-    @Column(name = "phone_nr", unique = true)
+    @Column(name = "phone_nr")
     private String phone_nr;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)

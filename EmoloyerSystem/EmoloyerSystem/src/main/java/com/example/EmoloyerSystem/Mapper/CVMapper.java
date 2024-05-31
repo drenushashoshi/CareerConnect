@@ -9,7 +9,7 @@ public class CVMapper {
     {
         return new CVDto(
             Cv.getCvid(),
-            Cv.getProfilepic(),
+            Cv.getImage(),
             Cv.getName(),
             Cv.getSurname(),
             Cv.getEmail(),
@@ -27,7 +27,7 @@ public class CVMapper {
     {
         CV CV = new CV();
         CV.setCvid(Cv.getCvid());
-        CV.setProfilepic(Cv.getProfilepic());
+        CV.setImage(Cv.getImage());
         CV.setName(Cv.getName());
         CV.setSurname(Cv.getSurname());
         CV.setEmail(Cv.getEmail());

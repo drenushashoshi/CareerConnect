@@ -39,7 +39,6 @@ public class InternshipMapper {
         internship.setDeadline(internshipDto.getDeadline());
         internship.setCompany(company);
 
-
         return internship;
 
 

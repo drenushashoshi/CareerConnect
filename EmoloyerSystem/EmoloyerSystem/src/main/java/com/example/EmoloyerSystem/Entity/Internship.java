@@ -1,5 +1,7 @@
 package com.example.EmoloyerSystem.Entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,4 +49,7 @@ public class Internship {
     @ManyToOne
     @JoinColumn(name = "company")
     private Company company;
+
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "internshipid")
+    private List<Application> applicationid;
 }

@@ -2,36 +2,24 @@ package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Mapper.CVMapper;
-import com.example.EmoloyerSystem.Mapper.LanguageMapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.EmoloyerSystem.Entity.CV;
 import com.example.EmoloyerSystem.Entity.Employee;
-import com.example.EmoloyerSystem.Entity.Language;
 import com.example.EmoloyerSystem.Repository.CvRepository;
 import com.example.EmoloyerSystem.Repository.EmployeeRepository;
-import com.example.EmoloyerSystem.Repository.LanguageRepository;
 import com.example.EmoloyerSystem.dto.CVDto;
-import com.example.EmoloyerSystem.dto.LanguageDto;
 import com.example.EmoloyerSystem.Service.CvService;
+import com.example.EmoloyerSystem.Service.ImageUtils;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.example.EmoloyerSystem.Constant.Constant.Resume_Directiory;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 import java.io.IOException;
+
 
 @Service
 @AllArgsConstructor
@@ -41,10 +29,14 @@ public class CvServiceImpl implements CvService{
    private EmployeeRepository EmployeeRepository;
 
    @Override
-   public CVDto createCv(CVDto CvDto) {
+   public CVDto createCv(CVDto CvDto,MultipartFile file) throws IOException {
     Employee employee = EmployeeRepository.findById(CvDto.getEmployee()).orElseThrow(()->
     new ResourceNotFoundException("Cv does not exist"));
-       CV Cv= CVMapper.mapToCv(CvDto,employee);
+    
+    CV Cv= CVMapper.mapToCv(CvDto,employee);
+       if (file != null && !file.isEmpty()) {
+            Cv.setImage(ImageUtils.compressImage(file.getBytes()));
+       }
        CV savedCv=CvRepository.save(Cv);
        return CVMapper.mapToCvDto(savedCv);
    }
@@ -67,11 +59,13 @@ public class CvServiceImpl implements CvService{
    }
 
    @Override
-   public CVDto updateCv(int CvID, CVDto updatedCv) {
+   public CVDto updateCv(int CvID, CVDto updatedCv,MultipartFile file) throws IOException {
        CV Cv=CvRepository.findById(CvID).orElseThrow(
                ()-> new ResourceNotFoundException("Cv does not exist")
        );
-       Cv.setProfilepic(updatedCv.getProfilepic());
+       if (file != null && !file.isEmpty()) {
+        Cv.setImage(ImageUtils.compressImage(file.getBytes()));
+        }
        Cv.setName(updatedCv.getName());
        Cv.setSurname(updatedCv.getSurname());
        Cv.setEmail(updatedCv.getEmail());
@@ -101,43 +95,11 @@ public class CvServiceImpl implements CvService{
        );
        return CVMapper.mapToCvDto(CV);
    }
-
-//    public String uploadPicture(Integer Id, MultipartFile resume) {
-//        CVDto CvDto = getCvById(Id);
-//        CV Cv = CVMapper.mapToCv(CvDto);
-
-//        try {
-//            String resumeContent = new String(resume.getBytes()); // Convert MultipartFile to string
-//            Cv.setProfilepic(resumeContent); // Set the document content to the string
-//            CvRepository.save(Cv); // Save the updated Cv entity
-//        } catch (IOException e) {
-//            throw new RuntimeException("Unable to read resume content", e);
-//        }
-
-//        return "Resume uploaded successfully";
-//    }
-
-
-
-   public final Function<String,String> fileExtension = filename-> Optional.of(filename).filter(name-> name.contains("."))
-           .map(name-> "."+name.substring(filename.lastIndexOf(".")+1)).orElse(".png");
-
-   public final BiFunction<String,MultipartFile,String> ResumeFunction = (ID,Document)->
-   {
-       try
-       {
-           Path fileStorageLocation = Paths.get(Resume_Directiory).toAbsolutePath().normalize();
-           if (!Files.exists(fileStorageLocation))
-           {
-               Files.createDirectories(fileStorageLocation);
-           }
-           Files.copy(Document.getInputStream(),fileStorageLocation.resolve(ID+fileExtension.apply(Document.getOriginalFilename())),REPLACE_EXISTING);
-           return ServletUriComponentsBuilder.fromCurrentContextPath().path("/Cvs/resume"+ID+fileExtension.apply(Document.getOriginalFilename())).toUriString();
-       }
-       catch (Exception exception)
-       {
-           throw  new RuntimeException("Unable to save resume");
-       }
-   };
+    @Override
+    public byte[] downloadImage(int Cvid) {
+        CV Cv = CvRepository.findById(Cvid)
+                .orElseThrow(() -> new ResourceNotFoundException("Cv does not exist"));
+        return ImageUtils.decompressImage(Cv.getImage());
+    }
 
 }

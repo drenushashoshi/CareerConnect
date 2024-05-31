@@ -1,5 +1,4 @@
 package com.example.EmoloyerSystem.dto;
-import com.example.EmoloyerSystem.Entity.CV;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

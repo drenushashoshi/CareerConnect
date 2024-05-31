@@ -19,6 +19,8 @@ import CustomNavbar from '../CustomNavbar';
 import backgroundImage from './background.jpg';
 import CompanyService from '../Services/CompanyService';
 import AllJobs from '../Jobs/AllJobs'
+import ApplicationsJob from './ApplicationsJob';
+import ApplicationInternship from './ApplicationsInternship';
 
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -229,7 +231,12 @@ const CompanyPage = () => {
               <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Shpalljet e Postuara</h2>
             </div>
             <CompanysInternships companyId={profileInfo.id} />
+            <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Punet e Postuara</h2>
             <AllJobs companyId={profileInfo.id} />
+            <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Aplikimet per Pune</h2>
+            <ApplicationsJob companyId={profileInfo.id}/>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Aplikimet per Shpallje</h2>
+            <ApplicationInternship companyId={profileInfo.id}/>
           </>
         )}
         <Footer />

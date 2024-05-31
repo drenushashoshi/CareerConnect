@@ -12,7 +12,6 @@ import AllJobs from "./Jobs/AllJobs";
 import EditJob from "./Jobs/EditJob";
 import JobDetails from './Jobs/JobDetails';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Application from './Applications/Application';
 import ApplicationList from './Applications/ApplicationList';
 import ApplicationDetail from './Applications/ApplicationDetail';
 import EditEmployee from './Employee/EditEmployee';
@@ -38,6 +37,12 @@ import RatesList from './Rate/RatesList';
 import CvInfo from './CV/CvInfo';
 import CompanysInternships from './Internships/CompanysInternships';
 import Dashboard from './Dashboard';
+import CvEdit from './CV/CvEdit';
+import JobApplication from './Applications/JobApplication';
+import InternshipApplication from './Applications/InternshipApplication';
+import ApplicationsJob from './Company/ApplicationsJob'
+import ApplicationInternship from './Company/ApplicationsInternship'
+
 
 
 function App() {
@@ -58,9 +63,7 @@ function App() {
           <Route path='/CompanyPage/:id' element={<CompanyPage/>}></Route>
           <Route path='/EditCompanyProfile' element={<EditCompanyProfile/>}></Route>
           <Route path='/EditCompanyProfile/:id' element={<EditCompanyProfile/>}></Route>
-          <Route path='/Applications' element={<Application/>}></Route>
-          <Route path='/ApplicationList' element={<ApplicationList/>}></Route>
-          <Route path='/Application/:id' element={<ApplicationDetail/>}></Route>
+          <Route path='/applications/:id' element={<JobApplication/>}></Route>
           <Route path='/EmployeePage/:id' element={<EmployeePage/>}></Route>
           <Route path='/EmployeePage' element={<EmployeePage/>}></Route>
           <Route path='/EmployeeList' element={<EmployeeList/>}></Route>
@@ -84,6 +87,10 @@ function App() {
           <Route path='/IndustriaDashboard' element={<IndustriaDashboard/>}></Route>
           <Route path='/CvInfo/:id' element={<AdditionalInfo/>}></Route>
           <Route path='/Cv/:id' element={<CV/>}></Route>
+          <Route path='/CvEdit/:id' element={<CvEdit/>}></Route>
+          <Route path='/InternshipApplication/:id' element={<InternshipApplication/>}></Route>
+          <Route path='/ApplicationsJob/:id' element={<ApplicationsJob/>}></Route>
+          <Route path='/ApplicationsInternship/:id' element={<ApplicationInternship/>}></Route>
       </Routes>
     </BrowserRouter>
   );

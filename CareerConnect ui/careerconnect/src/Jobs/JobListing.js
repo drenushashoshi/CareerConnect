@@ -149,7 +149,7 @@ function JobListing() {
                                         📍 {job.locationName}<br />
                                         🕒 {job.deadline}
                                     </Card.Text>
-                                    <Link to="/applications" className="btn btn-primary me-2">Apply</Link>
+                                    <Link to={`/applications/${job.id}`} className="btn btn-primary me-2">Apply</Link>
                                     <Link to={`/job/${job.id}`} className="btn btn-secondary">More Info</Link>
                                 </Card.Body>
                             </Card>

@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.Repository;
 
-import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 

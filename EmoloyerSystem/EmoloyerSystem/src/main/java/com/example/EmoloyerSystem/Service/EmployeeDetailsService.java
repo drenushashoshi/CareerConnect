@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.Service;
 
-import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

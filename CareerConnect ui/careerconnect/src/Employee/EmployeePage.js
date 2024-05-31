@@ -61,6 +61,8 @@ const EmployeePage = () => {
 
   return (
     <>
+    {profileInfo && (
+    <>
       <CustomNavbar />
       <div style={{
         backgroundImage: `url(${backgroundImage})`,
@@ -167,6 +169,8 @@ const EmployeePage = () => {
       </Modal>
       <Footer/>
     </>
+    )}
+  </>
   );
 }
 

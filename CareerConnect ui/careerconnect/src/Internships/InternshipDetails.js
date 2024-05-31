@@ -123,7 +123,7 @@ const InternshipDetails = () => {
 
                                     </div><br/>
                                     <div className="apply-btn2 d-flex justify-content-center"> 
-                                    {isEmployee &&(<Link to="/applications" className="btn btn-primary">Apliko</Link>)}
+                                    {isEmployee &&(<Link to={`/InternshipApplication/${id}`} className="btn btn-primary">Apliko</Link>)}
                                     </div>
                                 </div>
                             </div>

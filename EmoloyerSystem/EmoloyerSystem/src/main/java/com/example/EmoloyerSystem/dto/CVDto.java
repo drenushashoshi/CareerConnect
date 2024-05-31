@@ -1,8 +1,4 @@
     package com.example.EmoloyerSystem.dto;
-    import java.util.List;
-
-    import com.example.EmoloyerSystem.Entity.Reference;
-    import com.example.EmoloyerSystem.Entity.WorkExperience;
 
     import lombok.AllArgsConstructor;
     import lombok.Getter;
@@ -17,7 +13,7 @@
     public class CVDto{
 
         private int cvid;
-        private String profilepic;
+        private byte[] image;
         private String name;
         private String surname;
         private String email;

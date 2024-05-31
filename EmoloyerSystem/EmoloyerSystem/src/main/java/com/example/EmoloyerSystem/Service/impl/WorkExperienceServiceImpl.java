@@ -1,7 +1,6 @@
 package com.example.EmoloyerSystem.Service.impl;
 
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
-import com.example.EmoloyerSystem.Mapper.LanguageMapper;
 import com.example.EmoloyerSystem.Mapper.WorkExperienceMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.EmoloyerSystem.Entity.CV;
 import com.example.EmoloyerSystem.Entity.WorkExperience;
 import com.example.EmoloyerSystem.Repository.CvRepository;
-import com.example.EmoloyerSystem.Repository.ReferenceRepository;
 import com.example.EmoloyerSystem.Repository.WorkExperienceRepository;
-import com.example.EmoloyerSystem.dto.ReferenceDto;
 import com.example.EmoloyerSystem.dto.WorkExperienceDto;
 import com.example.EmoloyerSystem.Service.WorkExperienceService;
 

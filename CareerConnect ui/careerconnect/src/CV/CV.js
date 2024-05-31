@@ -13,6 +13,7 @@ const CV = () => {
     const [Cv, setCv] = useState(null);
     const [references, setReferences] = useState([]) || {};
     const [languages, setLanguages] = useState([]) || {};
+    const [profileImageURL, setProfileImageURL] = useState(null);
     const [workExperiences, setWorkExperiences] = useState([]) || {};
 
     const fetchCV = async () => {
@@ -24,6 +25,24 @@ const CV = () => {
             console.error('Error fetching Cv:', error);
         }
       };
+
+      const fetchProfileImage = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const imageData = await CvService.downloadImage(Cv.cvid, token); // Assuming Cv contains necessary data including id
+                const blob = new Blob([imageData], { type: 'image/jpeg' });
+                const url = URL.createObjectURL(blob);
+                setProfileImageURL(url);
+            } catch (error) {
+                console.error('Error fetching profile image:', error);
+            }
+        };
+
+        // Call the fetchProfileImage function, you can call it wherever you need, maybe inside fetchCV
+        useEffect(() => {
+            fetchProfileImage();
+        }, [Cv]);
+
 
     useEffect(() => {
         fetchCV();
@@ -84,7 +103,7 @@ const CV = () => {
                         <div className="col-lg-4 bg-dark text-light p-4 ">
                             <div className="section">
                                 <div className="text-center mb-4">
-                                    <img alt="Profile Picture" className="img-fluid rounded-circle" style={{ maxWidth: '150px' }} />
+                                    <img alt="Profile Picture" src={profileImageURL} className="img-fluid" style={{ width: '250px',height: '230px',borderRadius: '50%' }} />
                                 </div>
                                 <div>
                                     <p><strong>Name:</strong> {Cv.name} {Cv.surname}</p>

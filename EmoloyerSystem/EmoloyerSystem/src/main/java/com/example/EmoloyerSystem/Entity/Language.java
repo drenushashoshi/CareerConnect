@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,10 +18,10 @@ public class Language {
     @Column(name = "id",nullable = false)
     private int LanguageID;
     
-    @Column(name = "Language", nullable = true)
+    @Column(name = "Language", nullable = false)
     private String Language;
 
-    @Column(name = "Level", nullable = true)
+    @Column(name = "Level", nullable = false)
     private String Level;
 
     @ManyToOne(fetch = FetchType.LAZY)

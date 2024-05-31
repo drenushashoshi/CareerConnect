@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.Service.impl;
 
-import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Entity.Rate;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

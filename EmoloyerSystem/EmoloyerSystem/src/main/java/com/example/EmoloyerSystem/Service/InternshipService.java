@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.Service;
 
-import com.example.EmoloyerSystem.dto.CompanyStaffDto;
 import com.example.EmoloyerSystem.dto.InternshipDto;
 
 

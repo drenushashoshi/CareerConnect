@@ -5,36 +5,44 @@ import com.example.EmoloyerSystem.Mapper.ApplicationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.EmoloyerSystem.Entity.Application;
+import com.example.EmoloyerSystem.Entity.Employee;
+import com.example.EmoloyerSystem.Entity.Internship;
+import com.example.EmoloyerSystem.Entity.Job;
 import com.example.EmoloyerSystem.Repository.ApplicationRepository;
+import com.example.EmoloyerSystem.Repository.EmployeeRepository;
+import com.example.EmoloyerSystem.Repository.InternshipRepository;
+import com.example.EmoloyerSystem.Repository.JobRepository;
 import com.example.EmoloyerSystem.dto.ApplicationDto;
 import com.example.EmoloyerSystem.Service.ApplicationService;
 
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.example.EmoloyerSystem.Constant.Constant.Resume_Directiory;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
-import java.io.IOException;
 
 @Service
 @AllArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService{
 
     private  ApplicationRepository applicationRepository;
+    private EmployeeRepository employeeRepository;
+    private JobRepository jobRepository;
+    private InternshipRepository internshipRepository;
 
     @Override
     public ApplicationDto createApplication(ApplicationDto ApplicationDto) {
-        Application Application= ApplicationMapper.mapToApplication(ApplicationDto);
+        Employee employee = employeeRepository.findById(ApplicationDto.getEmployeeid()).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist"));
+        
+        Job job = null;
+        if (ApplicationDto.getJobid() != 0) {
+            job = jobRepository.findById(ApplicationDto.getJobid()).orElseThrow(()-> new ResourceNotFoundException("Job does not exist"));
+        }
+        
+        Internship internship = null;
+        if (ApplicationDto.getInternshipid() != 0) {
+            internship = internshipRepository.findById(ApplicationDto.getInternshipid()).orElseThrow(()-> new ResourceNotFoundException("internship does not exist"));
+        }
+
+        Application Application= ApplicationMapper.mapToApplication(ApplicationDto,job,internship,employee);
         Application savedApplication=applicationRepository.save(Application);
         return ApplicationMapper.mapToApplicationDto(savedApplication);
     }
@@ -53,7 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         Application Application=applicationRepository.findById(ApplicationID).orElseThrow(
                 ()-> new ResourceNotFoundException("Application does not exist")
         );
-        applicationRepository.deleteById(ApplicationID);
+        applicationRepository.delete(Application);
     }
 
     @Override
@@ -81,42 +89,33 @@ public class ApplicationServiceImpl implements ApplicationService{
                 .collect(Collectors.toList());
     }
 
-    public String uploadResume(Integer Id, MultipartFile resume) {
-        ApplicationDto applicationDto = getApplicationById(Id);
-        Application application = ApplicationMapper.mapToApplication(applicationDto);
-    
-        try {
-            String resumeContent = new String(resume.getBytes()); // Convert MultipartFile to string
-            application.setFile(resumeContent); // Set the document content to the string
-            applicationRepository.save(application); // Save the updated Application entity
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to read resume content", e);
-        }
-    
-        return "Resume uploaded successfully";
+    @Override
+    public List<ApplicationDto> getApplicationsByEmployeeid(int id)
+    {
+        List<Application> Applications = applicationRepository.findByEmployeeidId(id).orElseThrow(()-> new ResourceNotFoundException("Application does not exist"));
+
+        return Applications.stream()
+        .map(ApplicationMapper::mapToApplicationDto)
+        .collect(Collectors.toList());
+    }
+    @Override
+    public List<ApplicationDto> getApplicationsByInternshipid(int id)
+    {
+        List<Application> Applications = applicationRepository.findByInternshipidId(id).orElseThrow(()-> new ResourceNotFoundException("Application does not exist"));
+
+        return Applications.stream()
+        .map(ApplicationMapper::mapToApplicationDto)
+        .collect(Collectors.toList());
+    }
+    @Override
+    public List<ApplicationDto> getApplicationsByJobid(long id)
+    {
+        List<Application> Applications = applicationRepository.findByJobidId(id).orElseThrow(()-> new ResourceNotFoundException("Application does not exist"));
+
+        return Applications.stream()
+        .map(ApplicationMapper::mapToApplicationDto)
+        .collect(Collectors.toList());
     }
     
-    
-
-    public final Function<String,String> fileExtension = filename-> Optional.of(filename).filter(name-> name.contains("."))
-            .map(name-> "."+name.substring(filename.lastIndexOf(".")+1)).orElse(".pdf");
-
-    public final BiFunction<String,MultipartFile,String> ResumeFunction = (ID,Document)->
-    {
-        try
-        {
-            Path fileStorageLocation = Paths.get(Resume_Directiory).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation))
-            {
-                Files.createDirectories(fileStorageLocation);
-            }
-            Files.copy(Document.getInputStream(),fileStorageLocation.resolve(ID+fileExtension.apply(Document.getOriginalFilename())),REPLACE_EXISTING);
-            return ServletUriComponentsBuilder.fromCurrentContextPath().path("/applications/resume"+ID+fileExtension.apply(Document.getOriginalFilename())).toUriString();
-        }
-        catch (Exception exception)
-        {
-            throw  new RuntimeException("Unable to save resume");
-        }
-    };
     
 }

@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.dto;
 
-import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,4 +39,5 @@ public class EmployeeDto {
     private Employee employee;
     private List<Employee> employeeList;
     private int cvid;
+    private int applicationid;
 }

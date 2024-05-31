@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import ApplicationService from '../Services/ApplicationService';
-import Application from './Application';
+import JobApplication from './JobApplication';
 import { Prev } from 'react-bootstrap/esm/PageItem';
 
 const ApplicationDetail = (updateApplication,updateResume) => {

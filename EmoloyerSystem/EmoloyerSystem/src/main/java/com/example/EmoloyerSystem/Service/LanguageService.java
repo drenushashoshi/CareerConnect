@@ -2,7 +2,6 @@ package com.example.EmoloyerSystem.Service;
 
 import java.util.List;
 
-import com.example.EmoloyerSystem.Entity.Language;
 import com.example.EmoloyerSystem.dto.LanguageDto;
 
 public interface LanguageService {

@@ -1,6 +1,5 @@
 package com.example.EmoloyerSystem.Service;
 
-import com.example.EmoloyerSystem.Entity.Rate;
 import com.example.EmoloyerSystem.dto.RateDto;
 import java.util.List;
 

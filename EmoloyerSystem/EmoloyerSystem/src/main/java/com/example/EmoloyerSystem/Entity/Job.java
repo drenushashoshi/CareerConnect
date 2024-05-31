@@ -1,5 +1,9 @@
 package com.example.EmoloyerSystem.Entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,4 +47,8 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "company")
     private Company company;
+
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "jobid")
+    @JsonIgnore
+    private List<Application> applicationid;
 }

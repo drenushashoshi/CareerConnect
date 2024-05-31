@@ -1,6 +1,4 @@
 package com.example.EmoloyerSystem.Controller;
-import com.example.EmoloyerSystem.Entity.CV;
-import com.example.EmoloyerSystem.Entity.Reference;
 import com.example.EmoloyerSystem.Service.ReferenceService;
 import com.example.EmoloyerSystem.dto.ReferenceDto;
 

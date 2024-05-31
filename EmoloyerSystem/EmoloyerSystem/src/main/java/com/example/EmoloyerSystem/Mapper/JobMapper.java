@@ -4,7 +4,6 @@ import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Entity.Industria;
 import com.example.EmoloyerSystem.Entity.Job;
 import com.example.EmoloyerSystem.Entity.Location;
-import com.example.EmoloyerSystem.dto.CompanyDto;
 import com.example.EmoloyerSystem.dto.JobDto;
 
 public class JobMapper {

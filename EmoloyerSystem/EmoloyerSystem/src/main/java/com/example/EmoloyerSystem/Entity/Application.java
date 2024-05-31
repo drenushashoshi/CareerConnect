@@ -11,35 +11,44 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Applications")
+@Table(name = "application")
 public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ApplicationID",unique = true,updatable = false)
-    private int ID;
+    @Column(name = "applicationid",unique = true,updatable = false)
+    private int applicationid;
 
-    @Column(name="Name",nullable = false)
-    private String Name;
+    @Column(name="name" )
+    private String name;
 
-    @Column(name="Email", unique = true)
-    private String Email;
+    @Column(name="email")
+    private String email;
 
-    @Column(name="phone_nr",unique = true)
+    @Column(name="phone_nr")
     private String phone_nr;
 
-    @Column(name="Age",nullable = false)
+    @Column(name="age" )
     private int age;
 
-    @Column(name="City",nullable = false)
-    private String City;
+    @Column(name="city" )
+    private String city;
 
-    @Column(name="Description",nullable = false,length = 1000)
-    private String Description;
+    @Column(name="description" ,length = 1000)
+    private String description;
 
-    @Column(name="Gender",nullable = false)
-    private String Gender;
+    @Column(name="gender" )
+    private String gender;
 
-    @Column(name="file",nullable = true)
-    private String file;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jobid",nullable = true)
+    private Job jobid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "internshipid",nullable = true)
+    private Internship internshipid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employeeid" )
+    private Employee employeeid;
 }

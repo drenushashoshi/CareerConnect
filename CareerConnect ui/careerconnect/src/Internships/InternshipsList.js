@@ -164,7 +164,7 @@ function InternshipListing() {
                                             Industria:<strong>{internship.industriaName}</strong><br />
                                             <ClockIcon />Afati i aplikimit: <strong>{internship.deadline}</strong>
                                         </Card.Text>
-                                        {isEmployee && <Link to="/applications" className="btn btn-primary me-2">Apliko</Link>}
+                                        {isEmployee && <Link to={`/InternshipApplication/${internship.id}`} className="btn btn-primary me-2">Apliko</Link>}
                                         <Link to={`/InternshipDetails/${internship.id}`} className="btn btn-secondary me-2">Shiko detajet</Link>
                                         {isCompany && <Link className="btn btn-secondary">Shiko aplikimet</Link>}
                                     </Card.Body>

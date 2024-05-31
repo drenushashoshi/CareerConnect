@@ -2,21 +2,33 @@ import axios from "axios";
 
 class CvService {
     static BASE_URL = "http://localhost:8080";
+    
 
-    static async createCv(cv) {
-        const token = localStorage.getItem('token');
+    static async createCv(formData,token) {
         try {
-            const response = await axios.post(CvService.BASE_URL + '/employee/create', cv, {
+            const response = await axios.post(`${CvService.BASE_URL}/employee/createCv`, formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
                 }
             });
+            console.log(response.data);
             return response.data;
         } catch (error) {
             throw error;
         }
     }
-    
+    static async downloadImage(cvid, token) {
+        try {
+          const response = await axios.get(`${CvService.BASE_URL}/employee/downloadImage/${cvid}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: 'arraybuffer' 
+          });
+          return response.data;
+        } catch (err) {
+          throw err;
+        }
+      }
 
     static async getAllCVs() {
         const response = await axios.get(`${CvService.BASE_URL}/employee/getall`);
@@ -57,21 +69,40 @@ class CvService {
         }
     }
 
-    static async updateCv(id, cv) {
-        const response = await axios.put(`${CvService.BASE_URL}/employee/${id}`, cv);
-        return response.data;
-    }
-
-    static async uploadPicture(id, formData) {
-        const response = await axios.post(`${CvService.BASE_URL}/employee/${id}/upload`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        return response.data;
+    static async updateCv(id,formData,token) {
+        try
+        {
+            const response = await axios.put(`${CvService.BASE_URL}/employee/update/cv/${id}`,formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            console.log("Api Response:",response.data);
+            return response.data;
+        }catch(error)
+        {
+            throw error;
+        }
     }
 
     static async deleteCv(id) {
-        const response = await axios.delete(`${CvService.BASE_URL}/employee/${id}`);
-        return response.data;
+        try{
+            const token = localStorage.getItem('token');
+            const response = await axios.delete(`${CvService.BASE_URL}/employee/deleteCv/${id}`,
+                {
+                    headers:{Authorization: `Bearer ${token}`}
+                }
+            );
+            
+            return response.data;
+        }
+        catch(err)
+        {
+            throw err;
+        }
     }
 }
 

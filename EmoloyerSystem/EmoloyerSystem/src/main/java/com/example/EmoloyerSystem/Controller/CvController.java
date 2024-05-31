@@ -2,18 +2,18 @@ package com.example.EmoloyerSystem.Controller;
 
 import com.example.EmoloyerSystem.Service.CvService;
 import com.example.EmoloyerSystem.dto.CVDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-
-import static com.example.EmoloyerSystem.Constant.Constant.Resume_Directiory;
 
 @RestController
 @CrossOrigin("*")
@@ -22,10 +22,11 @@ public class CvController {
 
     private final CvService CVService;
 
-    @PostMapping("/employee/create")
-    public ResponseEntity<CVDto> createCv(@RequestBody CVDto CV) {
-        CVDto savedCV = CVService.createCv(CV);
-        return new ResponseEntity<>(savedCV, HttpStatus.CREATED);
+    @PostMapping("/employee/createCv")
+    public ResponseEntity<CVDto> createCv(@RequestParam("image") MultipartFile file,@RequestParam("CV") String CV)throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CVDto savedCV = objectMapper.readValue(CV, CVDto.class);
+        return ResponseEntity.ok(CVService.createCv(savedCV, file));
     }
 
     @GetMapping("/employee/getall")
@@ -51,25 +52,25 @@ public class CvController {
         return ResponseEntity.ok(Cvs);
     }
     
-    @PutMapping("/employee/{id}")
-    public ResponseEntity<CVDto> updateCv(@PathVariable("id") Integer CVID, @RequestBody CVDto updatedCV) {
-        CVDto CV = CVService.updateCv(CVID, updatedCV);
+    @PutMapping("/employee/update/cv/{id}")
+    public ResponseEntity<CVDto> updateCv(@PathVariable("id") Integer CVID, @RequestPart("CV") String CvJson,@RequestPart(value = "image",required = false) MultipartFile file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CVDto updatedCV = objectMapper.readValue(CvJson, CVDto.class);
+        CVDto CV = CVService.updateCv(CVID, updatedCV,file);
         return ResponseEntity.ok(CV);
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/employee/deleteCv/{id}")
     public ResponseEntity<String> deleteCv(@PathVariable("id") Integer CVID) {
         CVService.deleteCv(CVID);
         return ResponseEntity.ok("CV Deleted");
     }
-
-    // @PostMapping("/employee/upload")
-    // public ResponseEntity<String> uploadPicture(@RequestParam("id") Integer cvId, @RequestParam("file") MultipartFile file) {
-    //     return ResponseEntity.ok().body(CVService.uploadPicture(cvId, file));
-    // }
-
-    @GetMapping("/employee/image/{filename}")
-    public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(Resume_Directiory + filename));
+        @GetMapping("/employee/downloadImage/{id}")
+    public ResponseEntity<byte[]> downloadImage(@PathVariable("id") int cvid) {
+        byte[] image = CVService.downloadImage(cvid);
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"image.jpg\"")
+                .body(image);
     }
 }

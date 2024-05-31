@@ -10,13 +10,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicationDto {
-    private int ID;
+    private int applicationid;
     private String name;
     private String email;
     private String phone_nr;
     private int age;
-    private String City;
-    private String Description;
-    private String Gender;
-    private String file;
+    private String city;
+    private String description;
+    private String gender;
+    private long jobid;
+    private int internshipid;
+    private int employeeid;
 }
