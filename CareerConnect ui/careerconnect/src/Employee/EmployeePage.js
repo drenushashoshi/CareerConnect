@@ -8,7 +8,7 @@ import {
   MDBCardText,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
 import CustomNavbar from "../CustomNavbar";
@@ -16,11 +16,15 @@ import EmployeeService from '../Services/EmployeeService';
 import backgroundImage from '../Company/background.jpg'; 
 import { ReactComponent as GearIcon } from '../Company/gear.svg';
 import Footer from '../Footer';
+import CompanyService from '../Services/CompanyService';
+import { Button } from 'react-bootstrap';
 
 const EmployeePage = () => {
+  const {id} = useParams();
   const [showModal, setShowModal] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
   const isEmployee = EmployeeService.isEmployee();
+  const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -58,6 +62,10 @@ const EmployeePage = () => {
       console.error('Error deleting employee ', error);
     }
   };
+  const Click = () =>
+    {
+      navigator(`/Cv/`+id);
+    }
 
   return (
     <>
@@ -154,6 +162,11 @@ const EmployeePage = () => {
                   </MDBRow>
                 </MDBCardBody>
               </MDBCard>
+              {isCompany &&(
+                  <>
+                    <Button className='btn btn-primary' onClick={Click}>See Cv</Button>
+                  </>
+                )}
             </MDBCol>
           </MDBRow>
         </MDBContainer>

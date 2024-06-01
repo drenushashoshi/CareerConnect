@@ -35,7 +35,7 @@ public class CvController {
         return ResponseEntity.ok(CVs);
     }
 
-    @GetMapping("/employee/Cv/{id}")
+    @GetMapping("/public/Cv/{id}")
     public ResponseEntity<CVDto> getCVById(@PathVariable int id) {
         try {
             CVDto cv = CVService.getCvById(id);
@@ -45,7 +45,7 @@ public class CvController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/employee/Cv/Employee/{id}")
+    @GetMapping("/public/Cv/Employee/{id}")
     public ResponseEntity<CVDto> getCvByEmployeeId(@PathVariable int id)
     {
         CVDto Cvs = CVService.getCvByEmployeeId(id);
@@ -65,7 +65,7 @@ public class CvController {
         CVService.deleteCv(CVID);
         return ResponseEntity.ok("CV Deleted");
     }
-        @GetMapping("/employee/downloadImage/{id}")
+        @GetMapping("/public/downloadImage/{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable("id") int cvid) {
         byte[] image = CVService.downloadImage(cvid);
         return ResponseEntity.ok()

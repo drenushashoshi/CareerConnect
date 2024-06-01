@@ -40,8 +40,8 @@ import Dashboard from './Dashboard';
 import CvEdit from './CV/CvEdit';
 import JobApplication from './Applications/JobApplication';
 import InternshipApplication from './Applications/InternshipApplication';
-import ApplicationsJob from './Company/ApplicationsJob'
-import ApplicationInternship from './Company/ApplicationsInternship'
+import ApplicationJob from './Applications/ApplicationJob'
+import ApplicationInternship from './Applications/ApplicationsInternship'
 
 
 
@@ -89,7 +89,7 @@ function App() {
           <Route path='/Cv/:id' element={<CV/>}></Route>
           <Route path='/CvEdit/:id' element={<CvEdit/>}></Route>
           <Route path='/InternshipApplication/:id' element={<InternshipApplication/>}></Route>
-          <Route path='/ApplicationsJob/:id' element={<ApplicationsJob/>}></Route>
+          <Route path='/ApplicationsJob/:id' element={<ApplicationJob/>}></Route>
           <Route path='/ApplicationsInternship/:id' element={<ApplicationInternship/>}></Route>
       </Routes>
     </BrowserRouter>

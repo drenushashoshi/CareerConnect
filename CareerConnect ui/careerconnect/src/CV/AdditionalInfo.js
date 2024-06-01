@@ -12,6 +12,7 @@ const AdditionalInfo = () => {
   const [isReferenceVisible, setIsReferenceVisible] = useState(false);
   const [isExpereienceVisible, setIsExpereienceVisible] = useState(false);
   const [isLanguageVisible, setIsLanguageVisible] = useState(false);
+  const employee = sessionStorage.getItem("employeeId");
 
   const handleReferenceClick = () => {
     setIsReferenceVisible(!isReferenceVisible);
@@ -25,7 +26,7 @@ const AdditionalInfo = () => {
     setIsLanguageVisible(!isLanguageVisible);
   };
   const navigate = () => {
-    navigator(`/Cv/` + id)
+    navigator(`/Cv/` + employee)
   }
 
   return (

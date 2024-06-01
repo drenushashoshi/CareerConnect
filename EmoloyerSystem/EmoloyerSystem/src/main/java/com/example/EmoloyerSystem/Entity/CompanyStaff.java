@@ -23,7 +23,7 @@ public class CompanyStaff {
     private String role;
 
     @Lob
-    @Column(name="image")
+    @Column(name="image",columnDefinition = "LONGBLOB")
     private byte[] image;
 
     @ManyToOne

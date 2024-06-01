@@ -98,7 +98,7 @@ function CustomNavbar() {
                             {Cv ? (
                                 <NavDropdown title="CV" id="cv-nav-dropdown" className="nav-item dropdown">
                                     <NavDropdown.Item onClick={() => navigate(`/CvEdit/${Cv.cvid}`)}>Edit Cv</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() => navigate(`/Cv/${Cv.cvid}`)}>View Cv</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => navigate(`/Cv/${employeeId}`)}>View Cv</NavDropdown.Item>
                                     <NavDropdown.Item onClick={handleModalOpen}>Delete Cv</NavDropdown.Item>
                                 </NavDropdown>
                             ) : (

@@ -45,7 +45,7 @@ import InterService from '../Services/InterService';
                                          </Card.Text>
                                          {isEmployee &&(<Link to={`/InternshipApplication/${internship.id}`} className="btn btn-primary me-2">Apliko</Link>)}
                                          <Link to={`/InternshipDetails/${internship.id}`} className="btn btn-secondary me-2">Shiko detajet</Link> 
-                                         {isCompany &&(<Link  className="btn btn-secondary">Shiko aplikimet</Link> )}
+                                         {isCompany &&(<Link to={`/ApplicationsInternship/${internship.id}`}  className="btn btn-secondary">Shiko aplikimet</Link> )}
                                      </Card.Body>
                                  </Card>
                              </div>

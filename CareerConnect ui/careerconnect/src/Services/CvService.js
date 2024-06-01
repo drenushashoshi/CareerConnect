@@ -20,7 +20,7 @@ class CvService {
     }
     static async downloadImage(cvid, token) {
         try {
-          const response = await axios.get(`${CvService.BASE_URL}/employee/downloadImage/${cvid}`, {
+          const response = await axios.get(`${CvService.BASE_URL}/public/downloadImage/${cvid}`, {
             headers: { Authorization: `Bearer ${token}` },
             responseType: 'arraybuffer' 
           });
@@ -38,7 +38,7 @@ class CvService {
     static async getCVById(id) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`${CvService.BASE_URL}/employee/Cv/${id}`, {
+            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -54,7 +54,7 @@ class CvService {
         const token = localStorage.getItem('token');
         try
         {
-            const response = await axios.get(`${CvService.BASE_URL}/employee/Cv/Employee/${id}`,
+            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/Employee/${id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -72,7 +72,7 @@ class CvService {
     static async updateCv(id,formData,token) {
         try
         {
-            const response = await axios.put(`${CvService.BASE_URL}/employee/update/cv/${id}`,formData,
+            const response = await axios.put(`${CvService.BASE_URL}/public/update/cv/${id}`,formData,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -91,7 +91,7 @@ class CvService {
     static async deleteCv(id) {
         try{
             const token = localStorage.getItem('token');
-            const response = await axios.delete(`${CvService.BASE_URL}/employee/deleteCv/${id}`,
+            const response = await axios.delete(`${CvService.BASE_URL}/public/deleteCv/${id}`,
                 {
                     headers:{Authorization: `Bearer ${token}`}
                 }
