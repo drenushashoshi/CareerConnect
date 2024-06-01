@@ -5,6 +5,7 @@ import EmployeeService from './Services/EmployeeService';
 import backgroundImage from './login-test2.avif';
 import Modal from 'react-bootstrap/Modal';
 import './styles.css';
+import RatesForVisitors from './Rate/RatesForVisitors';
 
 function Login() {
   const navigator = useNavigate();
@@ -22,7 +23,6 @@ function Login() {
     event.preventDefault();
     handleShowModal();
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,9 +65,9 @@ function Login() {
       setPassword('');
     }
   }
-  
+
   return (
-    <div className='login template d-flex justify-content-center align-items-center bg-primary text-white' style={{ 
+    <div className='login template d-flex flex-column align-items-center bg-primary text-white' style={{ 
       backgroundImage: `url(${backgroundImage})`, 
       backgroundSize: 'cover', 
       backgroundRepeat: 'no-repeat',
@@ -75,17 +75,16 @@ function Login() {
       opacity: 0.85,
       width: '100%',
       minHeight: '100vh', 
-  }}>
-  
+    }}>
       <div className='d-flex flex-column align-items-center'>
         <h1 className="custom-margin"><b>CareerConnect</b></h1>
         <p className='w-50 mt-3'>
-        Zbuloni, aplikoni dhe shkëlqeni me aplikacionin tonë të gjithanshëm në internet të krijuar për kërkuesit e punës dhe rekrutuesit.
-        Shfletoni dhe aplikoni lehtësisht për vendet e punës, kurset dhe praktikat në dispozicion të përshtatura për nevojat tuaja.
-        Thjeshtoni procesin tuaj të punësimit si kompani duke postuar vende të lira pune, duke menaxhuar aplikimet dhe duke planifikuar
-        intervistat pa mundim. Platforma jonë intuitive siguron lidhje të përsosur midis individëve të talentuar dhe
-        mundësive të shpërblyese. Nga kërkimi i punës deri te integrimi, ne ju mbështesim në çdo hap të rrugës.
-        Bashkohuni me komunitetin tonë sot dhe bëni hapin e ardhshëm në karrierën tuaj!
+          Zbuloni, aplikoni dhe shkëlqeni me aplikacionin tonë të gjithanshëm në internet të krijuar për kërkuesit e punës dhe rekrutuesit.
+          Shfletoni dhe aplikoni lehtësisht për vendet e punës, kurset dhe praktikat në dispozicion të përshtatura për nevojat tuaja.
+          Thjeshtoni procesin tuaj të punësimit si kompani duke postuar vende të lira pune, duke menaxhuar aplikimet dhe duke planifikuar
+          intervistat pa mundim. Platforma jonë intuitive siguron lidhje të përsosur midis individëve të talentuar dhe
+          mundësive të shpërblyese. Nga kërkimi i punës deri te integrimi, ne ju mbështesim në çdo hap të rrugës.
+          Bashkohuni me komunitetin tonë sot dhe bëni hapin e ardhshëm në karrierën tuaj!
         </p>
         <div className='w-40 p-3 bg-transparent'>
           <form onSubmit={handleSubmit}>
@@ -115,7 +114,8 @@ function Login() {
             </p>
           </form>
         </div>
-      </div>
+      </div><br/><br/><br/>
+      
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Body className='text-center custom-font'>
           <h5 className='mt-3'>Regjistrohu si?</h5>
@@ -125,6 +125,10 @@ function Login() {
           </div>
         </Modal.Body>
       </Modal>
+      
+      <div className='w-100 mt-3'>
+        <RatesForVisitors />
+      </div><br/><br/>
     </div>
   );
 }

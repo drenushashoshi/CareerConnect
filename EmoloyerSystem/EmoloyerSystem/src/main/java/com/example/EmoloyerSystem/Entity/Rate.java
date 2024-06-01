@@ -25,6 +25,12 @@ public class Rate {
     @Column(name="komenti",nullable = false)
     private String komenti;
 
+    @Column(name="name", nullable = false)
+    private String name;
+
+    @Column(name = "surname", nullable = false)
+    private String surname;
+
     @Column(name="data_krijimit",nullable = false)
     private String dataKrijimit;
 

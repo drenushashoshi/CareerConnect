@@ -11,7 +11,6 @@ public class InternshipMapper {
         return new InternshipDto(
                 internship.getId(),
                 internship.getTitle(),
-                internship.getCompany_name(),
                 internship.getDescription(),
                 internship.getStart_date(),
                 internship.getEnd_date(),
@@ -33,7 +32,6 @@ public class InternshipMapper {
         internship.setRequirements(internshipDto.getRequirements());
         internship.setStart_date(internshipDto.getStart_date());
         internship.setEnd_date(internshipDto.getEnd_date());
-        internship.setCompany_name(internship.getCompany_name());
         internship.setLocation(location);
         internship.setIndustria(industria);
         internship.setDeadline(internshipDto.getDeadline());

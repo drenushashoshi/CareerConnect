@@ -12,6 +12,9 @@ const Rate = () => {
   const [dataKrijimit, setDataKrijimit] = useState(null);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const name=sessionStorage.getItem('name');
+  const surname=sessionStorage.getItem('surname');
+
 
   const { employeeId } = useParams(); 
   const navigate = useNavigate();
@@ -39,7 +42,7 @@ const Rate = () => {
       return;
     }
 
-    const rate = { vleresimi, komenti, data_krijimit: dataKrijimit, employeeId }; 
+    const rate = { vleresimi, komenti, data_krijimit: dataKrijimit, employeeId, name, surname }; 
     console.log(rate);
 
     try {

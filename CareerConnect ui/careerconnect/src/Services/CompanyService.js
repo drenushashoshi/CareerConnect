@@ -12,11 +12,10 @@ class CompanyService{
             throw err;
         }
     }
-    static async downloadImage(staffId, token) {
+    static async downloadImage(staffId) {
         try {
-          const response = await axios.get(`${CompanyService.BASE_URL}/company/downloadImage/${staffId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-            responseType: 'arraybuffer' 
+          const response = await axios.get(`${CompanyService.BASE_URL}/public/downloadImage/${staffId}`, {
+           responseType: 'arraybuffer' 
           });
           return response.data;
         } catch (err) {

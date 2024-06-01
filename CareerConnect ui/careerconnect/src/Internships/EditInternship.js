@@ -10,7 +10,6 @@ import CompanyService from '../Services/CompanyService';
 
 const EditInternship = () => {
     const [title, settitle] = useState('');
-    const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
@@ -47,7 +46,6 @@ const EditInternship = () => {
                 .then((response) => {
                     setInternship(response.data);
                     settitle(response.title);
-                    setCompany_name(response.company_name);
                     setStart_date(response.start_date);
                     setEnd_date(response.end_date);
                     setRequirements(response.requirements);
@@ -103,7 +101,6 @@ const EditInternship = () => {
     function saveInternship(e) {
         e.preventDefault();
         setTitleError('');
-        setCompanyNameError('');
         setStartDateError('');
         setEndDateError('');
         setDeadlineError('');
@@ -142,7 +139,7 @@ const EditInternship = () => {
         }
 
         if (isValid) {
-            const updatedInternship = { title, company_name, description, start_date, end_date, requirements, locationName, industriaName, deadline };
+            const updatedInternship = { title, description, start_date, end_date, requirements, locationName, industriaName, deadline };
             if (id) {
                 const token = localStorage.getItem('token');
                 InterService.updateInternship(id, updatedInternship, token)
@@ -234,15 +231,6 @@ const EditInternship = () => {
                                         {endDateError && <div style={{ color: 'red' }}>{endDateError}</div>}
                                         <li>Afati i dorezimit: <input type="text" value={deadline} onChange={(e) => setDeadline(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px' }} /></li>
                                         {deadlineError && <div style={{ color: 'red' }}>{deadlineError}</div>}
-                                    </ul>
-                                </div>
-                                <div className="post-details4 mb-4">
-                                    <div className="small-section-title">
-                                        <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Informacioni lidhur me kompaninë</h4>
-                                    </div>
-                                    <ul style={{ listStyle: 'none' }}>
-                                        <li>Emri i kompanise: <input type="text" value={company_name} onChange={(e) => setCompany_name(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px' }} /></li>
-                                        {companyNameError && <div style={{ color: 'red' }}>{companyNameError}</div>}
                                     </ul>
                                 </div>
                             </div>

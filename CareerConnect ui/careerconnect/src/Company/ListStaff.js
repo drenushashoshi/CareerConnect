@@ -47,7 +47,7 @@ const ListStaff = ({ companyId }) => {
   const fetchImages = async (staffList) => {
     const token = localStorage.getItem('token');
     const imagePromises = staffList.map(staff => 
-      CompanyService.downloadImage(staff.id, token)
+      CompanyService.downloadImage(staff.id)
         .then(imageData => {
           const blob = new Blob([imageData], { type: 'image/jpeg' });
           const url = URL.createObjectURL(blob);
@@ -249,7 +249,6 @@ const ListStaff = ({ companyId }) => {
                   }}
                 />
                 {roleError && <div style={{ color: 'red' }}>{roleError}</div>}<br />
-                
                 <input
                   type="file"
                   accept="image/*"

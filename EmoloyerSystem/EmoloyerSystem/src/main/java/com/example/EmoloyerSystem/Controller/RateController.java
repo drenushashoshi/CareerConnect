@@ -27,19 +27,11 @@ public class RateController {
 
     
     @GetMapping("/public/getAllRates")
-    public ResponseEntity<List<RateDto>>getAllRates(){
-        List<RateDto>rates=null;
-            rates=rateService.getAllRates();
+    public ResponseEntity<List<RateDto>>getAllRates() {
+        List<RateDto> rates = null;
+        rates = rateService.getAllRates();
 
         return ResponseEntity.ok(rates);
-    }
-
-    //Update Rate REST API
-    @PutMapping("/admin/updateRate/{id}")
-    public ResponseEntity<RateDto>updateRate(@PathVariable("id")Integer rateId,
-                                            @RequestBody RateDto updatedRate){
-        RateDto rateDto=rateService.updateRate(rateId,updatedRate);
-        return ResponseEntity.ok(rateDto);
     }
 
     //Delete Rate REST API

@@ -74,7 +74,6 @@ public class InternshipServiceImpl implements InternshipService {
         internship.setTitle(updatedInternship.getTitle());
         internship.setStart_date(updatedInternship.getStart_date());
         internship.setEnd_date(updatedInternship.getEnd_date());
-        internship.setCompany_name(updatedInternship.getCompany_name());
         internship.setDescription(updatedInternship.getDescription());
         internship.setRequirements(updatedInternship.getRequirements());
         internship.setDeadline(updatedInternship.getDeadline());

@@ -15,6 +15,8 @@ public class RateDto {
     private int id;
     private String vleresimi;
     private String komenti;
+    private String name;
+    private String surname;
     private String data_krijimit;
     private int EmployeeId;
 }

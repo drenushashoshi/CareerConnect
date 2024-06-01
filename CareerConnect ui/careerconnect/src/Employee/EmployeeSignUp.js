@@ -85,7 +85,7 @@ function EmployeeSignUp() {
       if (isFormValid) {
         setLoading(true);
         const employeeData = { name, surname, email, address, age, phone, password, jobPreferences, skills, role };
-
+        
         const data = await EmployeeService.register(employeeData);
 
         if (data.token) {

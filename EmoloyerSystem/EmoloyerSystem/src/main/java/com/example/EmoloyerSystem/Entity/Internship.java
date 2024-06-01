@@ -22,9 +22,6 @@ public class Internship {
     @Column(name="title", nullable = false)
     private String title;
 
-    @Column(name="company_name", nullable = true)
-    private String company_name;
-
     @Column(name="description", nullable = false, length = 1000)
     private String description;
     @Column(name="start_date", nullable = false)

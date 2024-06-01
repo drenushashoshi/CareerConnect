@@ -15,7 +15,6 @@ const InternshipDetails = () => {
     const isEmployee=EmployeeService.isEmployee();
 
     const [title, setTittle] = useState('');
-    const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
@@ -35,7 +34,6 @@ const InternshipDetails = () => {
           InterService.getInternshipById(id)
             .then((response) => {
               setTittle(response.title);
-              setCompany_name(response.company_name);
               setStart_date(response.start_date);
               setEnd_date(response.end_date);
               setRequirements(response.requirements);
@@ -112,7 +110,6 @@ const InternshipDetails = () => {
                                         <li>Data e fillimit: <span>{start_date}</span></li>
                                         <li>Data e perfundimit: <span>{end_date}</span></li>
                                         <li>Afati i aplikimit: <span>{deadline}</span></li>
-                                        <li>Kompania: <span>{company_name}</span></li>
                                     </ul>
                                     <div className="d-flex justify-content-center"> 
                                     {isEmployee && (

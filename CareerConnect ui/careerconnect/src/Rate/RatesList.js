@@ -58,15 +58,15 @@ const RatesList = () => {
     <div className="d-flex justify-content-center"> 
       <SideNavBar />
       <div className="container" style={{ marginLeft: "300px", marginTop:"50px" }}>
-        <h2>Lista e Vlerësimeve:</h2><br/>
         {rates.map(rate => (
           <div key={rate.id} className="col-md-6 mb-4">
             <Card className="text-center">
               <Card.Body>
+              <Card.Title>{rate.name} {rate.surname}</Card.Title>
                 <Card.Title>{renderStars(rate.vleresimi)}</Card.Title>
                 <Card.Text>
-                  <strong>Komenti:</strong> {rate.komenti}<br />
-                  <strong>Data e Krijimit:</strong> {rate.data_krijimit}
+                  <strong> "</strong>{rate.komenti}<strong>"</strong><br />
+                  {rate.data_krijimit}
                 </Card.Text>
                 <Button variant="danger" onClick={() => deleteRate(rate.id)}>Fshij komentin</Button>
               </Card.Body>

@@ -50,20 +50,6 @@ public class RateServiceImpl implements RateService{
     }
 
     @Override
-    public RateDto updateRate(Integer rateId, RateDto updatedRate) {
-
-        Rate rate =rateRepository.findById(rateId.longValue())
-                .orElseThrow(()-> new ResourceNotFoundException("Rate not found with id:"+rateId));
-
-        rate.setVleresimi(updatedRate.getVleresimi());
-        rate.setKomenti(updatedRate.getKomenti());
-        rate.setDataKrijimit(updatedRate.getData_krijimit());
-
-        Rate updatedRateObj=rateRepository.save(rate);
-        return RateMapper.mapToRateDto(updatedRateObj);
-    }
-
-    @Override
     public void deleteRate(Long rateId) {
         Rate rate=rateRepository.findById(rateId).orElseThrow(
                 ()->new ResourceNotFoundException("Rate does not exist with given id"+rateId)

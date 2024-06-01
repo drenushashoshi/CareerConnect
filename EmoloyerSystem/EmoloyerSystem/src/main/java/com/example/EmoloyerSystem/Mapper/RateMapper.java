@@ -10,6 +10,8 @@ public class RateMapper {
                 rate.getId(),
                 rate.getVleresimi(),
                 rate.getKomenti(),
+                rate.getName(),
+                rate.getSurname(),
                 rate.getDataKrijimit(),
                 rate.getEmployee().getId()
         );
@@ -20,6 +22,8 @@ public class RateMapper {
         rate.setId(rateDto.getId());
         rate.setVleresimi(rateDto.getVleresimi());
         rate.setKomenti(rateDto.getKomenti());
+        rate.setName(rateDto.getName());
+        rate.setSurname(rateDto.getSurname());
         rate.setDataKrijimit(rateDto.getData_krijimit());
         rate.setEmployee(employee);
 

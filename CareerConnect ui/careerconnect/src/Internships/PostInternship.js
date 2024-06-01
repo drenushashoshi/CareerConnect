@@ -10,7 +10,6 @@ import CompanyService from '../Services/CompanyService';
 
 function PostInternship() {
     const [title, setTitle] = useState('');
-    const [company_name, setCompany_name] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
@@ -38,9 +37,6 @@ function PostInternship() {
         switch (name) {
             case "title":
                 setTitle(value);
-                break;
-            case "company_name":
-                setCompany_name(value);
                 break;
             case "description":
                 setDescription(value);
@@ -105,12 +101,11 @@ function PostInternship() {
         try {
             const errors = validateForm();
             if (Object.keys(errors).length === 0) {
-                const internship = { title, company_name, description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
+                const internship = { title,description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
                 const token = localStorage.getItem('token');
                 await InterService.createInternship(internship, token);
                 setSuccessMessage("Praktika u postua me sukses!");
                 setTitle('');
-                setCompany_name('');
                 setDescription('');
                 setStart_date('');
                 setEnd_date('');
@@ -133,9 +128,6 @@ function PostInternship() {
         const errors = {};
         if (!title.trim()) {
             errors.title = 'Shkruani titullin';
-        }
-        if (!company_name.trim()) {
-            errors.company_name = 'Shkruani emrin e kompanisë';
         }
         if (!description.trim()) {
             errors.description = 'Shkruani përshkrimin e praktikës';
@@ -186,10 +178,6 @@ function PostInternship() {
                         <div style={{ width: 'calc(50% - 5px)' }}>
                             <input className="form-control" industria="text" name="title" value={title} onChange={handleChange} placeholder="Titulli" style={{ width: '100%' }} />
                             {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
-                        </div>
-                        <div style={{ width: 'calc(50% - 5px)' }}>
-                            <input className="form-control" industria="text" name="company_name" value={company_name} onChange={handleChange} placeholder="Emri i Kompanise" style={{ width: '100%' }} />
-                            {errors.company_name && <span style={{ color: 'red' }}>{errors.company_name}</span>}
                         </div>
                     </div>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>

@@ -35,6 +35,8 @@ const EmployeePage = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await EmployeeService.getProfile(token);
+      sessionStorage.setItem('name', response.employee.name);
+      sessionStorage.setItem('surname', response.employee.surname);
       setProfileInfo(response.employee);
     } catch (error) {
       console.log('Error fetching profile data ', error);

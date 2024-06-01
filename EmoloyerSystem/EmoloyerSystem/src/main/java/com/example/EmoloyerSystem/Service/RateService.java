@@ -10,8 +10,6 @@ public interface RateService {
 
     List<RateDto>getAllRates();
 
-    RateDto updateRate(Integer rateId,RateDto updatedRate);
-
     void deleteRate(Long rateId);
 
 
