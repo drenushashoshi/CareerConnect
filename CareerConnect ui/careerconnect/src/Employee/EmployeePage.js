@@ -29,12 +29,12 @@ const EmployeePage = () => {
 
   useEffect(() => {
     fetchProfileInfo();
-  }, []);
+  }, [id]);
 
   const fetchProfileInfo = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await EmployeeService.getProfile(token);
+      const response = await EmployeeService.getEmployeeById(id);
       sessionStorage.setItem('name', response.employee.name);
       sessionStorage.setItem('surname', response.employee.surname);
       setProfileInfo(response.employee);

@@ -14,7 +14,7 @@ class CompanyService{
     }
     static async downloadImage(staffId) {
         try {
-          const response = await axios.get(`${CompanyService.BASE_URL}/public/downloadImage/${staffId}`, {
+          const response = await axios.get(`${CompanyService.BASE_URL}/public/downloadImagee/${staffId}`, {
            responseType: 'arraybuffer' 
           });
           return response.data;

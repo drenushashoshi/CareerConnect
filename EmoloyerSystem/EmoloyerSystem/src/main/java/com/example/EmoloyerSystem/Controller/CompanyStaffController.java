@@ -63,7 +63,7 @@ public class CompanyStaffController {
         return ResponseEntity.ok("CompanyStaff Deleted");
     }
 
-    @GetMapping("/public/downloadImage/{id}")
+    @GetMapping("/public/downloadImagee/{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable("id") Integer companyStaffId) {
         byte[] image = companyStaffService.downloadImage(companyStaffId);
         return ResponseEntity.ok()

@@ -48,7 +48,8 @@ function Login() {
           console.log(data.role)
           
           if (data.role === 'Employee') {
-            navigator('/EmployeePage');
+            const id=(data.id);
+            navigator(`/EmployeePage/${id}`);
           } else if (data.role === 'ADMIN') {
             navigator('/Dashboard');
           } else {

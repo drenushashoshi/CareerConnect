@@ -228,8 +228,7 @@ const CompanyPage = () => {
             <div className="text-center mb-5">
               <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Shpalljet e Postuara</h2>
             </div>
-            <CompanysInternships companyId={profileInfo.id} />
-            <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Punet e Postuara</h2>
+            <CompanysInternships companyId={profileInfo.id} /><br/>
             <AllJobs companyId={profileInfo.id} />
           </>
         )}
