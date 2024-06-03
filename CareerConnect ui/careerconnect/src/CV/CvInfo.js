@@ -106,7 +106,7 @@ const CvInfo = () => {
             const response = await CvService.createCv(formData, token);
             navigate(`/CvInfo/` + response.cvid);
         } catch (error) {
-            console.error('Error creating CV or uploading picture:', error);
+            setImageError('Please try a different email/phone nr.');
         }
     };
 
@@ -177,7 +177,7 @@ const CvInfo = () => {
                     <div className="form-group mt-3 mb-3">
                         <input type="file" className="form-control-file d-none" id="fileInput" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
                         <label htmlFor="fileInput" className="btn btn-primary">Choose Picture For Cv</label>
-                        {imageError && <span className="text-danger">{imageError}</span>}
+                        {imageError && <span className="text-danger mx-5">{imageError}</span>}
                     </div>
                     <button type="submit" className="btn btn-primary">Continue</button>
                 </form>
