@@ -22,6 +22,60 @@ const JobApplication = () => {
         internshipid: 0,
         employeeid: employeeId
     });
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const errors = {};
+        let isValid = true;
+
+        // Validate name
+        if (!values.name.trim()) {
+            errors.name = 'Name is required';
+            isValid = false;
+        }
+
+        // Validate email
+        if (!values.email.trim()) {
+            errors.email = 'Email is required';
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+            errors.email = 'Email is invalid';
+            isValid = false;
+        }
+
+        // Validate phone number
+        if (!values.phone_nr.trim()) {
+            errors.phone_nr = 'Phone number is required';
+            isValid = false;
+        }
+
+        // Validate age
+        if (!values.age.trim()) {
+            errors.age = 'Age is required';
+            isValid = false;
+        }
+
+        // Validate city
+        if (!values.city.trim()) {
+            errors.city = 'City is required';
+            isValid = false;
+        }
+
+        // Validate description
+        if (!values.description.trim()) {
+            errors.description = 'Description is required';
+            isValid = false;
+        }
+
+        // Validate gender
+        if (!values.gender.trim()) {
+            errors.gender = 'Gender is required';
+            isValid = false;
+        }
+
+        setErrors(errors);
+        return isValid;
+    };
 
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
@@ -29,13 +83,15 @@ const JobApplication = () => {
 
     const handleNewApplication = async (event) => {
         event.preventDefault();
-        try {
-            console.log(values);
-            const { data } = await ApplicationService.createApplication(values);
-            navigate(`/EmployeePage/`+employeeId);  // Add appropriate navigation route
-        } catch (error) {
-            console.error(error);
-        }
+        if (validateForm()) {
+            try {
+                console.log(values);
+                const { data } = await ApplicationService.createApplication(values);
+                navigate(`/EmployeePage/`+employeeId);  // Add appropriate navigation route
+            } catch (error) {
+                console.error(error);
+            }
+    }
     };
 
     return (
@@ -59,6 +115,7 @@ const JobApplication = () => {
                                 value={values.name}
                                 onChange={handleChange}
                             />
+                            {errors.name && <div className="text-danger">{errors.name}</div>}
                         </label>
 
                         <label className="d-block mb-4">
@@ -72,6 +129,7 @@ const JobApplication = () => {
                                 value={values.email}
                                 onChange={handleChange}
                             />
+                            {errors.email && <div className="text-danger">{errors.email}</div>}
                         </label>
 
                         <label className="d-block mb-4">
@@ -85,6 +143,7 @@ const JobApplication = () => {
                                 value={values.city}
                                 onChange={handleChange}
                             />
+                            {errors.city && <div className="text-danger">{errors.city}</div>}
                         </label>
 
                         <label className="d-block mb-4">
@@ -98,6 +157,7 @@ const JobApplication = () => {
                                 value={values.phone_nr}
                                 onChange={handleChange}
                             />
+                            {errors.phone_nr && <div className="text-danger">{errors.phone_nr}</div>}
                         </label>
 
                         <label className="d-block mb-4">
@@ -110,6 +170,7 @@ const JobApplication = () => {
                                 value={values.age}
                                 onChange={handleChange}
                             />
+                            {errors.age && <div className="text-danger">{errors.age}</div>}
                         </label>
 
                         <label className="d-block mb-4">
@@ -122,6 +183,7 @@ const JobApplication = () => {
                                 value={values.description}
                                 onChange={handleChange}
                             ></textarea>
+                            {errors.description && <div className="text-danger">{errors.description}</div>}
                         </label>
 
                         <div className="mb-4">
@@ -154,11 +216,12 @@ const JobApplication = () => {
                                     <span className="form-check-label">Female</span>
                                 </label>
                             </div>
+                            {errors.gender && <div className="text-danger">{errors.gender}</div>}
                         </div>
 
                         <div className="mb-3">
                             <button type="submit" className="btn btn-primary px-3 rounded-3">
-                                Upload
+                                Apply
                             </button>
                         </div>
                     </form>

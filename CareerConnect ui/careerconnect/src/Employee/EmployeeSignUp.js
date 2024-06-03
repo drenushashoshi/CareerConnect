@@ -94,7 +94,7 @@ function EmployeeSignUp() {
             localStorage.setItem('role', role);
             sessionStorage.setItem('employeeId', data.id);
             setLoading(false);
-            navigator('/EmployeePage');
+            navigator('/EmployeePage/'+data.id);
           }, 4000);
         } else {
           setLoading(false);

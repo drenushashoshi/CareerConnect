@@ -62,7 +62,7 @@ public class Employee implements UserDetails {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Rate> rates;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee",orphanRemoval = true)
     private CV Cvid;
 
     @OneToMany(mappedBy = "employeeid",cascade = CascadeType.ALL,orphanRemoval = true)

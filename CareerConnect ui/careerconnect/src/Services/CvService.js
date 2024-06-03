@@ -54,7 +54,7 @@ class CvService {
         const token = localStorage.getItem('token');
         try
         {
-            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/Employee/${id}`,
+            const response = await axios.get(`${CvService.BASE_URL}/employee/Cv/Employee/${id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -91,7 +91,7 @@ class CvService {
     static async deleteCv(id) {
         try{
             const token = localStorage.getItem('token');
-            const response = await axios.delete(`${CvService.BASE_URL}/public/deleteCv/${id}`,
+            const response = await axios.delete(`${CvService.BASE_URL}/employee/deleteCv/${id}`,
                 {
                     headers:{Authorization: `Bearer ${token}`}
                 }

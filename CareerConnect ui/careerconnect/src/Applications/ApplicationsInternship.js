@@ -3,12 +3,12 @@ import CustomNavbar from '../CustomNavbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApplicationService from '../Services/ApplicationService';
 import Footer from '../Footer';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Row, Col } from 'react-bootstrap';
 import backgroundImage from '../Company/background.jpg';
 import CompanyService from '../Services/InterService';
 
 const ApplicationsInternship = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { id } = useParams();
     const [applications, setApplications] = useState([]);
     const [job, setJob] = useState(null);
@@ -39,10 +39,15 @@ const ApplicationsInternship = () => {
         fetchJob();
     }, [id]);
 
-    const Click = ()=>
-        {
-            navigate(`/EmployeePage/`+applications[0].employeeid);
-        }
+    const [showDetails, setShowDetails] = useState({}); // Use an object to track details for each application
+
+    const toggleDetails = (applicationId) => {
+        setShowDetails(prevState => ({
+            ...prevState,
+            [applicationId]: !prevState[applicationId] // Toggle the state for the clicked application
+        }));
+    };
+
     return (
         <div 
             className="d-flex flex-column min-vh-100" 
@@ -51,33 +56,43 @@ const ApplicationsInternship = () => {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                textAlign: 'center'
             }}>
-            {job &&(
+            {job && (
             <>
-            <CustomNavbar/>
-            <h3>{job.title}</h3>
-            <div className="flex-grow-1">
-                {applications.map((application) => (
-                    <div className="container mt-5" key={application.id}>
-                        <div className="row">
-                            <div className="col-md-4 mb-4">
+                <CustomNavbar/>
+                <h3 className='text-center'>{job.title}</h3>
+                <div className="flex-grow-1">
+                    <Row xs={1} md={3} className="mx-5 g-4">
+                        {applications.map((application) => (
+                            <Col key={application.applicationid}>
                                 <Card>
                                     <Card.Body>
-                                        <Card.Title>{application.name} {application.surname}</Card.Title>
+                                        <Card.Title className='text-center'>{application.name} {application.surname}</Card.Title>
                                         <Card.Text>
-                                            ✉️{application.email}<br />
+                                            ✉️ {application.email}<br />
                                             📞 {application.phone_nr}
                                         </Card.Text>
-                                        <Button className='btn btn-primary' onClick={Click}>See Employee</Button>
+                                        {showDetails[application.applicationid] && ( // Conditionally render additional details for the specific application
+                                            <Card.Text>
+                                                Gender: {application.gender}<br />
+                                                Description:<br/> {application.description}
+                                            </Card.Text>
+                                        )}
+                                        <Button className='btn btn-primary mx-5' onClick={() => toggleDetails(application.applicationid)}>
+                                            {showDetails[application.applicationid] ? 'See less' : 'See more'}
+                                        </Button>
+                                        <Button 
+                                            className='btn btn-primary mx-5' 
+                                            onClick={() => navigate(`/EmployeePage/${application.employeeid}`)}>
+                                            See Employee
+                                        </Button>
                                     </Card.Body>
                                 </Card>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <Footer/>
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+                <Footer/>
             </>
             )}
         </div>

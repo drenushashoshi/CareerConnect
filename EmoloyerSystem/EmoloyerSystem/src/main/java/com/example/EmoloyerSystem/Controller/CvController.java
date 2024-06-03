@@ -45,7 +45,7 @@ public class CvController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/public/Cv/Employee/{id}")
+    @GetMapping("/employee/Cv/Employee/{id}")
     public ResponseEntity<CVDto> getCvByEmployeeId(@PathVariable int id)
     {
         CVDto Cvs = CVService.getCvByEmployeeId(id);

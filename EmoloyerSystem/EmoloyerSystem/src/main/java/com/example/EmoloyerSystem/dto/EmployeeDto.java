@@ -38,6 +38,4 @@ public class EmployeeDto {
 
     private Employee employee;
     private List<Employee> employeeList;
-    private int cvid;
-    private int applicationid;
 }

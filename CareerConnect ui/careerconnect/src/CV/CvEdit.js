@@ -98,7 +98,7 @@ const CvEdit = () => {
         if (!phone_nr) newErrors.phone_nr = 'Please fill out the phone_nr';
         if (!street) newErrors.street = 'Please fill out the street';
         if (!city) newErrors.city = 'Please fill out the city';
-
+        if (!image) newErrors.fileInput = 'Please insert an image';
         return newErrors;
     };
 
