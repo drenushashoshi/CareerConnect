@@ -20,6 +20,7 @@ const CvEdit = () => {
     const [description,setDescription] = useState('');
     const [street,setStreet] = useState('');
     const [image, setImage] = useState(null); 
+    const [uniqueError,setUniqueError] = useState('');
 
     const fetchCV = async () => {
         try {
@@ -57,9 +58,11 @@ const CvEdit = () => {
                 break;
             case 'email':
                 setEmail(value);
+                setUniqueError('');
                 break;
             case 'phone_nr':
                 setPhone_nr(value);
+                setUniqueError('');
                 break;
             case 'college':
                 setCollege(value);
@@ -105,27 +108,39 @@ const CvEdit = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const validationErrors = validate();
-        if (Object.keys(validationErrors).length > 0 || fileError) {
+        if (Object.keys(validationErrors).length > 0 || fileError || uniqueError) {
             setErrors(validationErrors);
             return;
         }
         try {
             const formData = new FormData();
-            formData.append('CV', JSON.stringify({name, surname, email, phone_nr, college, degree, city, highschool, description, street, employee}));
+            formData.append('CV', JSON.stringify({ name, surname, email, phone_nr, college, degree, city, highschool, description, street, employee }));
             if (image) {
                 formData.append('image', image);
             }
-
+    
             const token = localStorage.getItem('token');
-            CvService.updateCv(Cv.cvid, formData, token)
-                .then((response) => {
-                console.log(response);
-        })
-        navigate(`/CvInfo/`+Cv.cvid);
+            console.log("Sending request to update CV with ID:", Cv.cvid); // Log the ID
+            console.log("Form Data:", formData); // Log the form data for debugging
+    
+            const response = await CvService.updateCv(Cv.cvid, formData, token);
+    
+            if (response.status === 200) {
+                navigate(`/CvInfo/${Cv.cvid}`);
+            } else if (response.status === 409) {
+                setUniqueError('Email/Phone number already in use');
+            } else if (response.status === 404) {
+                setUniqueError('CV not found');
+            } else {
+                setUniqueError('An unexpected error occurred');
+                console.error('Unexpected Error:', response);
+            }
         } catch (error) {
-            console.error('Error updating CV:', error);
+            console.log(error.message);
+            setUniqueError('An error occurred while updating the CV');
         }
     };
+    
 
     return (
         <div>
@@ -278,6 +293,7 @@ const CvEdit = () => {
                             />
                             <label htmlFor="fileInput" className="btn btn-primary">Choose Picture For Cv</label>
                             {fileError && <div className="invalid-feedback d-block">Please insert an image</div>}
+                            {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                         </div>
                         <button type="submit" className="btn btn-primary">Continue</button>
                     </form>

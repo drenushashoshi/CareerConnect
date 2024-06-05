@@ -30,7 +30,8 @@ const CV = () => {
         if (Cv) {
             try {
                 const token = localStorage.getItem('token');
-                const imageData = await CvService.downloadImage(Cv.cvid, token); // Assuming Cv contains necessary data including id
+                console.log(Cv.cvid)
+                const imageData = await CvService.downloadImage(Cv.cvid); // Assuming Cv contains necessary data including id
                 const blob = new Blob([imageData], { type: 'image/jpeg' });
                 const url = URL.createObjectURL(blob);
                 setProfileImageURL(url);
@@ -42,7 +43,7 @@ const CV = () => {
 
     useEffect(() => {
         fetchCV();
-    }, [idAsInteger]);
+    }, [id]);
 
     useEffect(() => {
         if (Cv) {
@@ -88,6 +89,7 @@ const CV = () => {
     console.log("References:", references);
     console.log("Languages:", languages);
     console.log("Experiences:", workExperiences);
+    console.log("Image: ",profileImageURL)
 
     return (
         <>
@@ -123,6 +125,7 @@ const CV = () => {
                                         {languages.map((language, index) => (
                                             <p key={index}>
                                                 <strong>Language:</strong> {language.Language} <span className="ml-4"><strong>Level:</strong> {language.Level}</span>
+                                                <br/>
                                             </p>
                                         ))}
                                     </div>
@@ -142,6 +145,7 @@ const CV = () => {
                                             <p><strong>{workExperience.companyname}, {workExperience.street}, {workExperience.city}</strong></p>
                                             <p><strong>{workExperience.jobposition}</strong></p>
                                             <p>{workExperience.description}</p>
+                                            <hr/>
                                         </div>
                                     ))}
                                 </div>
@@ -153,6 +157,7 @@ const CV = () => {
                                             <p>{reference.jobposition}, {reference.companyname}</p>
                                             <p>Phone: {reference.phone_nr}</p>
                                             <p>Email: {reference.email}</p>
+                                            <hr/>
                                         </div>
                                     ))}
                                 </div>

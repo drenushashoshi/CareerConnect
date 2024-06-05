@@ -55,7 +55,7 @@ public class LanguageController {
         LanguageService.deleteLanguage(ID);
         return ResponseEntity.ok("Language Deleted");
     }
-    @GetMapping("/employee/languages/cv/{id}")
+    @GetMapping("/public/languages/cv/{id}")
     public ResponseEntity<List<LanguageDto>> getLanguageByCvId(@PathVariable int id)
     {
         List<LanguageDto> Languages =LanguageService.getLanguagesByCvid(id);

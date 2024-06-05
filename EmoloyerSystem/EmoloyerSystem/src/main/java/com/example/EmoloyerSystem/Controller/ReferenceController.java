@@ -47,7 +47,7 @@ public class ReferenceController {
         ReferenceService.deleteReference(ReferenceID);
         return ResponseEntity.ok("Reference Deleted");
     }
-    @GetMapping("/employee/References/cv/{id}")
+    @GetMapping("/public/References/cv/{id}")
    public ResponseEntity<List<ReferenceDto>> getReferenceByCvId(@PathVariable int id)
    {
        List<ReferenceDto> Reference =ReferenceService.getReferenceByCvId(id);

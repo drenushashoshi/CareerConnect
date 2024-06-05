@@ -63,11 +63,9 @@ class WorkExperienceService {
     }
     static async getWorkExperienceByCvId(id)
     {
-        const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`${WorkExperienceService.BASE_URL}/employee/WorkExperiences/cv/${id}`, {
+            const response = await axios.get(`${WorkExperienceService.BASE_URL}/public/WorkExperiences/cv/${id}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });

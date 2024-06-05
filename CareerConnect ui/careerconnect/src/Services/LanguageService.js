@@ -62,11 +62,9 @@ class LanguageService {
     }
     static async getLanguageByCvId(id)
     {
-        const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`${LanguageService.BASE_URL}/employee/languages/cv/${id}`, {
+            const response = await axios.get(`${LanguageService.BASE_URL}/public/languages/cv/${id}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });

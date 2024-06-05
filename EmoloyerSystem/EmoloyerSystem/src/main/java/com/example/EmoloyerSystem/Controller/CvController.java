@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Controller;
 
+import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Service.CvService;
 import com.example.EmoloyerSystem.dto.CVDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,11 +55,21 @@ public class CvController {
     }
     
     @PutMapping("/employee/update/cv/{id}")
-    public ResponseEntity<CVDto> updateCv(@PathVariable("id") Integer CVID, @RequestPart("CV") String CvJson,@RequestPart(value = "image",required = false) MultipartFile file) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        CVDto updatedCV = objectMapper.readValue(CvJson, CVDto.class);
-        CVDto CV = CVService.updateCv(CVID, updatedCV,file);
-        return ResponseEntity.ok(CV);
+    public ResponseEntity<CVDto> updateCv(@PathVariable("id") Integer CVID, 
+                                          @RequestPart("CV") String CvJson, 
+                                          @RequestPart(value = "image", required = false) MultipartFile file) throws IOException,IllegalArgumentException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            CVDto updatedCV = objectMapper.readValue(CvJson, CVDto.class);
+            CVDto CV = CVService.updateCv(CVID, updatedCV, file);
+            return ResponseEntity.ok(CV);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @DeleteMapping("/employee/deleteCv/{id}")

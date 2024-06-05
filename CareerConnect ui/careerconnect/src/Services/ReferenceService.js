@@ -62,11 +62,9 @@ class ReferenceService {
     }
     static async getReferenceByCvId(id)
     {
-        const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`${ReferenceService.BASE_URL}/employee/References/cv/${id}`, {
+            const response = await axios.get(`${ReferenceService.BASE_URL}/public/References/cv/${id}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });

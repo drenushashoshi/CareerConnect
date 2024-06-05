@@ -16,6 +16,7 @@ import com.example.EmoloyerSystem.Service.ImageUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import java.io.IOException;
@@ -59,27 +60,47 @@ public class CvServiceImpl implements CvService{
    }
 
    @Override
-   public CVDto updateCv(int CvID, CVDto updatedCv,MultipartFile file) throws IOException {
-       CV Cv=CvRepository.findById(CvID).orElseThrow(
-               ()-> new ResourceNotFoundException("Cv does not exist")
-       );
-       if (file != null && !file.isEmpty()) {
-        Cv.setImage(ImageUtils.compressImage(file.getBytes()));
-        }
-       Cv.setName(updatedCv.getName());
-       Cv.setSurname(updatedCv.getSurname());
-       Cv.setEmail(updatedCv.getEmail());
-       Cv.setPhone_nr(updatedCv.getPhone_nr());
-       Cv.setStreet(updatedCv.getStreet());
-       Cv.setCity(updatedCv.getCity());
-       Cv.setDescription(updatedCv.getDescription());
-       Cv.setCollege(updatedCv.getCollege());
-       Cv.setHighschool(updatedCv.getHighschool());
+   public CVDto updateCv(int CvID, CVDto updatedCv, MultipartFile file) throws IOException, IllegalArgumentException {
+    // Retrieve existing CV
+    CV existingCv = CvRepository.findById(CvID).orElseThrow(
+        () -> new ResourceNotFoundException("Cv does not exist")
+    );
 
-       CV updateCvn=CvRepository.save(Cv);
+    // Check for email uniqueness
+    Optional<CV> emailCheck = CvRepository.findByEmail(updatedCv.getEmail());
+    if (emailCheck.isPresent() && emailCheck.get().getCvid() != existingCv.getCvid()) {
+        throw new IllegalArgumentException("Email already in use by another CV");
+    }
 
-       return CVMapper.mapToCvDto(updateCvn);
-   }
+    // Check for phone number uniqueness
+    Optional<CV> phoneCheck = CvRepository.findByPhonenr(updatedCv.getPhone_nr());
+    if (phoneCheck.isPresent() && phoneCheck.get().getCvid() != existingCv.getCvid()) {
+        throw new IllegalArgumentException("Phone number already in use by another CV");
+    }
+
+    // Update image if new file is provided
+    if (file != null && !file.isEmpty()) {
+        existingCv.setImage(ImageUtils.compressImage(file.getBytes()));
+    }
+
+    // Update CV fields
+    existingCv.setName(updatedCv.getName());
+    existingCv.setSurname(updatedCv.getSurname());
+    existingCv.setEmail(updatedCv.getEmail());
+    existingCv.setPhone_nr(updatedCv.getPhone_nr());
+    existingCv.setStreet(updatedCv.getStreet());
+    existingCv.setCity(updatedCv.getCity());
+    existingCv.setDescription(updatedCv.getDescription());
+    existingCv.setCollege(updatedCv.getCollege());
+    existingCv.setHighschool(updatedCv.getHighschool());
+
+    // Save the updated CV
+    CV updatedCvEntity = CvRepository.save(existingCv);
+
+    // Map to DTO and return
+    return CVMapper.mapToCvDto(updatedCvEntity);
+}
+
 
    @Override
    public List<CVDto> getAllCvs(){

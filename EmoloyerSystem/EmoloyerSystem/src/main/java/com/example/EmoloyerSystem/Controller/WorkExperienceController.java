@@ -47,7 +47,7 @@ public class WorkExperienceController {
        WorkExperienceService.deleteWorkExperience(WorkExperienceID);
        return ResponseEntity.ok("Work Experience Deleted");
    }
-   @GetMapping("/employee/WorkExperiences/cv/{id}")
+   @GetMapping("/public/WorkExperiences/cv/{id}")
    public ResponseEntity<List<WorkExperienceDto>> getWorkExperienceByCvId(@PathVariable int id)
    {
        List<WorkExperienceDto> Reference =WorkExperienceService.getWorkExperienceByCvId(id);

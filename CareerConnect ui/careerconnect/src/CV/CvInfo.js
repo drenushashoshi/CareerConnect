@@ -29,6 +29,7 @@ const CvInfo = () => {
     const [descriptionError, setDescriptionError] = useState('');
     const [streetError, setStreetError] = useState('');
     const [imageError, setImageError] = useState('');
+    const [uniqueError, setUniqueError] = useState('');
 
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
@@ -55,10 +56,12 @@ const CvInfo = () => {
             case 'email':
                 setEmail(value);
                 setEmailError(value ? '' : 'Email is required');
+                setUniqueError('');
                 break;
             case 'phone_nr':
                 setPhone_nr(value);
                 setPhoneError(value ? '' : 'Phone Number is required');
+                setUniqueError('');
                 break;
             case 'college':
                 setCollege(value);
@@ -91,7 +94,7 @@ const CvInfo = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (nameError || surnameError || emailError || phoneError || collegeError || degreeError || cityError || highschoolError || descriptionError || streetError || imageError) {
+        if (nameError || surnameError || emailError || phoneError || collegeError || degreeError || cityError || highschoolError || descriptionError || streetError || imageError || uniqueError) {
             console.log('Please fill out all required fields correctly.');
             return;
         }
@@ -106,7 +109,7 @@ const CvInfo = () => {
             const response = await CvService.createCv(formData, token);
             navigate(`/CvInfo/` + response.cvid);
         } catch (error) {
-            setImageError('Please try a different email/phone nr.');
+            setUniqueError('Please try a different email/phone nr.');
         }
     };
 
@@ -178,6 +181,7 @@ const CvInfo = () => {
                         <input type="file" className="form-control-file d-none" id="fileInput" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
                         <label htmlFor="fileInput" className="btn btn-primary">Choose Picture For Cv</label>
                         {imageError && <span className="text-danger mx-5">{imageError}</span>}
+                        {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                     </div>
                     <button type="submit" className="btn btn-primary">Continue</button>
                 </form>
