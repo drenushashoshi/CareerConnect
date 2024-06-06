@@ -56,7 +56,7 @@ const Rate = () => {
       
       setTimeout(() => {
         setShowModal(false);
-        navigate('/EmployeePage');
+        navigate(`/EmployeePage/${employeeId}`);
       }, 2000);
     } catch (error) {
       console.error(error);

@@ -26,7 +26,7 @@ public class CompanyManagementController {
     public ResponseEntity<CompanyDto> refreshToken(@RequestBody CompanyDto companyDto){
         return ResponseEntity.ok(companyMenagmentService.refreshToken(companyDto));
     }
-    @GetMapping("/public/getAllCompanies")
+    @GetMapping("/admin/getAllCompanies")
     public ResponseEntity<CompanyDto> getAllCompanies(){
         return ResponseEntity.ok(companyMenagmentService.getAllCompanies());
     }
@@ -45,7 +45,7 @@ public class CompanyManagementController {
         CompanyDto response = companyMenagmentService.getMyInfo(email);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
-    @DeleteMapping("/company/deleteCompany/{id}")
+    @DeleteMapping("/admincompany/deleteCompany/{id}")
     public ResponseEntity<CompanyDto> deleteCompany(@PathVariable Integer id){
         return ResponseEntity.ok(companyMenagmentService.deleteCompany(id));
     }

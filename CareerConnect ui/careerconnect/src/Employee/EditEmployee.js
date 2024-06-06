@@ -69,7 +69,7 @@ const EditEmployee = () => {
     try {
       const token = localStorage.getItem('token');
       await EmployeeService.updateEmployee(id, employeeData, token);
-      navigate('/EmployeePage');
+      navigate(`/EmployeePage/${id}`);
     } catch (error) {
       console.error('Error updating employee profile', error);
     }

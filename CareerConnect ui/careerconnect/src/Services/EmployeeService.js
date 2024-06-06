@@ -22,9 +22,11 @@ class EmployeeService{
     }
     
     
-    static async getAllEmployees(){
+    static async getAllEmployees(token){
         try{
-            const response= await axios.get(`${EmployeeService.BASE_URL}/public/getAllEmployees`)
+            const response= await axios.get(`${EmployeeService.BASE_URL}/admin/getAllEmployees`, {
+                headers:{Authorization: `Bearer ${token}`}
+            })
             return response.data;
         }catch(err){
             throw err;

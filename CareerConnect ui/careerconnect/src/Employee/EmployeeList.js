@@ -17,10 +17,20 @@ const EmployeeList = () => {
         fetchEmployees();
     }, []);
 
+    const removeEmployee = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            await EmployeeService.deleteEmployee(id, token);
+            fetchEmployees();
+        } catch (error) {
+            console.error('Error deleting employee', error);
+        }
+    };
+
     const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await EmployeeService.getAllEmployees();
+            const response = await EmployeeService.getAllEmployees(token);
             setEmployees(response.employeeList);
         } catch (error) {
             console.log('Error fetching employees ', error);
@@ -44,6 +54,8 @@ const EmployeeList = () => {
                                 <th>Numri kontaktues</th>
                                 <th>Preferencat për punë</th>
                                 <th>Aftësitë</th>
+                                <th>Shiko:</th>
+                                <th>Kontrollo:</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,6 +69,20 @@ const EmployeeList = () => {
                                     <td>{employee.phone}</td>
                                     <td>{employee.jobPreferences}</td>
                                     <td>{employee.skills}</td>
+                                    <td>
+                                        <a href={`/EmployeePage/${employee.id}`}
+                                            className="btn btn-link"
+                                            style={{ padding: 0, textDecoration: 'none', color: '#007bff' }}
+                                        >
+                                            Profili i punetorit
+                                        </a>
+                                    </td>
+                                    <td>
+                                    <button className="btn btn-danger" onClick={() => removeEmployee(employee.id)}>
+                                        Fshij profilin
+                                    </button>
+
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

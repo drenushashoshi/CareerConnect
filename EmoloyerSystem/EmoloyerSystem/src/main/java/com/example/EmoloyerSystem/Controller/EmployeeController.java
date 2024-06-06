@@ -28,7 +28,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> refreshToken(@RequestBody EmployeeDto employeeDto){
         return ResponseEntity.ok(employeeService.refreshToken(employeeDto));
     }
-    @GetMapping("/public/getAllEmployees")
+    @GetMapping("/admin/getAllEmployees")
     public ResponseEntity<EmployeeDto> getAllEmployees(){
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }

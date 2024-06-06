@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const navigator = useNavigate();
 
     useEffect(() => {
@@ -18,28 +18,37 @@ const CompanyList = () => {
         fetchCompanies();
     }, []);
 
-    const fetchCompanies = async () => {
-        setLoading(true); 
+    const removeCompany = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await CompanyService.getAllCompanies();
+            await CompanyService.deleteCompany(id, token);
+            fetchCompanies();
+        } catch (error) {
+            console.error('Error deleting company', error);
+        }
+    };
+
+    const fetchCompanies = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await CompanyService.getAllCompanies(token);
             setCompanies(response.companyList);
         } catch (error) {
             console.log('Error fetching companies ', error);
         }
-        
+
         setTimeout(() => {
-            setLoading(false); 
-        }, 3000);
+            setLoading(false);
+        }, 1000);
     };
-    
 
     return (
         <div className="d-flex">
             <SideNavBar />
             <div className='container-fluid' style={{ marginLeft: '250px', marginTop: '100px', paddingTop: '20px', fontFamily: 'Arial, sans-serif' }}>
                 <h2>LISTA E KOMPANIVE TË REGJISTRUARA:</h2><br />
-                {loading ? ( 
+                {loading ? (
                     <p>Loading...</p>
                 ) : (
                     <div className="table-responsive">
@@ -53,6 +62,7 @@ const CompanyList = () => {
                                     <th>Viti i hapjes</th>
                                     <th style={{ minWidth: '250px' }}>Përshkrimi</th>
                                     <th>Shiko:</th>
+                                    <th>Kontrollo:</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,6 +81,12 @@ const CompanyList = () => {
                                             >
                                                 Profili i kompanisë
                                             </a>
+                                        </td>
+                                        <td>
+                                        <button className="btn btn-danger" onClick={() => removeCompany(company.id)}>
+                                            Fshij profilin
+                                        </button>
+
                                         </td>
                                     </tr>
                                 ))}

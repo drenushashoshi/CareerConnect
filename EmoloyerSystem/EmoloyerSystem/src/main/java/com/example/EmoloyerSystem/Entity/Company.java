@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class Company implements UserDetails {
     private Collection<Internship> internships;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Collection<CompanyStaff> staff;
 
     @OneToMany(mappedBy = "company")

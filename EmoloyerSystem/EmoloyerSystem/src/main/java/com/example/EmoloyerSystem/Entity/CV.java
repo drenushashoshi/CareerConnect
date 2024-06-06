@@ -22,7 +22,7 @@ public class CV{
     private int cvid;
 
     @Lob
-    @Column(name="image", nullable = true, columnDefinition = "BLOB")
+    @Column(name="image", nullable = true, columnDefinition = "LONGBLOB")
     private byte[] image;
 
     @Column(name="name",nullable = false)

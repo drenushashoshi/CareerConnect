@@ -54,9 +54,13 @@ class CompanyService{
         }
     }
     
-    static async getAllCompanies(){
+    static async getAllCompanies(token){
         try{
-            const response= await axios.get(`${CompanyService.BASE_URL}/public/getAllCompanies`)
+            const response= await axios.get(`${CompanyService.BASE_URL}/admin/getAllCompanies`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             return response.data;
         }catch(err){
             throw err;
@@ -93,7 +97,7 @@ class CompanyService{
     }
     static async deleteCompany(id, token){
         try{
-            const response= await axios.delete(`${CompanyService.BASE_URL}/company/deleteCompany/${id}`, {
+            const response= await axios.delete(`${CompanyService.BASE_URL}/admincompany/deleteCompany/${id}`, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;
