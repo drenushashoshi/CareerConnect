@@ -1,85 +1,256 @@
-import React, { useEffect, useState } from 'react';
-import { listEmployeePosts, deleteEmployeePost } from '../Services/EmployeePostService';
-import EmployeeService from '../Services/EmployeeService';
+import React, { useState, useEffect } from 'react';
+import { MDBRow, MDBCard, MDBCardBody, MDBCardText, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
+import { ReactComponent as EditButton } from '../Company/pencil.svg';
+import { ReactComponent as DeleteButton } from '../Company/trash.svg';
+import Modal from 'react-bootstrap/Modal';
+import {
+    getAllEmployeePosts,
+    downloadImage,
+    updateEmployeePost,
+    deleteEmployeePost,
+    getEmployeePost
+} from '../Services/EmployeePostService';
+import EmployeeService from "../Services/EmployeeService";
 
-const EmployeePostList = () => {
-    const [employeePosts, setEmployeePosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
+    const [posts, setPosts] = useState([]);
+    const [postId, setPostId] = useState(null);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [titleError, setTitleError] = useState('');
+    const [contentError, setContentError] = useState('');
+    const [postChanges, setPostChanges] = useState(0);
+    const [images, setImages] = useState({});
+    const [modalImage, setModalImage] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const isEmployee = EmployeeService.isEmployee();
 
     useEffect(() => {
-        fetchEmployeePosts();
-    }, []);
+        fetchPosts(employeeId);
+    }, [employeeId, postChanges]);
 
-    const fetchEmployeePosts = async () => {
+    const fetchPosts = async (employeeId) => {
         try {
-            const data = await listEmployeePosts();
-            setEmployeePosts(data);
+            const response = await getAllEmployeePosts(employeeId);
+            setPosts(response);
+            await fetchImages(response);
         } catch (error) {
-            setError('Error fetching employee posts');
-        } finally {
-            setLoading(false);
+            console.log('Gabim gjatë marrjes së postimeve', error);
         }
     };
 
-    const handleDelete = async (postId) => {
-        try {
-            await deleteEmployeePost(postId);
-            setEmployeePosts(employeePosts.filter(post => post.id !== postId));
-        } catch (error) {
-            setError('Error deleting employee post');
+    const fetchImages = async (postList) => {
+        const imagePromises = postList.map(post =>
+            downloadImage(post.id)
+                .then(imageData => {
+                    const blob = new Blob([imageData], { type: 'image/jpeg' });
+                    const url = URL.createObjectURL(blob);
+                    return { id: post.id, url };
+                })
+                .catch(error => {
+                    console.error(`Gabim gjatë marrjes së imazhit për postimin me id ${post.id}:`, error);
+                    return { id: post.id, url: null };
+                })
+        );
+
+        const imageResults = await Promise.all(imagePromises);
+        const imageMap = imageResults.reduce((acc, img) => ({ ...acc, [img.id]: img.url }), {});
+        setImages(imageMap);
+    };
+
+    const handleShowModal = (id) => {
+        setShowModal(true);
+        setPostId(id);
+        getEmployeePost(id)
+            .then((response) => {
+                const { title, content } = response;
+                setTitle(title);
+                setContent(content);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        downloadImage(id)
+            .then(imageData => {
+                const blob = new Blob([imageData], { type: 'image/jpeg' });
+                const url = URL.createObjectURL(blob);
+                setModalImage(url);
+            })
+            .catch(error => {
+                console.error(`Gabim gjatë marrjes së imazhit për postimin me id ${id}:`, error);
+                setModalImage(null);
+            });
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setPostId(null);
+        setModalImage(null);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        setTitleError('');
+        setContentError('');
+
+        let isValid = true;
+        if (!title.trim()) {
+            setTitleError('Titulli nuk mund të jetë bosh');
+            isValid = false;
+        }
+        if (!content.trim()) {
+            setContentError('Përmbajtja nuk mund të jetë bosh');
+            isValid = false;
+        }
+
+        if (isValid) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Ju nuk jeni të autentifikuar. Ju lutemi hyni fillimisht.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('post', JSON.stringify({ title, content }));
+            if (selectedFile) {
+                formData.append('image', selectedFile);
+            }
+
+            try {
+                const response = await updateEmployeePost(postId, formData, token);
+                console.log(response);
+                handleCloseModal();
+                setPostChanges(prev => prev + 1);
+            } catch (error) {
+                console.error("Gabim gjatë përditësimit të postimit:", error);
+            }
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const deletePost = async (postId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Ju nuk jeni të autentifikuar. Ju lutemi hyni fillimisht.');
+            return;
+        }
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+        try {
+            const response = await deleteEmployeePost(postId, token);
+            console.log(response);
+            setPostChanges(prev => prev + 1);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <div className='container'>
-            <h2>List of Employee Posts:</h2>
-            <table className='table table-bordered'>
-                <thead>
-                <tr>
-                    <th>Post ID</th>
-                    <th>Title</th>
-                    <th>Content</th>
-                    <th>Post Date</th>
-                    {isEmployee && <th>Actions</th>}
-                </tr>
-                </thead>
-                <tbody>
-                {employeePosts.length > 0 ? (
-                    employeePosts.map(post => (
-                        <tr key={post.id}>
-                            <td>{post.id}</td>
-                            <td>{post.title}</td>
-                            <td>{post.content}</td>
-                            <td>{new Date(post.postDate).toLocaleDateString()}</td>
-                            {isEmployee && (
-                                <td>
-                                    <button
-                                        className="btn btn-danger"
-                                        onClick={() => handleDelete(post.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            )}
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan={isEmployee ? 5 : 4} className="text-center">No posts available</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+        <div className="container-lg"> {/* Changed from "container" to "container-lg" */}
+            <MDBRow className="row-cols-1 row-cols-md-2 g-4">
+                {posts.map(post => (
+                    <MDBCol key={post.id} className="mb-4">
+                        <MDBCard className="h-100 position-relative" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
+                            <MDBCardBody className="text-center">
+                                {post.employeeId == loggedInEmployeeId && isEmployee && (
+                                    <div className="position-absolute top-0 end-0 mt-2 me-2">
+                                        <button
+                                            onClick={() => handleShowModal(post.id)}
+                                            style={{
+                                                border: 'none',
+                                                background: 'none',
+                                                padding: 0,
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            <EditButton />
+                                        </button>
+                                        <br />
+                                        <button
+                                            onClick={() => deletePost(post.id)}
+                                            style={{
+                                                border: 'none',
+                                                background: 'none',
+                                                padding: 0,
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            <DeleteButton />
+                                        </button>
+                                    </div>
+                                )}
+
+                                <MDBCardText tag="h5" className="mb-3">{post.title}</MDBCardText>
+
+                                {images[post.id] ? (
+                                    <img src={images[post.id]} alt={`${post.title}`} className="img-fluid mb-3" style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
+                                ) : (
+                                    <div className="placeholder mb-3" style={{ width: '100%', height: '200px', backgroundColor: '#f0f0f0' }}></div>
+                                )}
+
+                                <MDBCardText style={{ whiteSpace: 'pre-wrap' }}>{post.content}</MDBCardText>
+                            </MDBCardBody>
+                        </MDBCard>
+                    </MDBCol>
+                ))}
+            </MDBRow>
+            <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Body className='text-center custom-font'>
+                    <MDBCard className="mb-4" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
+                        <form onSubmit={handleSubmit}>
+                            <MDBCardBody className="text-center">
+                                {modalImage ? (
+                                    <img src={modalImage} alt={`${title}`} className="img-fluid rounded-circle mb-2" style={{ width: '100px', height: '100px' }} />
+                                ) : (
+                                    <div className="placeholder rounded-circle mb-2" style={{ width: '100px', height: '100px', backgroundColor: '#f0f0f0' }}></div>
+                                )}
+                                <MDBRow>
+                                    <MDBCol>
+                                        <MDBInput
+                                            type="text"
+                                            placeholder='Titulli'
+                                            value={title}
+                                            onChange={(e) => {
+                                                setTitle(e.target.value);
+                                                setTitleError('');
+                                            }}
+                                        />
+                                        {titleError && <div style={{ color: 'red' }}>{titleError}</div>}
+                                    </MDBCol>
+                                </MDBRow><br />
+                                <MDBInput
+                                    type="text"
+                                    placeholder='Përmbajtja'
+                                    value={content}
+                                    onChange={(e) => {
+                                        setContent(e.target.value);
+                                        setContentError('');
+                                    }}
+                                />
+                                {contentError && <div style={{ color: 'red' }}>{contentError}</div>}<br />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                                />
+
+                                <MDBBtn
+                                    className='mb-3 btn-primary'
+                                    type="submit"
+                                    style={{
+                                        border: '1px solid #0d6efd',
+                                        width: '160px',
+                                        height: '40px'
+                                    }}
+                                >
+                                    Ruaj Ndryshimet
+                                </MDBBtn>
+                            </MDBCardBody>
+                        </form>
+                    </MDBCard>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

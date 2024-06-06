@@ -1,5 +1,6 @@
 package com.example.EmoloyerSystem.Service;
 
+import com.example.EmoloyerSystem.Entity.Job;
 import com.example.EmoloyerSystem.dto.JobDto;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface JobService {
     void deleteJob(Integer jobId);
 
     List<JobDto> searchJobs(String query, String locationName, String IndustriaName);
+
 }

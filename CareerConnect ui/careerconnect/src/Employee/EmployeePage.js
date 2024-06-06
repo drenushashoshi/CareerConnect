@@ -13,11 +13,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
 import CustomNavbar from "../CustomNavbar";
 import EmployeeService from '../Services/EmployeeService';
-import backgroundImage from '../Company/background.jpg'; 
+import backgroundImage from '../Company/background.jpg';
 import { ReactComponent as GearIcon } from '../Company/gear.svg';
 import Footer from '../Footer';
 import CompanyService from '../Services/CompanyService';
 import { Button } from 'react-bootstrap';
+import EmployeePostSignup from "./EmployeePostSignup";
+import EmployeePostList from "./EmployeePostList";
 
 const EmployeePage = () => {
   const {id} = useParams();
@@ -26,6 +28,8 @@ const EmployeePage = () => {
   const isEmployee = EmployeeService.isEmployee();
   const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
+  const loggedInEmployee= sessionStorage.getItem('employeeId');
+
 
   useEffect(() => {
     fetchProfileInfo();
@@ -172,13 +176,15 @@ const EmployeePage = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
+        <EmployeePostSignup employeeId={id} loggedInEmployeeId={loggedInEmployee}></EmployeePostSignup>
+        <EmployeePostList employeeId={id} loggedInEmployeeId={loggedInEmployee}></EmployeePostList>
       </div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Body className='text-center custom-font'>
           <h5 className='mt-3'>Me fshirjen e profilit, të dhënat e juaja do fshihen. Doni të vazhdoni?</h5>
           <div className='mt-4 mb-4'>
             <Link to='' className='btn' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
-            <Link to='' onClick={() => removeEmployee(profileInfo.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link> 
+            <Link to='' onClick={() => removeEmployee(profileInfo.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link>
           </div>
         </Modal.Body>
       </Modal>

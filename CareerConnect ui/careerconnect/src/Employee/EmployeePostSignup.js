@@ -1,69 +1,126 @@
-import React, { useState } from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
-
+import React, { useState, useEffect } from 'react';
+import { MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { createEmployeePost } from '../Services/EmployeePostService';
-import EmployeeService from '../Services/EmployeeService'; // Import the service for checking user role
+import EmployeeService from "../Services/EmployeeService";
 
-const EmployeePost = ({ employeePostId }) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [date] = useState(new Date().toISOString()); // Set the date automatically
-    const [titleError, setTitleError] = useState('');
-    const [contentError, setContentError] = useState('');
+const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
+    const [formData, setFormData] = useState({
+        media_url: null,
+        title: '',
+        content: '',
+        timestamp: new Date().toISOString(),
+        employeeId: null
+    });
+    const [error, setError] = useState('');
+    const isEmployee = EmployeeService.isEmployee();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        setFormData(prevFormData => ({ ...prevFormData, employeeId }));
+    }, [employeeId]);
 
-        setTitleError('');
-        setContentError('');
-
-        let isValid = true;
-
-        if (!title.trim()) {
-            setTitleError('Ju lutem shtoni titullin!');
-            isValid = false;
-        }
-
-        if (!content.trim()) {
-            setContentError('Ju lutem shtoni përmbajtjen!');
-            isValid = false;
-        }
-
-        if (isValid) {
-            const token = localStorage.getItem('token'); // Get the token from local storage
-            const isEmployee = EmployeeService.isEmployee(); // Check if user is an employee
-            if (isEmployee) {
-                const employeePost = { title, content, date };
-                createEmployeePost(employeePost, token).then((response) => { // Pass the token to createEmployeePost
-                    console.log(response.data);
-                }).catch((error) => {
-                    console.error('Error creating employee post:', error);
-                    // Handle error
-                });
-            } else {
-                console.error('Only employees can post.');
-                // Handle error for non-employees attempting to post
-            }
-        }
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        const newValue = name === 'media_url' ? (files.length > 0 ? files[0] : null) : value;
+        setFormData({ ...formData, [name]: newValue });
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        try {
+            const postData = new FormData();
+            if (formData.media_url != null) {
+                postData.append('image', formData.media_url);
+            }
+            postData.append('title', formData.title);
+            postData.append('content', formData.content);
+            postData.append('timestamp', formData.timestamp);
+            postData.append('employeeId', formData.employeeId);
+
+            const response = await createEmployeePost(postData, token);
+            console.log('Post created:', response);
+            setFormData({ media_url: null, title: '', content: '', timestamp: new Date().toISOString(), employeeId: formData.employeeId });
+            document.getElementById('media_url').value = null;
+            window.location.reload();
+        } catch (error) {
+            console.error('Error creating post:', error);
+            setError('Dështoi krijimi i postimit. Ju lutemi provoni përsëri.');
+        }
+    };
+    if (employeeId !== loggedInEmployeeId && isEmployee ) {
+        return null;
+    }
     return (
-        <MDBContainer className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-            <MDBRow>
-                <MDBCol md="10">
-                    <p className="text-center mb-4">Fill out the form below to create a new post:</p>
+        <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+            <div className="col-lg-6">
+                <MDBCard className="mb-4" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
                     <form onSubmit={handleSubmit}>
-                        <MDBInput label="Titulli" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        {titleError && <div className="error">{titleError}</div>}
-                        <MDBInput type="textarea" label="Përmbajtja" value={content} onChange={(e) => setContent(e.target.value)} />
-                        {contentError && <div className="error">{contentError}</div>}
-                        <input type="hidden" value={date} />
-                        <MDBBtn color="primary" type="submit">Submit</MDBBtn>
+                        <MDBCardBody className="text-center">
+                            {error && <p className="text-red-500">{error}</p>}
+                            <MDBRow>
+                                <MDBCol>
+                                    <label htmlFor="media_url" className="btn btn-outline-primary">
+                                        Ngarko Imazh
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        id="media_url"
+                                        name="media_url"
+                                        onChange={handleChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                    {formData.media_url && <div className="mt-2">{formData.media_url.name}</div>}
+                                </MDBCol>
+                            </MDBRow><br />
+                            <MDBRow>
+                                <MDBCol>
+                                    <MDBInput
+                                        type="text"
+                                        placeholder='Titulli'
+                                        id="title"
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </MDBCol>
+                            </MDBRow><br />
+                            <MDBRow>
+                                <MDBCol>
+                                    <textarea
+                                        placeholder='Përmbajtja'
+                                        id="content"
+                                        name="content"
+                                        value={formData.content}
+                                        onChange={handleChange}
+                                        required
+                                        style={{ width: '100%', minHeight: '150px', resize: 'vertical' }}
+                                        rows={4}
+                                        className="form-control"
+                                    />
+                                </MDBCol>
+                            </MDBRow><br />
+                        </MDBCardBody>
+                        <div className="d-flex justify-content-center">
+                            <MDBBtn
+                                className='mb-3'
+                                type="submit"
+                                style={{
+                                    backgroundColor: '#0d6efd',
+                                    color: 'white',
+                                    width: '100px',
+                                    height: '40px'
+                                }}
+                            >
+                                Posto
+                            </MDBBtn>
+                        </div>
                     </form>
-                </MDBCol>
-            </MDBRow>
-        </MDBContainer>
+                </MDBCard>
+            </div>
+        </div>
     );
 };
 
-export default EmployeePost;
+export default EmployeePostSignup;

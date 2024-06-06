@@ -1,34 +1,35 @@
-//package com.example.EmoloyerSystem.Mapper;
-//
-//import com.example.EmoloyerSystem.Entity.EmployeePost;
-//import com.example.EmoloyerSystem.dto.EmployeePostDto;
-//
-//
-//
-//import java.util.List;
-//
-//public class EmployeePostMapper {
-//
-//    public static EmployeePostDto mapToEmployeePostDto(EmployeePost employeePost) {
-//        return new EmployeePostDto(
-//                employeePost.getId(),
-//                employeePost.getTitle(),
-//                employeePost.getContent(),
-//                employeePost.getPostDate(),
-//                employeePost.getEmployee().getId()
-//                //employeePost.getAttachments()
-//        );
-//    }
-//
-//    public static EmployeePost mapToEmployeePost(EmployeePostDto employeePostDto) {
-//        // Ensure that EmployeePost class has a constructor that accepts id, title, content, and attachments
-//        return new EmployeePost(
-//                employeePostDto.setId(),
-//                employeePostDto.getTitle(),
-//                employeePostDto.getContent(),
-//                employeePostDto.getPostDate(),
-//                employeePostDto.setEmployee();
-//                //employeePostDto.getAttachments()
-//        );
-//    }
-//}
+package com.example.EmoloyerSystem.Mapper;
+
+import com.example.EmoloyerSystem.Entity.Employee;
+import com.example.EmoloyerSystem.dto.EmployeePostDto;
+import com.example.EmoloyerSystem.Entity.EmployeePost;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Component
+public class EmployeePostMapper {
+
+    public static EmployeePostDto mapToEmployeePostDto(EmployeePost employeePost) {
+        return new EmployeePostDto(
+        employeePost.getId(),
+        employeePost.getEmployee().getId(),
+        employeePost.getTitle(),
+        employeePost.getContent(),
+        employeePost.getImage(),
+        employeePost.getTimestamp()
+        );
+    }
+
+    public static EmployeePost mapToEmployeePost(EmployeePostDto employeePostDto, Employee employee) {
+        EmployeePost employeePost = new EmployeePost();
+        employeePost.setId(employeePostDto.getId());
+        employeePost.setEmployee(employee);
+        employeePost.setTitle(employeePostDto.getTitle());
+        employeePost.setContent(employeePostDto.getContent());
+        employeePost.setImage(employeePostDto.getImage());
+        employeePost.setTimestamp(employeePostDto.getTimestamp() != null ? employeePostDto.getTimestamp() : new Date());
+        return employeePost;
+    }
+}

@@ -1,15 +1,10 @@
-/*
 package com.example.EmoloyerSystem.Entity;
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -30,15 +25,14 @@ public class EmployeePost {
     @Column(name="content",nullable = false)
     private String content;
 
-    @Column(name = "post_date",nullable = false)
-    private Date postDate;
+    @Column(name = "timestamp",nullable = false)
+    private Date timestamp;
 
-    @Column(name = "employee")
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
-   // @ElementCollection // Specifies a collection of basic types (in this case, Strings)
-    //@CollectionTable(name = "post_attachments", joinColumns = @JoinColumn(name = "post_id"))
-    //@Column(name = "attachment")
-    //private List<String> attachments; // Add a List to store attachment paths or URLs
 
+    @Lob
+    @Column(name="media_url",nullable = true, columnDefinition="LONGBLOB")
+    private byte[] image;
 }
-*/

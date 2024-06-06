@@ -7,6 +7,8 @@ const IndustriaDashboard = () => {
     const [newIndustriaName, setNewIndustriaName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [industriaToDelete, setIndustriaToDelete] = useState(null);
 
     useEffect(() => {
         fetchIndustries();
@@ -21,11 +23,11 @@ const IndustriaDashboard = () => {
             } else if (response.data && Array.isArray(response.data)) {
                 setIndustries(response.data);
             } else {
-                throw new Error('Invalid response format');
+                throw new Error('Formati i përgjigjes është i pavlefshëm');
             }
         } catch (error) {
-            setError('Error fetching industries');
-            console.error('Error fetching industries:', error);
+            setError('Gabim gjatë marrjes së industrive');
+            console.error('Gabim gjatë marrjes së industrive:', error);
         }
         setLoading(false);
     };
@@ -33,7 +35,7 @@ const IndustriaDashboard = () => {
     const handleCreateIndustria = async (e) => {
         e.preventDefault();
         if (!newIndustriaName.trim()) {
-            setError('Please enter a valid industria name');
+            setError('Ju lutemi vendosni një emër të vlefshëm për industria');
             return;
         }
 
@@ -43,62 +45,110 @@ const IndustriaDashboard = () => {
             setNewIndustriaName('');
             await fetchIndustries();
         } catch (error) {
-            setError('Error creating industria');
-            console.error('Error creating industria:', error);
+            setError('Gabim gjatë krijimit të industria');
+            console.error('Gabim gjatë krijimit të industria:', error);
         }
         setLoading(false);
     };
 
-    const handleDeleteIndustria = async (name) => {
+    const handleDeleteIndustria = async () => {
         setLoading(true);
         try {
-            await deleteIndustria(name);
+            await deleteIndustria(industriaToDelete);
             await fetchIndustries();
+            setShowDeleteModal(false);
         } catch (error) {
-            setError('Error deleting industria');
-            console.error('Error deleting industria:', error);
+            setError('Gabim gjatë fshirjes së industria');
+            console.error('Gabim gjatë fshirjes së industria:', error);
         }
         setLoading(false);
+    };
+
+    const toggleDeleteModal = (industriaName) => {
+        setShowDeleteModal(!showDeleteModal);
+        setIndustriaToDelete(industriaName);
     };
 
     return (
-        <div className="d-flex">
-            <SideNavBar />
-            <div className='container-fluid' style={{ marginLeft: '250px', marginTop: '100px', paddingTop: '20px' }}>
-                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LIST OF INDUSTRIES:</h2><br/>
-                <div className="table-responsive">
-                    <table className='table table-striped table-bordered'>
-                        <thead className="thead-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {industries.map(industria => (
-                            <tr key={industria.name}>
-                                <td>{industria.name}</td>
-                                <td><button onClick={() => handleDeleteIndustria(industria.name)}>Delete</button></td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-md-3">
+                    <SideNavBar />
                 </div>
-
-                <h2>Add New Industria:</h2>
-                <form onSubmit={handleCreateIndustria}>
+                <div className="col-md-9">
+                    <h2 className="mt-5">Shto Industri të Re:</h2>
+                    <form onSubmit={handleCreateIndustria} className="mb-4">
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Emri i Industri"
+                                value={newIndustriaName}
+                                onChange={(e) => setNewIndustriaName(e.target.value)}
+                                disabled={loading}
+                            />
+                            <div className="input-group-append">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Duke shtuar...' : 'Shto Industri'}
+                                </button>
+                            </div>
+                        </div>
+                        {error && <p className="text-danger mt-2">{error}</p>}
+                    </form>
                     <div>
-                        <input
-                            type="text"
-                            placeholder="Industria Name"
-                            value={newIndustriaName}
-                            onChange={(e) => setNewIndustriaName(e.target.value)}
-                        />
+                        <h2>Lista e Industrive:</h2>
+                        <table className="table">
+                            <thead className="thead-dark">
+                            <tr>
+                                <th>Emri</th>
+                                <th>Veprim</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {industries.map(industria => (
+                                <tr key={industria.name}>
+                                    <td>{industria.name}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => toggleDeleteModal(industria.name)}
+                                            disabled={loading}
+                                        >
+                                            {loading ? 'Duke fshirë...' : 'Fshi'}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="submit">Add Industria</button>
-                    {error && <p>{error}</p>}
-                </form>
+                </div>
             </div>
+            {showDeleteModal && (
+                <div className="modal show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Konfirmo Fshirjen</h5>
+                                <button type="button" className="close" onClick={() => setShowDeleteModal(false)}>
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>A jeni i sigurt që dëshironi të fshini këtë industrinë?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Anulo</button>
+                                <button type="button" className="btn btn-danger" onClick={handleDeleteIndustria} disabled={loading}>Fshije</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

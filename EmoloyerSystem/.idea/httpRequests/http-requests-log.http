@@ -1,3 +1,472 @@
+GET http://localhost:8080/employee/saved-jobs?employeeId=1&jobId=1
+Host: localhost:8080
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTc0MTExNjYsImV4cCI6MTcxNzQ5NzU2Nn0.zExmyjdeQ-YpBX-DEtTBazuAnh6ZBbdTmUkjCAfCrVQ
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/employee/saved-jobs?employeeId=1&jobId=1
+Host: localhost:8080
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTc0MTExNjYsImV4cCI6MTcxNzQ5NzU2Nn0.zExmyjdeQ-YpBX-DEtTBazuAnh6ZBbdTmUkjCAfCrVQ
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+POST http://localhost:8080/api/employee/createPost
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=boundary
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 18999
+
+--null
+Content-Disposition: form-data; name="image"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+--null
+Content-Disposition: form-data; name="content"
+
+This is the content of the post
+--null
+Content-Disposition: form-data; name="title"
+
+Post Title
+--null
+Content-Disposition: form-data; name="employeeId"
+
+1
+--null
+Content-Disposition: form-data; name="timestamp"
+
+2024-06-03T12:34:56Z
+--null--
+
+###
+
+POST http://localhost:8080/api/employee/createPost
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=boundary
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 19005
+
+--null
+Content-Disposition: form-data; name="image"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+--null
+Content-Disposition: form-data; name="content"
+
+This is the content of the post
+--null
+Content-Disposition: form-data; name="title"
+
+Post Title
+--null
+Content-Disposition: form-data; name="employeeId"
+
+1
+--null
+Content-Disposition: form-data; name="timestamp"
+
+2024-06-03T12:34:56Z
+--null--
+
+###
+
+POST http://localhost:8080/api/employee/createPost
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=boundary
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 19005
+
+--null
+Content-Disposition: form-data; name="image"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+--null
+Content-Disposition: form-data; name="content"
+
+This is the content of the post
+--null
+Content-Disposition: form-data; name="title"
+
+Post Title
+--null
+Content-Disposition: form-data; name="employeeId"
+
+1
+--null
+Content-Disposition: form-data; name="timestamp"
+
+2024-06-03T12:34:56Z
+--null--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18662
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc"
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18662
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc"
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18662
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc"
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18662
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost?media_url=zAbA72P1&employee_post=h2ObBDx_
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+Origin: http://localhost:3000
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkcmVuYUBnbWFpbC5jb20iLCJpYXQiOjE3MTcyODczODIsImV4cCI6MTcxNzM3Mzc4Mn0.lq1SPJ6WRyVzyRvIw0suCX2645L3pW3pRLH70De4Mgc
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 18671
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="employee_post"
+
+{
+  "title": "Sample Title",
+  "content": "Sample Content",
+  "timestamp": "2023-06-01T12:00:00Z",
+  "employeeId": 1
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image_url"; filename="admin.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Buton\Documents\GitHub\CareerConnect\CareerConnect ui\careerconnect\src\admin.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+POST http://localhost:8080/employee/createPost?image_url=IBavHT93&employee_post=Ur9Joz0i
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/public/EmployeePosts?employeeId=55
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-06-01T204604.200.json
+
+###
+
 POST http://localhost:3000/postjob
 Content-Type: application/json
 Content-Length: 128
