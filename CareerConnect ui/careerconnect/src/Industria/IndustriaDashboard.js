@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getIndustries, createIndustria, deleteIndustria } from '../Services/IndustriaService';
 import SideNavBar from "../SideNavBar";
+import {Link} from "react-router-dom";
 
 const IndustriaDashboard = () => {
     const [industries, setIndustries] = useState([]);
@@ -10,9 +11,14 @@ const IndustriaDashboard = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [industriaToDelete, setIndustriaToDelete] = useState(null);
 
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
     useEffect(() => {
-        fetchIndustries();
-    }, []);
+        if (token && role === 'ADMIN') {
+            fetchIndustries();
+        }
+    }, [token, role]);
 
     const fetchIndustries = async () => {
         setLoading(true);
@@ -41,7 +47,7 @@ const IndustriaDashboard = () => {
 
         setLoading(true);
         try {
-            await createIndustria({ name: newIndustriaName });
+            await createIndustria({ name: newIndustriaName }, token);
             setNewIndustriaName('');
             await fetchIndustries();
         } catch (error) {
@@ -54,7 +60,7 @@ const IndustriaDashboard = () => {
     const handleDeleteIndustria = async () => {
         setLoading(true);
         try {
-            await deleteIndustria(industriaToDelete);
+            await deleteIndustria(industriaToDelete, token);
             await fetchIndustries();
             setShowDeleteModal(false);
         } catch (error) {
@@ -69,6 +75,7 @@ const IndustriaDashboard = () => {
         setIndustriaToDelete(industriaName);
     };
 
+    if(role === 'ADMIN'){
     return (
         <div className="container-fluid">
             <div className="row">
@@ -118,7 +125,7 @@ const IndustriaDashboard = () => {
                                             onClick={() => toggleDeleteModal(industria.name)}
                                             disabled={loading}
                                         >
-                                            {loading ? 'Duke fshirë...' : 'Fshi'}
+                                            {loading ? 'Deleting...' : 'Delete'}
                                         </button>
                                     </td>
                                 </tr>
@@ -150,7 +157,15 @@ const IndustriaDashboard = () => {
                 </div>
             )}
         </div>
-    );
+    );}
+    else{
+        return (
+            <div>
+                <h2 className="mt-5">Vetem ADMINI ka akses ne dashboard</h2>
+                <Link to="/">Kliko ketu per tu loguar si ADMIN</Link>
+            </div>
+        );
+    }
 };
 
 export default IndustriaDashboard;

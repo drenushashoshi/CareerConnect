@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getLocations, createLocation, deleteLocation } from '../Services/LocationService';
 import SideNavBar from "../SideNavBar";
+import { Link } from 'react-router-dom';
 
 const LocationDashboard = () => {
     const [locations, setLocations] = useState([]);
@@ -10,14 +11,19 @@ const LocationDashboard = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [locationToDelete, setLocationToDelete] = useState(null);
 
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
     useEffect(() => {
-        fetchLocations();
-    }, []);
+        if (token && role === 'ADMIN') {
+            fetchLocations();
+        }
+    }, [token, role]);
 
     const fetchLocations = async () => {
         setLoading(true);
         try {
-            const response = await getLocations();
+            const response = await getLocations(token);
             if (Array.isArray(response)) {
                 setLocations(response);
             } else if (response.data && Array.isArray(response.data)) {
@@ -41,7 +47,7 @@ const LocationDashboard = () => {
 
         setLoading(true);
         try {
-            await createLocation({ name: newLocationName });
+            await createLocation({ name: newLocationName }, token);
             setNewLocationName('');
             await fetchLocations();
         } catch (error) {
@@ -54,7 +60,7 @@ const LocationDashboard = () => {
     const handleDeleteLocation = async () => {
         setLoading(true);
         try {
-            await deleteLocation(locationToDelete);
+            await deleteLocation(locationToDelete, token);
             await fetchLocations();
             setShowDeleteModal(false);
         } catch (error) {
@@ -69,6 +75,7 @@ const LocationDashboard = () => {
         setLocationToDelete(locationName);
     };
 
+    if(role === 'ADMIN'){
     return (
         <div className="container-fluid">
             <div className="row">
@@ -150,7 +157,15 @@ const LocationDashboard = () => {
                 </div>
             </div>
         </div>
-    );
+    );}
+    else{
+        return (
+            <div>
+                <h2 className="mt-5">Vetem ADMINI ka akses ne dashboard</h2>
+                <Link to="/">Kliko ketu per tu loguar si ADMIN</Link>
+            </div>
+        );
+    }
 };
 
 export default LocationDashboard;

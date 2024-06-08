@@ -12,34 +12,34 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/public/Location")
+@RequestMapping
 public class LocationController {
 
     private final LocationService LocationService;
 
     // Add Location REST API
-    @PostMapping
+    @PostMapping("/admin/location")
     public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
         LocationDto savedLocation = LocationService.createLocation(locationDto);
         return new ResponseEntity<>(savedLocation, HttpStatus.CREATED);
     }
 
     // Read Location by name REST API
-    @GetMapping("{name}")
+    @GetMapping("/public/location/{name}")
     public ResponseEntity<LocationDto> getLocationByName(@PathVariable("name") String locationName) {
         LocationDto LocationDto = LocationService.getLocationName(locationName);
         return ResponseEntity.ok(LocationDto);
     }
 
     // Read All Cities REST API
-    @GetMapping
+    @GetMapping("/public/location")
     public ResponseEntity<List<LocationDto>> getAllCities() {
         List<LocationDto> cities = LocationService.getAllLocations();
         return ResponseEntity.ok(cities);
     }
 
     // Update Location REST API
-    @PutMapping("{name}")
+    @PutMapping("/public/updateLocation/{name}")
     public ResponseEntity<LocationDto> updateLocation(@PathVariable("name") String currentName,
                                                       @RequestBody LocationDto updatedLocationDto) {
         // Check if the provided name matches the current name in the URL
@@ -55,7 +55,7 @@ public class LocationController {
     }
 
     // Delete Location REST API
-    @DeleteMapping("{name}")
+    @DeleteMapping("/admin/deleteLocation/{name}")
     public ResponseEntity<String> deleteLocation(@PathVariable("name") String LocationName) {
         LocationService.deleteLocation(LocationName);
         return ResponseEntity.ok("Location Deleted");

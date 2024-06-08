@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/public/Industria")
+@RequestMapping
 public class IndustriaController {
 
     private final IndustriaService industriaService;
@@ -20,14 +20,14 @@ public class IndustriaController {
     }
 
     // Add Industria REST API
-    @PostMapping
+    @PostMapping("/admin/industria")
     public ResponseEntity<IndustriaDto> createIndustria(@RequestBody IndustriaDto industriaDto){
         IndustriaDto savedIndustria = industriaService.createIndustria(industriaDto);
         return new ResponseEntity<>(savedIndustria, HttpStatus.CREATED);
     }
 
     // Read Company by Name REST API
-    @GetMapping("/{name}")
+    @GetMapping("/public/industria/{name}")
     public ResponseEntity<IndustriaDto> getIndustriaName(@PathVariable("name") String industriaName){
         IndustriaDto industriaDto = industriaService.getIndustriaName(industriaName);
         if(industriaDto != null) {
@@ -38,14 +38,14 @@ public class IndustriaController {
     }
 
     // Read All Industries REST API
-    @GetMapping
+    @GetMapping("/public/industria")
     public ResponseEntity<List<IndustriaDto>> getAllIndustries(){
         List<IndustriaDto> industries = industriaService.getAllIndustries();
         return ResponseEntity.ok(industries);
     }
 
     // Update Industria REST API
-    @PutMapping("/{name}")
+    @PutMapping("/public/updateIndustria/{name}")
     public ResponseEntity<IndustriaDto> updateIndustria(@PathVariable("name") String industriaName,
                                                         @RequestBody IndustriaDto updatedIndustria){
         IndustriaDto industriaDto = industriaService.updateIndustria(industriaName, updatedIndustria);
@@ -56,7 +56,7 @@ public class IndustriaController {
         }
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/admin/deleteIndustria/{name}")
     public ResponseEntity<String> deleteIndustria(@PathVariable("name") String industriaName) {
         try {
             industriaService.deleteIndustria(industriaName);
