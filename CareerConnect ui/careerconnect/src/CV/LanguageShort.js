@@ -112,14 +112,14 @@ const LanguageShort = ({ initialLanguage }) => {
       <hr/>
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title>Konfirmo Fshirjen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete this language?
+          A jeni te sigurt qe doni ta fshini gjuhen?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
+            Anulo
           </Button>
           <Button variant="danger" onClick={handleConfirmDelete}>
             Delete
@@ -128,13 +128,13 @@ const LanguageShort = ({ initialLanguage }) => {
       </Modal>
       <Modal show={showEditModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Language</Modal.Title>
+          <Modal.Title>Edito Gjuhen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label>Language:</label>
+                <label>Gjuha:</label>
                 <input type="text" name="language" value={formData.language} onChange={handleChange} className="form-control" />
               </div>
             </div>
@@ -146,11 +146,11 @@ const LanguageShort = ({ initialLanguage }) => {
                   title={formData.level || "Select Level"}
                   onSelect={handleSelect}
                 >
-                  <Dropdown.Item eventKey="Beginner">Beginner</Dropdown.Item>
-                  <Dropdown.Item eventKey="Pre-intermediate">Pre-intermediate</Dropdown.Item>
-                  <Dropdown.Item eventKey="Intermediate">Intermediate</Dropdown.Item>
-                  <Dropdown.Item eventKey="Upper-Intermediate">Upper-Intermediate</Dropdown.Item>
-                  <Dropdown.Item eventKey="Advanced">Advanced</Dropdown.Item>
+                  <Dropdown.Item eventKey="Fillestar">Fillestar</Dropdown.Item>
+                  <Dropdown.Item eventKey="Nen-Mesatar">Nen-Mesatar</Dropdown.Item>
+                  <Dropdown.Item eventKey="Mesatar">Mesatar</Dropdown.Item>
+                  <Dropdown.Item eventKey="Permbi-Mesatar">Permbi-Mesatar</Dropdown.Item>
+                  <Dropdown.Item eventKey="Avancum">Avancum</Dropdown.Item>
                 </DropdownButton>
               </div>
             </div>
@@ -158,10 +158,10 @@ const LanguageShort = ({ initialLanguage }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
+            Anulo
           </Button>
           <Button variant="primary" onClick={handleConfirmEdit}>
-            Save Changes
+            Ruaj Ndryshimet
           </Button>
         </Modal.Footer>
       </Modal>

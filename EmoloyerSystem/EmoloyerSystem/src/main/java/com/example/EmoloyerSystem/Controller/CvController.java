@@ -25,10 +25,19 @@ public class CvController {
     private final CvService CVService;
 
     @PostMapping("/employee/createCv")
-    public ResponseEntity<CVDto> createCv(@RequestParam("image") MultipartFile file,@RequestParam("CV") String CV)throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        CVDto savedCV = objectMapper.readValue(CV, CVDto.class);
-        return ResponseEntity.ok(CVService.createCv(savedCV, file));
+    public ResponseEntity<CVDto> createCv(@RequestParam("image") MultipartFile file,@RequestParam("CV") String CV)throws IOException,IllegalArgumentException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            CVDto savedCV = objectMapper.readValue(CV, CVDto.class);
+            return ResponseEntity.ok(CVService.createCv(savedCV, file));
+        }
+        catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/employee/getall")

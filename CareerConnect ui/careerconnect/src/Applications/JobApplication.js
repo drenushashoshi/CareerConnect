@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApplicationService from '../Services/ApplicationService';
+import CustomNavbar from '../CustomNavbar';
+import Footer from '../Footer';
 
 const JobApplication = () => {
     const {id} = useParams();
@@ -95,7 +97,9 @@ const JobApplication = () => {
     };
 
     return (
-        <div className="container">
+        <>
+        <CustomNavbar></CustomNavbar>
+        <div className="container my-3">
             <div className="row mx-0 justify-content-center">
                 <div className="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
                     <form
@@ -105,13 +109,13 @@ const JobApplication = () => {
                         encType="multipart/form-data"
                     >
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">Your name</span>
+                            <span className="form-label d-block">Emri:</span>
                             <input
                                 required
                                 name="name"
                                 type="text"
                                 className="form-control"
-                                placeholder="Filan Fisteku"
+                                placeholder=""
                                 value={values.name}
                                 onChange={handleChange}
                             />
@@ -119,13 +123,13 @@ const JobApplication = () => {
                         </label>
 
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">Email address</span>
+                            <span className="form-label d-block">Email:</span>
                             <input
                                 required
                                 name="email"
                                 type="email"
                                 className="form-control"
-                                placeholder="Filan.Fisteku@example.com"
+                                placeholder=""
                                 value={values.email}
                                 onChange={handleChange}
                             />
@@ -133,13 +137,13 @@ const JobApplication = () => {
                         </label>
 
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">City</span>
+                            <span className="form-label d-block">Qyteti:</span>
                             <input
                                 required
                                 name="city"
                                 type="text"
                                 className="form-control"
-                                placeholder="Prishtine"
+                                placeholder=""
                                 value={values.city}
                                 onChange={handleChange}
                             />
@@ -147,13 +151,13 @@ const JobApplication = () => {
                         </label>
 
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">Phone Number</span>
+                            <span className="form-label d-block">Numri i telefonit:</span>
                             <input
                                 required
                                 name="phone_nr"
                                 type="text"
                                 className="form-control"
-                                placeholder="xxx-xxx-xxx"
+                                placeholder=""
                                 value={values.phone_nr}
                                 onChange={handleChange}
                             />
@@ -161,7 +165,7 @@ const JobApplication = () => {
                         </label>
 
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">Age</span>
+                            <span className="form-label d-block">Mosha</span>
                             <input
                                 required
                                 name="age"
@@ -174,12 +178,12 @@ const JobApplication = () => {
                         </label>
 
                         <label className="d-block mb-4">
-                            <span className="form-label d-block">Tell us more about yourself</span>
+                            <span className="form-label d-block">Tregoni me shum per vedi:</span>
                             <textarea
                                 name="description"
                                 className="form-control"
                                 rows="3"
-                                placeholder="What motivates you?"
+                                placeholder="Cka ju motivon?"
                                 value={values.description}
                                 onChange={handleChange}
                             ></textarea>
@@ -187,7 +191,7 @@ const JobApplication = () => {
                         </label>
 
                         <div className="mb-4">
-                            <span className="form-label d-block">Gender</span>
+                            <span className="form-label d-block">Gjinia</span>
                             <div className="form-check">
                                 <label className="d-block">
                                     <input
@@ -196,10 +200,10 @@ const JobApplication = () => {
                                         className="form-check-input"
                                         name="gender"
                                         value="male"
-                                        checked={values.gender === 'male'}
+                                        checked={values.gender === 'Mashkull'}
                                         onChange={handleChange}
                                     />
-                                    <span className="form-check-label">Male</span>
+                                    <span className="form-check-label">Mashkull</span>
                                 </label>
                             </div>
                             <div className="form-check">
@@ -210,10 +214,10 @@ const JobApplication = () => {
                                         className="form-check-input"
                                         name="gender"
                                         value="female"
-                                        checked={values.gender === 'female'}
+                                        checked={values.gender === 'Femer'}
                                         onChange={handleChange}
                                     />
-                                    <span className="form-check-label">Female</span>
+                                    <span className="form-check-label">Femer</span>
                                 </label>
                             </div>
                             {errors.gender && <div className="text-danger">{errors.gender}</div>}
@@ -221,13 +225,15 @@ const JobApplication = () => {
 
                         <div className="mb-3">
                             <button type="submit" className="btn btn-primary px-3 rounded-3">
-                                Apply
+                                Apliko
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <Footer></Footer>
+        </>
     );
 };
 

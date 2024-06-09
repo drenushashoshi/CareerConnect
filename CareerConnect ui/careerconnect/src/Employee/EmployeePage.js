@@ -171,7 +171,7 @@ const EmployeePage = () => {
               </MDBCard>
               {isCompany &&(
                   <>
-                    <Button className='btn btn-primary' onClick={Click}>See Cv</Button>
+                    <Button className='btn btn-primary' onClick={Click}>Shiko CVn</Button>
                   </>
                 )}
             </MDBCol>

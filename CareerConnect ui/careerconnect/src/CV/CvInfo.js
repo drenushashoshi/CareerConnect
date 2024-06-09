@@ -35,57 +35,56 @@ const CvInfo = () => {
         const selectedImage = e.target.files[0];
         if (!selectedImage) {
             setImage(null);
-            setImageError('Image is required');
+            setImageError('Ju lutem insertoni fotografi');
         } else {
             setImage(selectedImage);
             setImageError('');
         }
     };
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
             case 'name':
                 setName(value);
-                setNameError(value ? '' : 'Name is required');
+                setNameError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'surname':
                 setSurname(value);
-                setSurnameError(value ? '' : 'Surname is required');
+                setSurnameError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'email':
                 setEmail(value);
-                setEmailError(value ? '' : 'Email is required');
+                setEmailError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 setUniqueError('');
                 break;
             case 'phone_nr':
                 setPhone_nr(value);
-                setPhoneError(value ? '' : 'Phone Number is required');
+                setPhoneError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 setUniqueError('');
                 break;
             case 'college':
                 setCollege(value);
-                setCollegeError(value ? '' : 'College is required');
+                setCollegeError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'degree':
                 setDegree(value);
-                setDegreeError(value ? '' : 'Degree is required');
+                setDegreeError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'city':
                 setCity(value);
-                setCityError(value ? '' : 'City is required');
+                setCityError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'highschool':
                 setHighschool(value);
-                setHighschoolError(value ? '' : 'Highschool is required');
+                setHighschoolError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'description':
                 setDescription(value);
-                setDescriptionError(value ? '' : 'Description is required');
+                setDescriptionError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             case 'street':
                 setStreet(value);
-                setStreetError(value ? '' : 'Street is required');
+                setStreetError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
                 break;
             default:
                 break;
@@ -107,9 +106,20 @@ const CvInfo = () => {
             }
             const token = localStorage.getItem('token');
             const response = await CvService.createCv(formData, token);
-            navigate(`/CvInfo/` + response.cvid);
+            console.log(response);
+            console.log(response.status);
+            if (response.status === 200) {
+                navigate(`/CvInfo/${response.data.cvid}`);
+            } else if (response.status === 409) {
+                setUniqueError('Email/Numri i telefonit eshte ne perdorim');
+            } else if (response.status === 404) {
+                console.log('CV not found');
+            } else {
+                console.error('Unexpected Error:', response);
+            }
         } catch (error) {
-            setUniqueError('Please try a different email/phone nr.');
+            console.log(error.message);
+            throw error
         }
     };
 
@@ -117,17 +127,17 @@ const CvInfo = () => {
         <>
             <CustomNavbar />
             <div className="container mt-2x">
-                <h1 className="mb-4">Personal Information</h1>
+                <h1 className="mb-4">Informacioni Personal</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="name">Name:</label>
+                                <label htmlFor="name">Emri:</label>
                                 <input type="text" className="form-control" id="name" name="name" value={name} onChange={handleChange} required />
                                 {nameError && <span className="text-danger">{nameError}</span>}
                             </div>
                             <div className="form-group">
-                                <label htmlFor="surname">Surname:</label>
+                                <label htmlFor="surname">Mbiemri:</label>
                                 <input type="text" className="form-control" id="surname" name="surname" value={surname} onChange={handleChange} required />
                                 {surnameError && <span className="text-danger">{surnameError}</span>}
                             </div>
@@ -137,7 +147,7 @@ const CvInfo = () => {
                                 {emailError && <span className="text-danger">{emailError}</span>}
                             </div>
                             <div className="form-group">
-                                <label htmlFor="phone">Phone Number:</label>
+                                <label htmlFor="phone">Nr. telefonit:</label>
                                 <input type="tel" className="form-control" id="phone_nr" name="phone_nr" value={phone_nr} onChange={handleChange} required />
                                 {phoneError && <span className="text-danger">{phoneError}</span>}
                             </div>
@@ -145,45 +155,45 @@ const CvInfo = () => {
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <label htmlFor="street">Street:</label>
+                                    <label htmlFor="street">Lagja:</label>
                                     <input type="text" className="form-control" id="street" name="street" value={street} onChange={handleChange} />
                                     {streetError && <span className="text-danger">{streetError}</span>}
                                 </div>
                                 <div className="col-md-6">
-                                    <label htmlFor="city">City:</label>
+                                    <label htmlFor="city">Qyteti:</label>
                                     <input type="text" className="form-control" id="city" name="city" value={city} onChange={handleChange} />
                                     {cityError && <span className="text-danger">{cityError}</span>}
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="college">College:</label>
+                                <label htmlFor="college">Fakulteti:</label>
                                 <input type="text" className="form-control" id="college" name="college" value={college} onChange={handleChange} />
                                 {collegeError && <span className="text-danger">{collegeError}</span>}
                             </div>
                             <div className="form-group">
-                                <label htmlFor="degree">Degree:</label>
+                                <label htmlFor="degree">Diploma:</label>
                                 <input type="text" className="form-control" id="degree" name="degree" value={degree} onChange={handleChange} />
                                 {degreeError && <span className="text-danger">{degreeError}</span>}
                             </div>
                             <div className="form-group">
-                                <label htmlFor="highSchool">High School:</label>
+                                <label htmlFor="highSchool">Shkolla e mesme:</label>
                                 <input type="text" className="form-control" id="highschool" name="highschool" value={highschool} onChange={handleChange} />
                                 {highschoolError && <span className="text-danger">{highschoolError}</span>}
                             </div>
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="description">About You:</label>
-                        <textarea className="form-control" id="description" name="description" style={{ height: '200px' }} placeholder='Describe Yourself' value={description} onChange={handleChange}></textarea>
+                        <label htmlFor="description">Per Ju:</label>
+                        <textarea className="form-control" id="description" name="description" style={{ height: '200px' }} placeholder='Pershkruani vedin' value={description} onChange={handleChange}></textarea>
                         {descriptionError && <span className="text-danger">{descriptionError}</span>}
                     </div>
                     <div className="form-group mt-3 mb-3">
                         <input type="file" className="form-control-file d-none" id="fileInput" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
-                        <label htmlFor="fileInput" className="btn btn-primary">Choose Picture For Cv</label>
+                        <label htmlFor="fileInput" className="btn btn-primary">Zgjidh fotografi per CV</label>
                         {imageError && <span className="text-danger mx-5">{imageError}</span>}
                         {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                     </div>
-                    <button type="submit" className="btn btn-primary">Continue</button>
+                    <button type="submit" className="btn btn-primary">Vazhdo</button>
                 </form>
             </div>
         </>

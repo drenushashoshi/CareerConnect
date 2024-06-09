@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CvService from '../Services/CvService';
 import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
-import EmployeeService from '../Services/EmployeeService';
 
 const CV = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const idAsInteger = parseInt(id, 10);
     const [Cv, setCv] = useState(null);
     const [references, setReferences] = useState([]);
@@ -18,22 +16,10 @@ const CV = () => {
     const [profileImageURL, setProfileImageURL] = useState(null);
     const [workExperiences, setWorkExperiences] = useState([]);
 
-    useEffect(() => {
-        if (!EmployeeService.isEmployee()) {
-          navigate('/');
-        } else {
-          const storedEmployeeId = sessionStorage.getItem('employeeId');
-          if (id !== storedEmployeeId) {
-            EmployeeService.logout();
-            navigate('/');
-          }
-        }
-      }, [navigate, id]);
-
     const fetchCV = async () => {
         try {
             const response = await CvService.getCvByEmployeeId(idAsInteger);
-            console.log('Fetched Cv:', response); 
+            console.log('Fetched Cv:', response); // Debugging line
             setCv(response);
         } catch (error) {
             console.error('Error fetching Cv:', error);
@@ -85,7 +71,7 @@ const CV = () => {
 
             const fetchLanguages = async () => {
                 try {
-                    const response = await LanguageService.getReferenceByCvId(Cv.cvid);
+                    const response = await LanguageService.getLanguageByCvId(Cv.cvid);
                     console.log('Fetched Languages:', response); // Debugging line
                     setLanguages(response);
                 } catch (error) {
@@ -123,22 +109,22 @@ const CV = () => {
                                         />
                                     </div>
                                     <div>
-                                        <p><strong>Name:</strong> {Cv.name} {Cv.surname}</p>
+                                        <p><strong>Emri:</strong> {Cv.name} {Cv.surname}</p>
                                         <p><strong>Email:</strong> {Cv.email}</p>
-                                        <p><strong>Phone:</strong> {Cv.phone_nr}</p>
-                                        <p><strong>Address:</strong> {Cv.city}, {Cv.street}</p>
+                                        <p><strong>Nr. telefonit:</strong> {Cv.phone_nr}</p>
+                                        <p><strong>Adresa:</strong> {Cv.city}, {Cv.street}</p>
                                     </div>
                                     <div className="mt-4">
-                                        <h2 className="mb-4">Education</h2>
-                                        <p><strong>University:</strong> {Cv.college}</p>
-                                        <p><strong>Degree:</strong> {Cv.degree}</p>
-                                        <p><strong>High School:</strong> {Cv.highschool}</p>
+                                        <h2 className="mb-4">Edukimi</h2>
+                                        <p><strong>Fakulteti:</strong> {Cv.college}</p>
+                                        <p><strong>Diploma:</strong> {Cv.degree}</p>
+                                        <p><strong>Shkolla e mesme:</strong> {Cv.highschool}</p>
                                     </div>
                                     <div className="mt-4">
-                                        <h2 className="mb-4">Languages</h2>
+                                        <h2 className="mb-4">Gjuhet</h2>
                                         {languages.map((language, index) => (
                                             <p key={index}>
-                                                <strong>Language:</strong> {language.Language} <span className="ml-4"><strong>Level:</strong> {language.Level}</span>
+                                                <strong>Gjuha:</strong> {language.language} <span className="mx-4"><strong>Niveli:</strong> {language.level}</span>
                                                 <br/>
                                             </p>
                                         ))}
@@ -152,7 +138,7 @@ const CV = () => {
                                     <p>{Cv.description}</p>
                                 </div>
                                 <div className="section">
-                                    <h2 className="mb-4">Experience</h2>
+                                    <h2 className="mb-4">Eksperienca</h2>
                                     {workExperiences.map((workExperience, index) => (
                                         <div key={index}>
                                             <p><strong>{workExperience.startingyear} - {workExperience.lastyear}</strong></p>
@@ -164,12 +150,12 @@ const CV = () => {
                                     ))}
                                 </div>
                                 <div className="section">
-                                    <h2 className="mb-4">References</h2>
+                                    <h2 className="mb-4">Referencat</h2>
                                     {references.map((reference, index) => (
                                         <div key={index}>
                                             <p>{reference.name} {reference.surname} </p>
                                             <p>{reference.jobposition}, {reference.companyname}</p>
-                                            <p>Phone: {reference.phone_nr}</p>
+                                            <p>Numri telefonit: {reference.phone_nr}</p>
                                             <p>Email: {reference.email}</p>
                                             <hr/>
                                         </div>

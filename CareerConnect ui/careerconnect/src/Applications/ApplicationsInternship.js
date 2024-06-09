@@ -74,17 +74,17 @@ const ApplicationsInternship = () => {
                                         </Card.Text>
                                         {showDetails[application.applicationid] && ( // Conditionally render additional details for the specific application
                                             <Card.Text>
-                                                Gender: {application.gender}<br />
-                                                Description:<br/> {application.description}
+                                                Gjinia: {application.gender}<br />
+                                                Pershkrim:<br/> {application.description}
                                             </Card.Text>
                                         )}
-                                        <Button className='btn btn-primary mx-5' onClick={() => toggleDetails(application.applicationid)}>
-                                            {showDetails[application.applicationid] ? 'See less' : 'See more'}
+                                        <Button className='btn btn-primary mx-3' onClick={() => toggleDetails(application.applicationid)}>
+                                            {showDetails[application.applicationid] ? 'Shiko me pak' : 'Shiko me shume'}
                                         </Button>
                                         <Button 
-                                            className='btn btn-primary mx-5' 
+                                            className='btn btn-primary mx-3' 
                                             onClick={() => navigate(`/EmployeePage/${application.employeeid}`)}>
-                                            See Employee
+                                            Shiko Aplikantin
                                         </Button>
                                     </Card.Body>
                                 </Card>

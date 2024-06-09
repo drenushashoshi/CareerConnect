@@ -70,31 +70,31 @@ useEffect(() => {
                     </div>
                 ))
             ) : (
-                <p>No References</p>
+                <p></p>
             )}
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
-              <label>Name:</label>
+              <label>Emri:</label>
               <input type="text" name="name" value={formData.name} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Surname:</label>
+              <label>Mbiemri:</label>
               <input type="text" name="surname" value={formData.surname} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Job Position:</label>
+              <label>Pozita e punes:</label>
               <input type="text" name="jobposition" value={formData.jobposition} onChange={handleChange} className="form-control" />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label>Company Name:</label>
+              <label>Emri i kompanis:</label>
               <input type="text" name="companyname" value={formData.companyname} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Phone Number:</label>
+              <label>Nr telefonit:</label>
               <input type="text" name="phone_nr" value={formData.phone_nr} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
@@ -103,7 +103,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary mt-3 col-12">Add Another Reference</button>
+        <button type="submit" className="btn btn-primary mt-3 col-12">Shto Reference tjeter</button>
       </form>
     </div>
   );

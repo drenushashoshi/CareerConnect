@@ -30,9 +30,19 @@ public class CvServiceImpl implements CvService{
    private EmployeeRepository EmployeeRepository;
 
    @Override
-   public CVDto createCv(CVDto CvDto,MultipartFile file) throws IOException {
+   public CVDto createCv(CVDto CvDto,MultipartFile file) throws IOException, IllegalArgumentException {
     Employee employee = EmployeeRepository.findById(CvDto.getEmployee()).orElseThrow(()->
     new ResourceNotFoundException("Cv does not exist"));
+    Optional<CV> emailCheck = CvRepository.findByEmail(CvDto.getEmail());
+    if (emailCheck.isPresent()) {
+        throw new IllegalArgumentException("Email already in use by another CV");
+    }
+
+    // Check for phone number uniqueness
+    Optional<CV> phoneCheck = CvRepository.findByPhonenr(CvDto.getPhone_nr());
+    if (phoneCheck.isPresent()) {
+        throw new IllegalArgumentException("Phone number already in use by another CV");
+    }
     
     CV Cv= CVMapper.mapToCv(CvDto,employee);
        if (file != null && !file.isEmpty()) {

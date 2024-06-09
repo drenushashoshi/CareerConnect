@@ -12,10 +12,19 @@ class CvService {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log(response.data);
-            return response.data;
+            console.log(response);
+            return response;
         } catch (error) {
-            throw error;
+            if (error.response) {
+                console.log("Error Response:", error.response.data);
+                return error.response;
+            } else if (error.request) {
+                console.log("Error Request:", error.request);
+                throw new Error('No response received from server');
+            } else {
+                console.log('Error', error.message);
+                throw new Error('Error in setting up request: ' + error.message);
+            }
         }
     }
     static async downloadImage(cvid) {
@@ -54,7 +63,7 @@ class CvService {
         const token = localStorage.getItem('token');
         try
         {
-            const response = await axios.get(`${CvService.BASE_URL}/employee/Cv/Employee/${id}`,
+            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/Employee/${id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`

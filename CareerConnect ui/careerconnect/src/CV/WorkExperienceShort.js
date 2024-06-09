@@ -129,12 +129,12 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
       {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title>Konfirmo Fshirjen</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to delete?</Modal.Body>
+        <Modal.Body>A jeni te sigurt qe doni ta fshini eksperiencen?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
+            Anulo
           </Button>
           <Button variant="danger" onClick={handleConfirmDelete}>
             Delete
@@ -144,50 +144,50 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
       {/* Edit Modal */}
       <Modal show={showEditModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Work Experience</Modal.Title>
+          <Modal.Title>Edito Eksperiencen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label>Start Year:</label>
+                <label>Viti fillestar:</label>
                 <input type="number" name="startingyear" value={formData.startingyear} onChange={handleChange} className="form-control" />
               </div>
               <div className="form-group">
-                <label>Street:</label>
+                <label>Lagja:</label>
                 <input type="text" name="street" value={formData.street} onChange={handleChange} className="form-control" />
               </div>
               <div className="form-group">
-                <label>Company Name:</label>
+                <label>Emri i kompanis:</label>
                 <input type="text" name="companyname" value={formData.companyname} onChange={handleChange} className="form-control" />
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
-                <label>End Year:</label>
+                <label>Viti perfundimtar:</label>
                 <input type="number" name="lastyear" value={formData.lastyear} onChange={handleChange} className="form-control" />
               </div>
               <div className="form-group">
-                <label>City:</label>
+                <label>Qyteti:</label>
                 <input type="text" name="city" value={formData.city} onChange={handleChange} className="form-control" />
               </div>
               <div className="form-group">
-                <label>Job Position:</label>
+                <label>Pozita e punes:</label>
                 <input type="text" name="jobposition" value={formData.jobposition} onChange={handleChange} className="form-control" />
               </div>
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="description">Description:</label>
+            <label htmlFor="description">Pershkrim:</label>
             <textarea className="form-control" id="description" name="description" style={{ height: '200px' }} placeholder='' value={formData.description} onChange={handleChange}></textarea>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
+            Anulo
           </Button>
           <Button variant="danger" onClick={handleConfirmEdit}>
-            Save
+            Ruaj Ndryshimet
           </Button>
         </Modal.Footer>
       </Modal>

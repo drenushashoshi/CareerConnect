@@ -90,18 +90,18 @@ const CvEdit = () => {
 
     const validate = () => {
         const newErrors = {};
-        if (!name) newErrors.name = 'Please fill out the name';
-        if (!surname) newErrors.surname = 'Please fill out the surname';
-        if (!email) newErrors.email = 'Please fill out the email';
-        if (!phone_nr) newErrors.phone_nr = 'Please fill out the phone number';
-        if (!description) newErrors.description = 'Please fill out the description';
-        if (!college) newErrors.college = 'Please fill out the college';
-        if (!degree) newErrors.degree = 'Please fill out the degree';
-        if (!highschool) newErrors.highschool = 'Please fill out the highschool';
-        if (!phone_nr) newErrors.phone_nr = 'Please fill out the phone_nr';
-        if (!street) newErrors.street = 'Please fill out the street';
-        if (!city) newErrors.city = 'Please fill out the city';
-        if (!image) newErrors.fileInput = 'Please insert an image';
+        if (!name) newErrors.name = 'Ju lutem plotesoni fushen e duhur';
+        if (!surname) newErrors.surname = 'Ju lutem plotesoni fushen e duhur';
+        if (!email) newErrors.email = 'Ju lutem plotesoni fushen e duhur';
+        if (!phone_nr) newErrors.phone_nr = 'Ju lutem plotesoni fushen e duhur';
+        if (!description) newErrors.description = 'Ju lutem plotesoni fushen e duhur';
+        if (!college) newErrors.college = 'Ju lutem plotesoni fushen e duhur';
+        if (!degree) newErrors.degree = 'Ju lutem plotesoni fushen e duhur';
+        if (!highschool) newErrors.highschool = 'Ju lutem plotesoni fushen e duhur';
+        if (!phone_nr) newErrors.phone_nr = 'Ju lutem plotesoni fushen e duhur';
+        if (!street) newErrors.street = 'Ju lutem plotesoni fushen e duhur';
+        if (!city) newErrors.city = 'Ju lutem plotesoni fushen e duhur';
+        if (!image) newErrors.fileInput = 'Ju lutem plotesoni fushen e duhur';
         return newErrors;
     };
 
@@ -128,7 +128,7 @@ const CvEdit = () => {
             if (response.status === 200) {
                 navigate(`/CvInfo/${Cv.cvid}`);
             } else if (response.status === 409) {
-                setUniqueError('Email/Phone number already in use');
+                setUniqueError('Email/Numri i telefonit eshte ne perdorim');
             } else if (response.status === 404) {
                 setUniqueError('CV not found');
             } else {
@@ -146,13 +146,13 @@ const CvEdit = () => {
         <div>
             <CustomNavbar />
             <div className="container mt-2x">
-                <h1 className="mb-4">Personal Information</h1>
+                <h1 className="mb-4">Informacioni Personal</h1>
                 {Cv && (
                     <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label htmlFor="name">Name:</label>
+                                    <label htmlFor="name">Emri:</label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.name ? 'is-invalid' : ''}`}
@@ -165,7 +165,7 @@ const CvEdit = () => {
                                     {errors.name && <div className="invalid-feedback">{errors.name}</div>}
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="surname">Surname:</label>
+                                    <label htmlFor="surname">Mbiemri:</label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.surname ? 'is-invalid' : ''}`}
@@ -191,7 +191,7 @@ const CvEdit = () => {
                                     {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="phone_nr">Phone Number:</label>
+                                    <label htmlFor="phone_nr">Nr. telefonit:</label>
                                     <input
                                         type="tel"
                                         className={`form-control ${errors.phone_nr ? 'is-invalid' : ''}`}
@@ -207,7 +207,7 @@ const CvEdit = () => {
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <label htmlFor="street">Street:</label>
+                                        <label htmlFor="street">Lagja:</label>
                                         <input
                                             type="text"
                                             className={`form-control ${errors.street ? 'is-invalid' : ''}`}
@@ -219,7 +219,7 @@ const CvEdit = () => {
                                         {errors.street && <div className="invalid-feedback">{errors.street}</div>}
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="city">City:</label>
+                                        <label htmlFor="city">Qyteti:</label>
                                         <input
                                             type="text"
                                             className={`form-control ${errors.city ? 'is-invalid' : ''}`}
@@ -232,7 +232,7 @@ const CvEdit = () => {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="college">College:</label>
+                                    <label htmlFor="college">Fakulteti:</label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.college ? 'is-invalid' : ''}`}
@@ -244,7 +244,7 @@ const CvEdit = () => {
                                     {errors.college && <div className="invalid-feedback">{errors.college}</div>}
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="degree">Degree:</label>
+                                    <label htmlFor="degree">Diploma:</label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.degree ? 'is-invalid' : ''}`}
@@ -256,7 +256,7 @@ const CvEdit = () => {
                                     {errors.degree && <div className="invalid-feedback">{errors.degree}</div>}
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="highschool">High School:</label>
+                                    <label htmlFor="highschool">Shkolla e mesme:</label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.highschool ? 'is-invalid' : ''}`}
@@ -270,13 +270,13 @@ const CvEdit = () => {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="description">About You:</label>
+                            <label htmlFor="description">Per ju:</label>
                             <textarea
                                 className={`form-control ${errors.description ? 'is-invalid' : ''}`}
                                 id="description"
                                 name="description"
                                 style={{ height: '200px' }}
-                                placeholder='Describe Yourself'
+                                placeholder=''
                                 value={description}
                                 onChange={handleChange}
                             ></textarea>
@@ -291,11 +291,11 @@ const CvEdit = () => {
                                 onChange={(e) => setImage(e.target.files[0])}
                                 style={{display:'none'}}
                             />
-                            <label htmlFor="fileInput" className="btn btn-primary">Choose Picture For Cv</label>
-                            {fileError && <div className="invalid-feedback d-block">Please insert an image</div>}
+                            <label htmlFor="fileInput" className="btn btn-primary">Zgjidh fotografi per CV</label>
+                            {fileError && <div className="invalid-feedback d-block">Ju lutem zgjidh fotografi!</div>}
                             {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                         </div>
-                        <button type="submit" className="btn btn-primary">Continue</button>
+                        <button type="submit" className="btn btn-primary">Vazhdo</button>
                     </form>
                 )}
             </div>

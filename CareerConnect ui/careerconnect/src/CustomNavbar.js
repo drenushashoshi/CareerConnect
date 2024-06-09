@@ -97,13 +97,13 @@ function CustomNavbar() {
                             <>
                                 {Cv ? (
                                     <NavDropdown title="CV" id="cv-nav-dropdown" className="nav-item dropdown mt-3">
-                                        <NavDropdown.Item onClick={() => navigate(`/CvEdit/${Cv.cvid}`)}>Edit Cv</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={() => navigate(`/Cv/${employeeId}`)}>View Cv</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={handleModalOpen}>Delete Cv</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate(`/CvEdit/${Cv.cvid}`)}>Edito CVn</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate(`/Cv/${employeeId}`)}>Shiko CVn</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={handleModalOpen}>Fshij CVn</NavDropdown.Item>
                                     </NavDropdown>
                                 ) : (
                                     <Button variant='light' className='bg-white border-0' onClick={handleCvClick}>
-                                        Create Cv
+                                        Krijo CV
                                     </Button>
                                 )}
                                 <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown mt-3">
@@ -134,14 +134,14 @@ function CustomNavbar() {
             </Navbar>
             <Modal show={showModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm Deletion</Modal.Title>
+                    <Modal.Title>Konfirmo Fshirjen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to delete your CV?
+                     A jeni te sigurt qe doni ta fshini CVn?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>
-                        Cancel
+                        Anulo
                     </Button>
                     <Button variant="danger" onClick={handleConfirmDelete}>
                         Delete

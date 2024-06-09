@@ -67,13 +67,13 @@ const Language = () => {
                     </div>
                 ))
             ) : (
-                <p>No Languages</p>
+                <p></p>
             )}
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-md-8">
                         <div className="form-group">
-                            <label>Language:</label>
+                            <label>Gjuha:</label>
                             <input
                                 type="text"
                                 name="language"
@@ -86,21 +86,23 @@ const Language = () => {
                     <div className="col-md-4">
                         <div className="form-group">
                             <label>Level:</label>
+                            <label></label>
                             <DropdownButton
                                 id="dropdown-basic-button"
-                                title={values.level || "Select Level"}
+                                title={values.level || "Zgjidh Nivelin"}
                                 onSelect={handleSelect}
                             >
-                                <Dropdown.Item eventKey="Beginner">Beginner</Dropdown.Item>
-                                <Dropdown.Item eventKey="Pre-intermediate">Pre-intermediate</Dropdown.Item>
-                                <Dropdown.Item eventKey="Intermediate">Intermediate</Dropdown.Item>
-                                <Dropdown.Item eventKey="Upper-Intermediate">Upper-Intermediate</Dropdown.Item>
-                                <Dropdown.Item eventKey="Advanced">Advanced</Dropdown.Item>
+
+                                <Dropdown.Item eventKey="Fillestar">Fillestar</Dropdown.Item>
+                                <Dropdown.Item eventKey="Nen-Mesatar">Nen-Mesatar</Dropdown.Item>
+                                <Dropdown.Item eventKey="Mesatar">Mesatar</Dropdown.Item>
+                                <Dropdown.Item eventKey="Permbi-Mesatar">Permbi-Mesatar</Dropdown.Item>
+                                <Dropdown.Item eventKey="Avancum">Avancum</Dropdown.Item>
                             </DropdownButton>
                         </div>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3 col-12">Add Another Language</button>
+                <button type="submit" className="btn btn-primary mt-3 col-12">Shto Gjuhe Tjeter</button>
             </form>
         </div>
     );

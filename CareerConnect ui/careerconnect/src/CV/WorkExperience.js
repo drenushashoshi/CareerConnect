@@ -69,44 +69,44 @@ const WorkExperience = () => {
                     </div>
                 ))
             ) : (
-                <p>No Work Experience</p>
+                <p></p>
             )}
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
-              <label>Start Year:</label>
+              <label>Viti fillestar:</label>
               <input type="number" name="startingyear" value={formData.startingyear} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Street:</label>
+              <label>Lagja:</label>
               <input type="text" name="street" value={formData.street} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Company Name:</label>
+              <label>Emri i kompanis:</label>
               <input type="text" name="companyname" value={formData.companyname} onChange={handleChange} className="form-control" />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label>End Year:</label>
+              <label>Viti perfundimtar:</label>
               <input type="number" name="lastyear" value={formData.lastyear} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>City:</label>
+              <label>Qyteti:</label>
               <input type="text" name="city" value={formData.city} onChange={handleChange} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Job Position:</label>
+              <label>Pozita e punes:</label>
               <input type="text" name="jobposition" value={formData.jobposition} onChange={handleChange} className="form-control" />
             </div>
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="description">Description:</label>
+          <label htmlFor="description">Pershkrim:</label>
           <textarea className="form-control" id="description" name="description" style={{ height: '200px' }} placeholder='' value={formData.description} onChange={handleChange}></textarea>
         </div>
-        <button type="submit" className="btn btn-primary mt-3 col-12">Add Another Work Experience</button>
+        <button type="submit" className="btn btn-primary mt-3 col-12">Shtoni Eksperienc Tjeter</button>
       </form>
     </div>
   );
