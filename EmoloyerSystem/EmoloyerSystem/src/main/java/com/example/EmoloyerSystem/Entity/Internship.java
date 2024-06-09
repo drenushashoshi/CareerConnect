@@ -2,6 +2,7 @@ package com.example.EmoloyerSystem.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,6 +46,7 @@ public class Internship {
 
     @ManyToOne
     @JoinColumn(name = "company")
+    @JsonBackReference
     private Company company;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "internshipid")

@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import RateService from '../Services/RateService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const Rate = () => {
   const [vleresimi, setVleresimi] = useState(null);
@@ -18,6 +19,18 @@ const Rate = () => {
 
   const { employeeId } = useParams(); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!EmployeeService.isEmployee()) {
+      navigate('/');
+    } else {
+      const storedEmployeeId = sessionStorage.getItem('employeeId');
+      if (employeeId !== storedEmployeeId) {
+        EmployeeService.logout();
+        navigate('/');
+      }
+    }
+  }, [navigate, employeeId]);
 
   useEffect(() => {
     setFormattedDate();

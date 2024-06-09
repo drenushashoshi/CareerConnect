@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import CvService from '../Services/CvService';
 import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
+import EmployeeService from '../Services/EmployeeService';
 
 const CV = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const idAsInteger = parseInt(id, 10);
     const [Cv, setCv] = useState(null);
     const [references, setReferences] = useState([]);
@@ -16,10 +18,22 @@ const CV = () => {
     const [profileImageURL, setProfileImageURL] = useState(null);
     const [workExperiences, setWorkExperiences] = useState([]);
 
+    useEffect(() => {
+        if (!EmployeeService.isEmployee()) {
+          navigate('/');
+        } else {
+          const storedEmployeeId = sessionStorage.getItem('employeeId');
+          if (id !== storedEmployeeId) {
+            EmployeeService.logout();
+            navigate('/');
+          }
+        }
+      }, [navigate, id]);
+
     const fetchCV = async () => {
         try {
             const response = await CvService.getCvByEmployeeId(idAsInteger);
-            console.log('Fetched Cv:', response); // Debugging line
+            console.log('Fetched Cv:', response); 
             setCv(response);
         } catch (error) {
             console.error('Error fetching Cv:', error);

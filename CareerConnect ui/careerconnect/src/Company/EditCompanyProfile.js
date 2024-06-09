@@ -19,9 +19,15 @@ const EditCompanyProfile = () => {
 
   useEffect(() => {
     if (!CompanyService.isCompany()) {
+      navigator('/');
+    } else {
+      const storedCompanyId = sessionStorage.getItem('companyId');
+      if (id !== storedCompanyId) {
+        CompanyService.logout();
         navigator('/');
+      }
     }
-  }, [navigator]);
+  }, [navigator, id]);
 
   const [companyData, setCompanyData] = useState({
     name: '',
@@ -32,7 +38,6 @@ const EditCompanyProfile = () => {
     description: ''
   });
 
-  
   const [validations, setValidations] = useState({
     name: true,
     email: true,
@@ -46,15 +51,12 @@ const EditCompanyProfile = () => {
     fetchCompanyDataById(id);
   }, [id]);
 
-  
-
   const fetchCompanyDataById = async (id) => {
     try {
       const token = localStorage.getItem('token');
       const response = await CompanyService.getCompany(id, token);
       const { name, email, address, phone_number, opening_year, description } = response.company;
-      setCompanyData({ name, email, address, phone_number, opening_year, description })
-
+      setCompanyData({ name, email, address, phone_number, opening_year, description });
     } catch (error) {
       console.error('Error fetching company data ', error);
     }
@@ -71,8 +73,6 @@ const EditCompanyProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
-    
     const areValid = validateForm();
     if (!areValid) {
       return;
@@ -83,61 +83,59 @@ const EditCompanyProfile = () => {
       navigator(`/CompanyPage/${id}`);
     } catch (error) {
       console.error('error updating company profile ', error);
-      alert(error)
+      alert(error);
     }
   };
 
   const validateForm = () => {
     const validationsCopy = { ...validations };
     let isValid = true;
-  
-    
+
     if (!companyData.name.trim()) {
       validationsCopy.name = false;
       isValid = false;
     } else {
       validationsCopy.name = true;
     }
-  
+
     if (!companyData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(companyData.email)) {
       validationsCopy.email = false;
       isValid = false;
     } else {
       validationsCopy.email = true;
     }
-  
+
     if (!companyData.address.trim()) {
       validationsCopy.address = false;
       isValid = false;
     } else {
       validationsCopy.address = true;
     }
-  
+
     if (!companyData.phone_number.trim()) {
       validationsCopy.phone_number = false;
       isValid = false;
     } else {
       validationsCopy.phone_number = true;
     }
-  
+
     if (!companyData.opening_year.toString().trim()) { 
       validationsCopy.opening_year = false;
       isValid = false;
     } else {
       validationsCopy.opening_year = true;
     }
-  
+
     if (!companyData.description.trim()) {
       validationsCopy.description = false;
       isValid = false;
     } else {
       validationsCopy.description = true;
     }
-  
+
     setValidations(validationsCopy);
     return isValid;
   };
-  
 
   return (
     <>
@@ -251,7 +249,6 @@ const EditCompanyProfile = () => {
                     />
                     {!validations.description && <div className="text-danger">Përshkrimi është i nevojshëm</div>}
                   </MDBCol>
-
                 </MDBRow><br />
                 <MDBRow className="mb-3 justify-content-center">
                   <MDBCol sm="6">

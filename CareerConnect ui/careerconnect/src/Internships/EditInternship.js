@@ -10,6 +10,7 @@ import CompanyService from '../Services/CompanyService';
 
 const EditInternship = () => {
     const [title, settitle] = useState('');
+    const [companyId, setCompanyId] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
     const [end_date, setEnd_date] = useState('');
@@ -18,7 +19,6 @@ const EditInternship = () => {
     const [locationName, setLocation] = useState('');
     const [industriaName, setIndustria] = useState('');
     const [titleError, setTitleError] = useState('');
-    const [companyNameError, setCompanyNameError] = useState('');
     const [startDateError, setStartDateError] = useState('');
     const [endDateError, setEndDateError] = useState('');
     const [deadlineError, setDeadlineError] = useState('');
@@ -33,11 +33,7 @@ const EditInternship = () => {
     const { id } = useParams();
     const [internship, setInternship] = useState(null);
 
-    useEffect(() => {
-        if (!CompanyService.isCompany()) {
-            navigator('/');
-        }
-    }, [navigator]);
+    
 
     useEffect(() => {
         if (id) {
@@ -45,6 +41,7 @@ const EditInternship = () => {
             InterService.getInternshipById(id, token)
                 .then((response) => {
                     setInternship(response.data);
+                    setCompanyId(response.companyId)
                     settitle(response.title);
                     setStart_date(response.start_date);
                     setEnd_date(response.end_date);
@@ -59,6 +56,20 @@ const EditInternship = () => {
                 });
         }
     }, [id]);
+    
+
+
+    useEffect(() => {
+        if (!CompanyService.isCompany()) {
+            navigator('/');
+        } else {
+            const storedCompanyId = sessionStorage.getItem('companyId');
+            if (companyId !== storedCompanyId) {
+            CompanyService.logout();
+            navigator('/');
+            }
+        }
+    }, [navigator, companyId]);
 
     useEffect(() => {
         async function fetchData() {

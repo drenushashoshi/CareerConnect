@@ -48,6 +48,7 @@ public class Company implements UserDetails {
     private String role;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Collection<Internship> internships;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -55,6 +56,7 @@ public class Company implements UserDetails {
     private Collection<CompanyStaff> staff;
 
     @OneToMany(mappedBy = "company")
+    @JsonManagedReference
     private Collection<Job> jobs;
 
 

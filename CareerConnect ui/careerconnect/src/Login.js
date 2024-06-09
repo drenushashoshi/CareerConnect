@@ -93,17 +93,17 @@ function Login() {
             {error && <div className="text-danger font-weight-bold">{error}</div>}
             <div className='mb-2'>
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter email' className='form-control'/>
+              <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='email' className='form-control'/>
             </div>
             <div className='mb-2'>
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter password' className='form-control'/>
+              <label htmlFor="password">Fjalekalimi</label>
+              <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='fjalekalimi' className='form-control'/>
             </div>
             <div className='mb-2'>
-              <label htmlFor="userType">Login as</label>
+              <label htmlFor="userType">Roli juaj</label>
               <select id="userType" value={userType} onChange={(e) => setUserType(e.target.value)} className='form-control'>
-                <option value="company">Company</option>
-                <option value="employee">Employee</option>
+                <option value="company">Kompani</option>
+                <option value="employee">Punetor</option>
               </select>
             </div>
             

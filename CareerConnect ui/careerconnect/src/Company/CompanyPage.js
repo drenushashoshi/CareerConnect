@@ -18,7 +18,7 @@ import CompanysInternships from '../Internships/CompanysInternships';
 import CustomNavbar from '../CustomNavbar';
 import backgroundImage from './background.jpg';
 import CompanyService from '../Services/CompanyService';
-import AllJobs from '../Jobs/AllJobs'
+import AllJobs from '../Jobs/AllJobs';
 
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,9 +26,11 @@ const CompanyPage = () => {
   const [loading, setLoading] = useState(true);
   const [showSpinner, setShowSpinner] = useState(false);
   const [fetchError, setFetchError] = useState(false); 
+
   const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
   const { id } = useParams();
+  const storedCompanyId = sessionStorage.getItem('companyId');
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
@@ -77,7 +79,6 @@ const CompanyPage = () => {
     CompanyService.logout();
   };
 
-  
   useEffect(() => {
     const spinnerTimeout = setTimeout(() => {
       if (loading) setShowSpinner(true);
@@ -86,7 +87,6 @@ const CompanyPage = () => {
     return () => clearTimeout(spinnerTimeout);
   }, [loading]);
 
-  
   if (loading && showSpinner) {
     return (
       <div style={{
@@ -104,7 +104,6 @@ const CompanyPage = () => {
     );
   }
 
-  
   if (loading) {
     return (
       <div style={{
@@ -156,7 +155,7 @@ const CompanyPage = () => {
         <div style={{ backgroundColor: '#3b5998', color: '#fff', fontFamily: 'Arial, sans-serif', padding: '10px', height: '70px', margin: '0 -15px' }}>
           <div className="container d-flex justify-content-between align-items-center">
             <h4 style={{ fontWeight: 'bold', padding: '10px', marginLeft: '15px' }}>{profileInfo?.name}</h4>
-            {isCompany && (
+            {isCompany && id === storedCompanyId && (
               <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={updateCompany} href="#">Ndrysho Profilin</NavDropdown.Item>
                 <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
@@ -218,18 +217,20 @@ const CompanyPage = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-        <div className="text-center mt-5">
-          <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Stafi i Kompanisë</h2>
-        </div>
         {profileInfo && (
           <>
             <ListStaff companyId={profileInfo.id} />
-            {isCompany && <CompanyStaff companyId={profileInfo.id} />}
-            <div className="text-center mb-5">
-              <h2 style={{ fontFamily: 'Arial, sans-serif', color: '#0056b3', fontWeight: 'bold' }}>Shpalljet e Postuara</h2>
-            </div>
-            <CompanysInternships companyId={profileInfo.id} /><br/>
-            <AllJobs companyId={profileInfo.id} />
+            {isCompany && id === storedCompanyId && <CompanyStaff companyId={profileInfo.id} />}
+            
+            <><br/>
+              <div className="text-center mb-5">
+              <h2 style={{ fontFamily: 'Bebas Neue', color: '#0066cc', fontWeight: 'bold', fontSize: '36px' }}>SHPALLJET E POSTUARA</h2>
+              </div>
+              <CompanysInternships companyId={profileInfo.id} />
+              <br />
+              <AllJobs companyId={profileInfo.id} />
+            </>
+            
           </>
         )}
         <Footer />

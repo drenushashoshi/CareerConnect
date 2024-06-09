@@ -21,6 +21,7 @@ import { Button } from 'react-bootstrap';
 import EmployeePostSignup from "./EmployeePostSignup";
 import EmployeePostList from "./EmployeePostList";
 
+
 const EmployeePage = () => {
   const {id} = useParams();
   const [showModal, setShowModal] = useState(false);
@@ -98,7 +99,7 @@ const EmployeePage = () => {
             <h4 style={{ fontWeight: 'bold', padding: '10px', marginLeft: '15px' }}>
               {profileInfo.name} {profileInfo.surname}
             </h4>
-            {isEmployee && (
+            {isEmployee && id === loggedInEmployee &&(
               <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={() => updateEmployee(profileInfo.id)} href="#">Ndrysho Profilin</NavDropdown.Item>
                 <NavDropdown.Item onClick={handleShowModal} href="#">Fshij Profilin</NavDropdown.Item>

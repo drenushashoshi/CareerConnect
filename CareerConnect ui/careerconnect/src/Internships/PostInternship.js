@@ -1,6 +1,6 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import CostumNavbar from "../CustomNavbar";
-import { Link, useNavigate, useParams} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg'; 
 import Footer from '../Footer';
@@ -21,9 +21,11 @@ function PostInternship() {
     const [errors, setErrors] = useState({});
     const [locations, setLocations] = useState([]);
     const [industries, setIndustries] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
 
     const navigator = useNavigate();
-    const {companyId}=useParams();
+    const { companyId } = useParams();
 
     useEffect(() => {
         if (!CompanyService.isCompany()) {
@@ -33,7 +35,7 @@ function PostInternship() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setErrors({ ...errors, [name]: '' }); 
+        setErrors({ ...errors, [name]: '' });
         switch (name) {
             case "title":
                 setTitle(value);
@@ -98,31 +100,36 @@ function PostInternship() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const errors = validateForm();
             if (Object.keys(errors).length === 0) {
-                const internship = { title,description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
+                const internship = { title, description, start_date, end_date, requirements, locationName, industriaName, deadline, companyId };
                 const token = localStorage.getItem('token');
                 await InterService.createInternship(internship, token);
-                setSuccessMessage("Praktika u postua me sukses!");
-                setTitle('');
-                setDescription('');
-                setStart_date('');
-                setEnd_date('');
-                setRequirements('');
-                setLocation('');
-                setIndustria('');
-                setDeadline('');
+                setShowSpinner(true);
+                setTimeout(() => {
+                    setShowSpinner(false);
+                    setIsLoading(false);
+                    setSuccessMessage("Praktika u postua me sukses!");
+                    setTitle('');
+                    setDescription('');
+                    setStart_date('');
+                    setEnd_date('');
+                    setRequirements('');
+                    setLocation('');
+                    setIndustria('');
+                    setDeadline('');
+                }, 2000); // Show spinner for 2 seconds
             } else {
                 setErrors(errors);
+                setIsLoading(false);
             }
         } catch (error) {
             console.error("Error posting internship: ", error);
+            setIsLoading(false);
         }
     };
-    
-    
-    
 
     const validateForm = () => {
         const errors = {};
@@ -163,39 +170,38 @@ function PostInternship() {
         <>
             <CostumNavbar />
             <div style={{ 
-            backgroundImage: `url(${backgroundImage})`, 
-            backgroundSize: 'cover', 
-            backgroundRepeat: 'no-repeat', 
-            backgroundPosition: 'center', 
-            textAlign: 'center',
-            minHeight: '100vh', 
+                backgroundImage: `url(${backgroundImage})`, 
+                backgroundSize: 'cover', 
+                backgroundRepeat: 'no-repeat', 
+                backgroundPosition: 'center', 
+                textAlign: 'center',
+                minHeight: '100vh', 
             }}>
-                
-                <br/><h1 style={{ fontFamily: 'Arial, sans-serif', color: '#4169E1' }}><b>Posto Praktikë</b></h1><br/>
+                <br /><h1 style={{ fontFamily: 'Arial, sans-serif', color: '#4169E1' }}><b>Posto Praktikë</b></h1><br />
 
                 <form style={{ width: '50%', margin: 'auto' }} onSubmit={handleSubmit}>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)' }}>
-                            <input className="form-control" industria="text" name="title" value={title} onChange={handleChange} placeholder="Titulli" style={{ width: '100%' }} />
+                            <input className="form-control" type="text" name="title" value={title} onChange={handleChange} placeholder="Titulli" style={{ width: '100%' }} />
                             {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
                         </div>
                     </div>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)', display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                            <label htmlFor="start_date" style={{color: '#4169E1', marginBottom: '5px'}}>Data e fillimit te praktikes:</label>
+                            <label htmlFor="start_date" style={{ color: '#4169E1', marginBottom: '5px' }}>Data e fillimit te praktikes:</label>
                             <input id="start_date" className="form-control" type="date" name="start_date" value={start_date} onChange={handleChange} />
                             {errors.start_date && <span style={{ color: 'red' }}>{errors.start_date}</span>}
                         </div>
                         <div style={{ width: 'calc(50% - 5px)', display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                            <label htmlFor="end_date" style={{color: '#4169E1', marginBottom: '5px'}}>Data e pefundimit te praktikes:</label>
+                            <label htmlFor="end_date" style={{ color: '#4169E1', marginBottom: '5px' }}>Data e pefundimit te praktikes:</label>
                             <input id="end_date" className="form-control" type="date" name="end_date" value={end_date} onChange={handleChange} />
                             {errors.end_date && <span style={{ color: 'red' }}>{errors.end_date}</span>}
                         </div>
                     </div>
 
-                    <textarea className="form-control" name="description" value={description} onChange={handleChange} placeholder="Pershkrimi" rows="6" style={{ marginBottom: '10px', width: '100%', resize:'none' }} />
+                    <textarea className="form-control" name="description" value={description} onChange={handleChange} placeholder="Pershkrimi" rows="6" style={{ marginBottom: '10px', width: '100%', resize: 'none' }} />
                     {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
-                    <textarea className="form-control" name="requirements" value={requirements} onChange={handleChange} placeholder="Kerkesat" rows="6" style={{ marginBottom: '10px', width: '100%', resize:'none' }} />
+                    <textarea className="form-control" name="requirements" value={requirements} onChange={handleChange} placeholder="Kerkesat" rows="6" style={{ marginBottom: '10px', width: '100%', resize: 'none' }} />
                     {errors.requirements && <span style={{ color: 'red' }}>{errors.requirements}</span>}
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)' }}>
@@ -219,27 +225,32 @@ function PostInternship() {
                     </div>
                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ width: 'calc(50% - 5px)', display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                            <label htmlFor="deadline" style={{ color: '#4169E1', marginBottom: '5px'}}>Afati i aplikimit:</label>
+                            <label htmlFor="deadline" style={{ color: '#4169E1', marginBottom: '5px' }}>Afati i aplikimit:</label>
                             <input id="deadline" className="form-control" type="date" name="deadline" value={deadline} onChange={handleChange} />
                             {errors.deadline && <span style={{ color: 'red' }}>{errors.deadline}</span>}
                         </div>
                     </div>
-                    <button industria="submit" className="btn btn-primary" style={{ cursor: 'pointer', width: '50%', marginTop: '10px' }}>Posto</button>
-                </form><br/><br/>
-                    {successMessage && (
-                        <div className="success-message" style={{ fontSize: '18px' }}>
+                    <button type="submit" className="btn btn-primary" style={{ cursor: 'pointer', width: '50%', marginTop: '10px' }}>
+                        {isLoading ? <span>Loading...</span> : "Posto"}
+                    </button>
+                </form><br /><br />
+                {showSpinner && (
+                    <div className="spinner" style={{ fontSize: '18px', marginTop: '10px' }}>
+                        <div className="spinner-border" role="status">
+                        </div>
+                    </div>
+                )}
+                {successMessage && (
+                    <div className="success-message" style={{ fontSize: '18px' }}>
                         {successMessage}
                         <br />
-                        <Link to={`/CompanyPage/${companyId}`} style={{ fontSize: '18px' }}>Klikoni këtu për të parë të gjitha shpalljet e postuara.</Link><br/>
-                      </div> 
-                      
-                    )}
-                
+                        <Link to={`/CompanyPage/${companyId}`} style={{ fontSize: '18px' }}>Klikoni këtu për të parë të gjitha shpalljet e postuara.</Link><br />
+                    </div>
+                )}
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
-    
 }
 
 export default PostInternship;

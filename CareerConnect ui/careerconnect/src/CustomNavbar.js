@@ -7,18 +7,17 @@ import CvService from './Services/CvService';
 
 function CustomNavbar() {
     const [profileInfo, setProfileInfo] = useState({});
-    const [showNavbar, setShowNavbar] = useState(false); 
+    const [showNavbar, setShowNavbar] = useState(false);
     const [Cv, setCv] = useState();
     const isAuthenticated = CompanyService.isAuthenticated();
     const isCompany = CompanyService.isCompany();
     const isEmployee = EmployeeService.isEmployee();
     const companyId = sessionStorage.getItem('companyId');
     const employeeId = sessionStorage.getItem('employeeId');
-    console.log(employeeId);
-    const [showModal, setShowModal] = useState(false); // State for modal visibility
-    
+    const [showModal, setShowModal] = useState(false);
+
     const navigate = useNavigate();
-    const location = useLocation(); // Add this to get the current route
+    const location = useLocation();
 
     const handleProfileButtonClick = () => {
         if (isAuthenticated && isCompany) {
@@ -32,8 +31,8 @@ function CustomNavbar() {
 
     useEffect(() => {
         if (isCompany || isEmployee) {
-            setShowNavbar(true); 
-            fetchProfileInfo(); 
+            setShowNavbar(true);
+            fetchProfileInfo();
         }
     }, [isCompany, isEmployee]);
 
@@ -50,7 +49,7 @@ function CustomNavbar() {
     const fetchCV = async () => {
         try {
             const response = await CvService.getCvByEmployeeId(employeeId);
-            console.log('Fetched Cv:', response); // Debugging line
+            console.log('Fetched Cv:', response);
             setCv(response);
         } catch (error) {
             console.error('Error fetching Cv:', error);
@@ -65,14 +64,12 @@ function CustomNavbar() {
         navigate(`/CvCreate/${employeeId}`);
     };
 
-    // Determine if the current path is CvCreate or CvEdit
     const isCvCreateOrEdit = location.pathname.includes('/CvCreate') || location.pathname.includes('/CvEdit');
 
     const handleModalOpen = () => {
         setShowModal(true);
     };
 
-    // Function to close the modal
     const handleModalClose = () => {
         setShowModal(false);
     };
@@ -81,7 +78,7 @@ function CustomNavbar() {
         e.preventDefault();
         try {
             await CvService.deleteCv(Cv.cvid);
-            window.location.reload(); // Reload the page after successful deletion
+            window.location.reload();
         } catch (error) {
             console.error('Error deleting reference:', error);
         }
@@ -96,10 +93,10 @@ function CustomNavbar() {
                 <Navbar.Toggle aria-controls="navbarCollapse" className="me-4" />
                 <Navbar.Collapse id="navbarCollapse">
                     <Nav className="ms-auto p-4 p-lg-0">
-                        {isEmployee && !isCvCreateOrEdit && ( // Conditionally render the CV button
+                        {isEmployee && !isCvCreateOrEdit && (
                             <>
                                 {Cv ? (
-                                    <NavDropdown title="CV" id="cv-nav-dropdown" className="nav-item dropdown">
+                                    <NavDropdown title="CV" id="cv-nav-dropdown" className="nav-item dropdown mt-3">
                                         <NavDropdown.Item onClick={() => navigate(`/CvEdit/${Cv.cvid}`)}>Edit Cv</NavDropdown.Item>
                                         <NavDropdown.Item onClick={() => navigate(`/Cv/${employeeId}`)}>View Cv</NavDropdown.Item>
                                         <NavDropdown.Item onClick={handleModalOpen}>Delete Cv</NavDropdown.Item>
@@ -109,7 +106,7 @@ function CustomNavbar() {
                                         Create Cv
                                     </Button>
                                 )}
-                                <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown">
+                                <NavDropdown title="Apliko" id="basic-nav-dropdown" className="nav-item dropdown mt-3">
                                     <NavDropdown.Item href="../JobListing">Pune</NavDropdown.Item>
                                     <NavDropdown.Item href="../InternshipsList">Praktike</NavDropdown.Item>
                                 </NavDropdown>
@@ -123,17 +120,19 @@ function CustomNavbar() {
                         )}
                         {isCompany && (
                             <>
-                                <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown">
+                                <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown mt-3">
                                     <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
                                     <NavDropdown.Item href={`../PostInternship/${companyId}`}>Posto Praktike</NavDropdown.Item>
                                 </NavDropdown>
                             </>
                         )}
+                        <Button variant="primary" className="rounded-0 py-4 px-lg-5 mt-3 mt-lg-0" onClick={handleProfileButtonClick}>
+                            Profili juaj <i className="fa fa-arrow-right ms-3"></i>
+                        </Button>
                     </Nav>
-                    <Button variant="primary" className="rounded-0 py-4 px-lg-5 d-none d-lg-block" onClick={handleProfileButtonClick}>Profili juaj<i className="fa fa-arrow-right ms-3"></i></Button>
                 </Navbar.Collapse>
             </Navbar>
-            <Modal show={showModal} onHide={handleModalClose}> {/* Conditionally render the modal */}
+            <Modal show={showModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Deletion</Modal.Title>
                 </Modal.Header>

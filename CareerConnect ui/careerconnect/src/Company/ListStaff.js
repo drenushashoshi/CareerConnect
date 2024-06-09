@@ -13,8 +13,6 @@ import { ReactComponent as DeleteButton } from './trash.svg';
 import Modal from 'react-bootstrap/Modal';
 import CompanyService from '../Services/CompanyService';
 
-const isCompany = CompanyService.isCompany();
-
 const ListStaff = ({ companyId }) => {
   const [companyStaff, setCompanyStaff] = useState([]);
   const [companyStaffId, setCompanyStaffId] = useState(null);
@@ -27,8 +25,10 @@ const ListStaff = ({ companyId }) => {
   const [roleError, setRoleError] = useState('');
   const [staffChanges, setStaffChanges] = useState(0);
   const [images, setImages] = useState({});
-  const [modalImage, setModalImage] = useState(null); // State for modal image
-  const [selectedFile, setSelectedFile] = useState(null); // State for selected file
+  const [modalImage, setModalImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const storedCompanyId = sessionStorage.getItem('companyId');
 
   useEffect(() => {
     fetchStaff(companyId);
@@ -46,7 +46,7 @@ const ListStaff = ({ companyId }) => {
 
   const fetchImages = async (staffList) => {
     const token = localStorage.getItem('token');
-    const imagePromises = staffList.map(staff => 
+    const imagePromises = staffList.map(staff =>
       CompanyService.downloadImage(staff.id)
         .then(imageData => {
           const blob = new Blob([imageData], { type: 'image/jpeg' });
@@ -58,7 +58,7 @@ const ListStaff = ({ companyId }) => {
           return { id: staff.id, url: null };
         })
     );
-    
+
     const imageResults = await Promise.all(imagePromises);
     const imageMap = imageResults.reduce((acc, img) => ({ ...acc, [img.id]: img.url }), {});
     setImages(imageMap);
@@ -79,7 +79,6 @@ const ListStaff = ({ companyId }) => {
         console.error(error);
       });
 
-    // Fetch image for the selected staff member
     CompanyService.downloadImage(id, token)
       .then(imageData => {
         const blob = new Blob([imageData], { type: 'image/jpeg' });
@@ -88,14 +87,14 @@ const ListStaff = ({ companyId }) => {
       })
       .catch(error => {
         console.error(`Error fetching image for staff id ${id}:`, error);
-        setModalImage(null); // Reset modal image in case of error
+        setModalImage(null);
       });
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setCompanyStaffId(null);
-    setModalImage(null); // Reset modal image when closing modal
+    setModalImage(null);
   };
 
   const handleSubmit = (event) => {
@@ -151,6 +150,8 @@ const ListStaff = ({ companyId }) => {
       });
   };
 
+  const isCompany = CompanyService.isCompany();
+
   return (
     <div className="container">
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -159,7 +160,7 @@ const ListStaff = ({ companyId }) => {
             <MDBCard className="h-100 position-relative" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
               <MDBCardBody className="text-center">
                 <div className="position-absolute top-0 end-0 mt-2 me-2">
-                  {isCompany && (
+                  {isCompany && companyId === parseInt(storedCompanyId) && (
                     <>
                       <button
                         onClick={() => handleShowModal(staff.id)}
@@ -189,9 +190,9 @@ const ListStaff = ({ companyId }) => {
                 </div>
 
                 {images[staff.id] ? (
-                  <img src={images[staff.id]} alt={`${staff.name} ${staff.surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '100px', height: '100px' }} />
+                  <img src={images[staff.id]} alt={`${staff.name} ${staff.surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '125px', height: '120px' }} />
                 ) : (
-                  <div className="placeholder rounded-circle mb-2" style={{ width: '100px', height: '100px', backgroundColor: '#f0f0f0' }}></div>
+                  <div className="placeholder rounded-circle mb-2" style={{ width: '120px', height: '120px', backgroundColor: '#f0f0f0' }}></div>
                 )}
 
                 <MDBRow>
@@ -209,9 +210,9 @@ const ListStaff = ({ companyId }) => {
             <form onSubmit={handleSubmit}>
               <MDBCardBody className="text-center">
                 {modalImage ? (
-                  <img src={modalImage} alt={`${name} ${surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '100px', height: '100px' }} />
+                  <img src={modalImage} alt={`${name} ${surname}`} className="img-fluid rounded-circle mb-2" style={{ width: '120px', height: '120px' }} />
                 ) : (
-                  <div className="placeholder rounded-circle mb-2" style={{ width: '100px', height: '100px', backgroundColor: '#f0f0f0' }}></div>
+                  <div className="placeholder rounded-circle mb-2" style={{ width: '120px', height: '120px', backgroundColor: '#f0f0f0' }}></div>
                 )}
                 <MDBRow>
                   <MDBCol>
@@ -253,8 +254,8 @@ const ListStaff = ({ companyId }) => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
-                />
-                
+                /><br/><br/>
+
                 <MDBBtn
                   className='mb-3 btn-primary'
                   type="submit"

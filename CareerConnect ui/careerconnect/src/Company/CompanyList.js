@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const navigator = useNavigate();
 
     useEffect(() => {
@@ -22,6 +24,7 @@ const CompanyList = () => {
         try {
             const token = localStorage.getItem('token');
             await CompanyService.deleteCompany(id, token);
+            setShowModal(false);
             fetchCompanies();
         } catch (error) {
             console.error('Error deleting company', error);
@@ -41,6 +44,15 @@ const CompanyList = () => {
         setTimeout(() => {
             setLoading(false);
         }, 1000);
+    };
+
+    const openModal = (companyId) => {
+        setSelectedCompanyId(companyId);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
     };
 
     return (
@@ -83,10 +95,9 @@ const CompanyList = () => {
                                             </a>
                                         </td>
                                         <td>
-                                        <button className="btn btn-danger" onClick={() => removeCompany(company.id)}>
-                                            Fshij profilin
-                                        </button>
-
+                                            <button className="btn btn-danger" onClick={() => openModal(company.id)}>
+                                                Fshij profilin
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -94,6 +105,25 @@ const CompanyList = () => {
                         </table>
                     </div>
                 )}
+
+                
+                {showModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">A jeni të sigurtë që dëshironi të fshini këtë kompani?</h5>
+                                </div>
+                                
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>Anulo</button>
+                                    <button type="button" className="btn btn-danger" onClick={() => removeCompany(selectedCompanyId)}>Fshij</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
             </div>
         </div>
     );

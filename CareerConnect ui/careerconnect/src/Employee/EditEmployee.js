@@ -32,6 +32,18 @@ const EditEmployee = () => {
     fetchEmployeeDataById(id);
   }, [id]);
 
+  useEffect(() => {
+    if (!EmployeeService.isEmployee()) {
+      navigate('/');
+    } else {
+      const storedEmployeeId = sessionStorage.getItem('employeeId');
+      if (id !== storedEmployeeId) {
+        EmployeeService.logout();
+        navigate('/');
+      }
+    }
+  }, [navigate, id]);
+
   const fetchEmployeeDataById = async (id) => {
     try {
       const response = await EmployeeService.getEmployeeById(id);

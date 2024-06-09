@@ -9,10 +9,10 @@ const CompanyStaff = ({ companyId }) => {
     const [nameError, setNameError] = useState('');
     const [surnameError, setSurnameError] = useState('');
     const [roleError, setRoleError] = useState('');
-    const [image, setImage] = useState(null); 
+    const [image, setImage] = useState(null);
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]); 
+        setImage(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
@@ -93,40 +93,41 @@ const CompanyStaff = ({ companyId }) => {
                                     placeholder='Pozita e punes (p.sh CEO)'
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                /><br/>
+                                /><br />
                                 {roleError && <div className="text-danger">{roleError}</div>}
                                 <div className="mb-3">
-                                    <label 
-                                        htmlFor="fileInput" 
+                                    <label
+                                        htmlFor="fileInput"
                                         className="btn btn-outline-primary"
                                         style={{ display: 'block', cursor: 'pointer' }}
                                     >
                                         Foto
                                     </label>
-                                    <input 
-                                        id="fileInput" 
-                                        type="file" 
-                                        accept="image/*" 
-                                        onChange={handleImageChange} 
+                                    <input
+                                        id="fileInput"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
                                         style={{ display: 'none' }}
                                     />
                                     {image && <div className="mt-2">{image.name}</div>}
                                 </div>
                             </MDBCardBody>
                             <div className="d-flex justify-content-center">
-                                <MDBBtn
+                                <button
                                     className='mb-3'
                                     type="submit"
                                     style={{
-                                        backgroundColor: 'transparent',
-                                        color: 'black',
-                                        border: '1px solid #0d6efd',
-                                        width: '30px',
-                                        height: '30px'
+                                        backgroundColor: '#0d6efd',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '10px 20px',
+                                        fontSize: '14px',
+                                        borderRadius:'10px'
                                     }}
                                 >
-                                    +
-                                </MDBBtn>
+                                    Posto Staf të kompanisë
+                                </button>
                             </div>
                         </form>
                     </MDBCard>
