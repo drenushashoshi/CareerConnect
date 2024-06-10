@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
-import InterService from '../Services/InterService'
+import InterService from '../Services/InterService';
 import Footer from '../Footer';
 import { getLocations } from '../Services/LocationService';
 import { getIndustries } from '../Services/IndustriaService';
 import CompanyService from '../Services/CompanyService';
 
-
 const EditInternship = () => {
-    const [title, settitle] = useState('');
+    const [title, setTitle] = useState('');
     const [companyId, setCompanyId] = useState('');
     const [description, setDescription] = useState('');
     const [start_date, setStart_date] = useState('');
@@ -28,48 +27,50 @@ const EditInternship = () => {
     const [locations, setLocations] = useState([]);
     const [industries, setIndustries] = useState([]);
 
-    const navigator = useNavigate();
-
+    const navigate = useNavigate();
     const { id } = useParams();
     const [internship, setInternship] = useState(null);
 
-    
-
     useEffect(() => {
         if (id) {
-            const token = localStorage.getItem('token');
-            InterService.getInternshipById(id, token)
+            InterService.getInternshipById(id)
                 .then((response) => {
-                    setInternship(response.data);
-                    setCompanyId(response.companyId)
-                    settitle(response.title);
-                    setStart_date(response.start_date);
-                    setEnd_date(response.end_date);
-                    setRequirements(response.requirements);
-                    setDescription(response.description);
-                    setLocation(response.locationName);
-                    setIndustria(response.industriaName);
-                    setDeadline(response.deadline);
+                    if (response) {
+                        console.log("Internship Data:", response); // Debugging line
+                        setInternship(response);
+                        setCompanyId(response.companyId || '');
+                        setTitle(response.title || '');
+                        setStart_date(response.start_date || '');
+                        setEnd_date(response.end_date || '');
+                        setRequirements(response.requirements || '');
+                        setDescription(response.description || '');
+                        setLocation(response.locationName || '');
+                        setIndustria(response.industriaName || '');
+                        setDeadline(response.deadline || '');
+                    }
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.error("Error fetching internship:", error);
                 });
         }
     }, [id]);
-    
-
 
     useEffect(() => {
         if (!CompanyService.isCompany()) {
-            navigator('/');
-        } else {
+            navigate('/');
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+        if (companyId) {
             const storedCompanyId = sessionStorage.getItem('companyId');
-            if (companyId !== storedCompanyId) {
-            CompanyService.logout();
-            navigator('/');
+            console.log(`Fetched companyId: ${companyId}, Stored companyId: ${storedCompanyId}`); // Debugging line
+            if (companyId.toString() !== storedCompanyId.toString()) {
+                CompanyService.logout();
+                navigate('/');
             }
         }
-    }, [navigator, companyId]);
+    }, [companyId, navigate]);
 
     useEffect(() => {
         async function fetchData() {
@@ -87,7 +88,7 @@ const EditInternship = () => {
 
             try {
                 const response = await getIndustries();
-                console.log('Response:', response);
+                console.log('Industries Response:', response);
                 if (Array.isArray(response)) {
                     setIndustries(response);
                 } else if (response.data && Array.isArray(response.data)) {
@@ -103,13 +104,11 @@ const EditInternship = () => {
         fetchData();
     }, []);
 
-    
-
     const isEmptyOrWhitespace = (str) => {
         return !str || /^\s*$/.test(str);
     };
 
-    function saveInternship(e) {
+    const saveInternship = (e) => {
         e.preventDefault();
         setTitleError('');
         setStartDateError('');
@@ -156,7 +155,7 @@ const EditInternship = () => {
                 InterService.updateInternship(id, updatedInternship, token)
                     .then((response) => {
                         console.log(response.data);
-                        navigator(`/InternshipDetails/${id}`);
+                        navigate(`/InternshipDetails/${id}`);
                     })
                     .catch(error => {
                         console.error("Error updating internship:", error);
@@ -164,7 +163,6 @@ const EditInternship = () => {
             }
         }
     }
-
 
     return (
         <>
@@ -180,7 +178,7 @@ const EditInternship = () => {
                                         <div className="job-title">
                                             <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Titulli</h4>
                                             <p style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>
-                                                <input type="text" value={title} onChange={(e) => settitle(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width:'400px' }} />
+                                                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width:'400px' }} />
                                                 {titleError && <div style={{ color: 'red' }}>{titleError}</div>}
                                             </p>
                                         </div>

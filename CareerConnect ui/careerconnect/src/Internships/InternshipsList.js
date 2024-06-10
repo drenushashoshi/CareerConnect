@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
 import InterService from '../Services/InterService';
@@ -72,14 +72,16 @@ function InternshipListing() {
     const handleSearch = async () => {
         setLoading(true);
         setError(null);
-        try {
-            const response = await InterService.searchInternships(searchParams.query, searchParams.Industry, searchParams.location);
-            setInternships(response);
-        } catch (error) {
-            setError('Error searching internships');
-            console.error('Error searching:', error);
-        }
-        setLoading(false);
+        setTimeout(async () => {
+            try {
+                const response = await InterService.searchInternships(searchParams.query, searchParams.Industry, searchParams.location);
+                setInternships(response);
+            } catch (error) {
+                setError('Error searching internships');
+                console.error('Error searching:', error);
+            }
+            setLoading(false);
+        }, 1000); // Simulate a delay for the loading spinner
     };
 
     const handleClearSearch = () => {
@@ -149,7 +151,7 @@ function InternshipListing() {
                     </div>
                 </div>
                 <div className="container mt-5">
-                    {loading && <p>Loading jobs...</p>}
+                    {loading && <div className="d-flex justify-content-center"><Spinner animation="border" /></div>}
                     {error && <p>{error}</p>}
                     <div className="row">
                         {internships?.map(internship => (
@@ -161,7 +163,7 @@ function InternshipListing() {
                                             Data e fillimit se praktikes: <strong>{internship.start_date}</strong><br />
                                             Data e perfundimit se praktikes: <strong>{internship.end_date}</strong><br />
                                             <GeoIcon /><strong>{internship.locationName}</strong><br />
-                                            Industria:<strong>{internship.industriaName}</strong><br />
+                                            Industria: <strong>{internship.industriaName}</strong><br />
                                             <ClockIcon />Afati i aplikimit: <strong>{internship.deadline}</strong>
                                         </Card.Text>
                                         {isEmployee && <Link to={`/InternshipApplication/${internship.id}`} className="btn btn-primary me-2">Apliko</Link>}
