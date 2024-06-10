@@ -5,6 +5,7 @@ import { getIndustries } from '../Services/IndustriaService';
 import { getLocations } from '../Services/LocationService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import CompanyService from '../Services/CompanyService';
 
 const EditJob = () => {
     const { id } = useParams();
@@ -73,6 +74,19 @@ const EditJob = () => {
         }
     }, [id]);
 
+    useEffect(() => {
+        if (!CompanyService.isCompany()) {
+            navigate('/');
+        } else {
+            const storedCompanyId = sessionStorage.getItem('companyId');
+            const jobCompanyId = localStorage.getItem('jobCompanyId');
+            if (storedCompanyId !== jobCompanyId) {
+                CompanyService.logout();
+                navigate('/');
+            }
+        }
+    }, [navigate]);
+
     const handleChange = (setter) => (e) => {
         setter(e.target.value);
     };
@@ -131,7 +145,7 @@ const EditJob = () => {
         }
 
         if (isValid) {
-            const updatedJob = {title, description, requirements, locationName, salary, industriaName, deadline};
+            const updatedJob = { title, description, requirements, locationName, salary, industriaName, deadline };
             if (id) {
                 const token = localStorage.getItem('token');
                 updateJob(id, updatedJob, token)
@@ -209,15 +223,15 @@ const EditJob = () => {
                                                 value={industriaName}
                                                 onChange={handleChange(setIndustriaName)}
                                                 className="form-control"
-                                                style={{width: '100%'}}
+                                                style={{ width: '100%' }}
                                             >
                                                 <option value="">Select Job Type</option>
                                                 {industryOptions.map((industria) => (
                                                     <option key={industria.name} value={industria.name}>{industria.name}</option>
                                                 ))}
                                             </select>
-                                            <br/>
-                                            {industryError && <div style={{color: 'red'}}>{industryError}</div>}
+                                            <br />
+                                            {industryError && <div style={{ color: 'red' }}>{industryError}</div>}
                                         </li>
                                         <li>
                                             Salary: <input type="text" value={salary} onChange={handleChange(setSalary)}
@@ -230,19 +244,22 @@ const EditJob = () => {
                                             {salaryError && <div style={{ color: 'red' }}>{salaryError}</div>}
                                         </li>
                                         <li>
-                                            Deadline: <input type="date" value={deadline} onChange={handleChange(setDeadline)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '100%' }} />
+                                            Application Deadline:
+                                            <input
+                                                type="date"
+                                                value={deadline}
+                                                onChange={handleChange(setDeadline)}
+                                                className="form-control"
+                                                style={{ width: '100%' }}
+                                            />
+                                            <br />
                                             {deadlineError && <div style={{ color: 'red' }}>{deadlineError}</div>}
                                         </li>
                                     </ul>
+                                    <button onClick={handleSubmit} className="btn btn-primary">Save Changes</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="apply-btn2" style={{ textAlign: 'center' }}>
-                            <button className="btn btn-primary" onClick={handleSubmit} style={{ borderRadius: '5px', backgroundColor: '#4e8fff', color: 'white', padding: '10px 20px', cursor: 'pointer', transition: 'background-color 0.3s' }}>
-                                Save Changes
-                            </button>
-                        </div>
-                        <br />
                     </div>
                 </div>
             </main>
