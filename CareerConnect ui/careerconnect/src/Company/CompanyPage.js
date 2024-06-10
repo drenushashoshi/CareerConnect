@@ -38,7 +38,7 @@ const CompanyPage = () => {
 
       try {
         const response = await CompanyService.getCompany(id);
-        setProfileInfo(response.company);
+        setProfileInfo(response);
       } catch (error) {
         console.error('Error fetching profile data', error);
         setFetchError(true); 

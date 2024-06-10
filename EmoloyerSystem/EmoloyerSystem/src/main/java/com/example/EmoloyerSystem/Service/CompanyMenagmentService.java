@@ -3,6 +3,7 @@ package com.example.EmoloyerSystem.Service;
 import com.example.EmoloyerSystem.Entity.Company;
 import com.example.EmoloyerSystem.Repository.CompanyRepository;
 import com.example.EmoloyerSystem.dto.CompanyDto;
+import com.example.EmoloyerSystem.Mapper.CompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyMenagmentService {
@@ -27,30 +29,21 @@ public class CompanyMenagmentService {
     public CompanyDto register(CompanyDto registrationRequest) {
         CompanyDto response = new CompanyDto();
         try {
-            Company company = new Company();
-            company.setEmail(registrationRequest.getEmail());
-            company.setName(registrationRequest.getName());
-            company.setAddress(registrationRequest.getAddress());
-            company.setPhone_number(registrationRequest.getPhone_number());
-            company.setOpening_year(registrationRequest.getOpening_year());
-            company.setDescription(registrationRequest.getDescription());
+            Company company = CompanyMapper.mapDtoToCompany(registrationRequest);
             company.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            company.setRole(registrationRequest.getRole());
 
             Company savedCompany = companyRepository.save(company);
 
             if (savedCompany.getId() > 0) {
-
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         registrationRequest.getEmail(), registrationRequest.getPassword()));
 
                 String jwt = JWTUtils.generateToken(savedCompany);
                 String refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), savedCompany);
 
+                response = CompanyMapper.mapCompanyToDto(savedCompany);
                 response.setStatusCode(200);
                 response.setToken(jwt);
-                response.setRole(savedCompany.getRole());
-                response.setId(savedCompany.getId());
                 response.setRefreshToken(refreshToken);
                 response.setExpirationTime("24Hrs");
                 response.setMessage("Company registered and logged in successfully");
@@ -62,18 +55,18 @@ public class CompanyMenagmentService {
         return response;
     }
 
-    public CompanyDto login(CompanyDto loginRequest){
+    public CompanyDto login(CompanyDto loginRequest) {
         CompanyDto response = new CompanyDto();
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginRequest.getEmail(), loginRequest.getPassword()));
-            var company = companyRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
-            var jwt = JWTUtils.generateToken(company); // Pass Company object here
-            var refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), company);
+            Company company = companyRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
+            String jwt = JWTUtils.generateToken(company);
+            String refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), company);
+
+            response = CompanyMapper.mapCompanyToDto(company);
             response.setStatusCode(200);
             response.setToken(jwt);
-            response.setRole(company.getRole());
-            response.setId(company.getId());
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully logged in");
@@ -84,14 +77,14 @@ public class CompanyMenagmentService {
         return response;
     }
 
-
-    public CompanyDto refreshToken(CompanyDto refreshTokenRequest){
-        CompanyDto response=new CompanyDto();
-        try{
-            String email=jwtUtils.extractUsername(refreshTokenRequest.getToken());
-            Company company=companyRepository.findByEmail(email).orElseThrow();
-            if(jwtUtils.isTokenValid(refreshTokenRequest.getToken(), company)){
-                var jwt= JWTUtils.generateToken(company);
+    public CompanyDto refreshToken(CompanyDto refreshTokenRequest) {
+        CompanyDto response = new CompanyDto();
+        try {
+            String email = jwtUtils.extractUsername(refreshTokenRequest.getToken());
+            Company company = companyRepository.findByEmail(email).orElseThrow();
+            if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), company)) {
+                String jwt = JWTUtils.generateToken(company);
+                response = CompanyMapper.mapCompanyToDto(company);
                 response.setStatusCode(200);
                 response.setToken(jwt);
                 response.setRefreshToken(refreshTokenRequest.getToken());
@@ -99,115 +92,115 @@ public class CompanyMenagmentService {
                 response.setMessage("Successfully refreshed Token");
             }
             response.setStatusCode(200);
-            return response;
-        }catch(Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
-            return response;
         }
+        return response;
     }
 
-    public CompanyDto getAllCompanies(){
-        CompanyDto companyDto=new CompanyDto();
-
-        try{
-            List<Company> result= companyRepository.findAll();
-            if(!result.isEmpty()){
-                companyDto.setCompanyList(result);
+    public CompanyDto getAllCompanies() {
+        CompanyDto companyDto = new CompanyDto();
+        try {
+            List<Company> result = companyRepository.findAll();
+            if (!result.isEmpty()) {
+                List<CompanyDto> companyDtos = result.stream()
+                        .map(CompanyMapper::mapCompanyToDto)
+                        .collect(Collectors.toList());
+                companyDto.setCompanyList(companyDtos);
                 companyDto.setStatusCode(200);
                 companyDto.setMessage("Successful");
-            }else{
+            } else {
                 companyDto.setStatusCode(404);
                 companyDto.setMessage("No companies found");
             }
-            return companyDto;
-        }catch(Exception e){
+        } catch (Exception e) {
             companyDto.setStatusCode(500);
-            companyDto.setMessage("Error occurred: "+e.getMessage());
-            return companyDto;
-        }
-    }
-    public CompanyDto getCompanyById(Integer id){
-        CompanyDto companyDto=new CompanyDto();
-        try{
-            Company companyById=companyRepository.findById(id).orElseThrow(()->new RuntimeException("Company not found"));
-            companyDto.setCompany(companyById);
-            companyDto.setStatusCode(200);
-            companyDto.setMessage("User with id "+id+" found successfully");
-
-        }catch(Exception e){
-            companyDto.setStatusCode(500);
-            companyDto.setMessage("Error occurred "+e.getMessage());
+            companyDto.setMessage("Error occurred: " + e.getMessage());
         }
         return companyDto;
     }
-    public CompanyDto deleteCompany(Integer id){
-        CompanyDto companyDto=new CompanyDto();
-        try{
-            Optional<Company> companyOptional=companyRepository.findById(id);
-            if(companyOptional.isPresent()){
+
+    public CompanyDto getCompanyById(Integer id) {
+        CompanyDto companyDto = new CompanyDto();
+        try {
+            Company company = companyRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
+            companyDto = CompanyMapper.mapCompanyToDto(company);
+            companyDto.setStatusCode(200);
+            companyDto.setMessage("User with id " + id + " found successfully");
+        } catch (Exception e) {
+            companyDto.setStatusCode(500);
+            companyDto.setMessage("Error occurred: " + e.getMessage());
+        }
+        return companyDto;
+    }
+
+    public CompanyDto deleteCompany(Integer id) {
+        CompanyDto companyDto = new CompanyDto();
+        try {
+            Optional<Company> companyOptional = companyRepository.findById(id);
+            if (companyOptional.isPresent()) {
                 companyRepository.deleteById(id);
                 companyDto.setStatusCode(200);
                 companyDto.setMessage("Company deleted successfully");
-            }else{
+            } else {
                 companyDto.setStatusCode(404);
                 companyDto.setMessage("Company not found");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             companyDto.setStatusCode(500);
-            companyDto.setMessage("Error occurred while deleting company "+e.getMessage());
+            companyDto.setMessage("Error occurred while deleting company: " + e.getMessage());
         }
         return companyDto;
     }
-    public CompanyDto updateCompany(Integer id, Company updatedCompany){
-        CompanyDto companyDto=new CompanyDto();
-        try{
-            Optional<Company> companyOptional=companyRepository.findById(id);
-            if(companyOptional.isPresent()){
-                Company existingCompany=companyOptional.get();
-                existingCompany.setName(updatedCompany.getName());
-                existingCompany.setEmail(updatedCompany.getEmail());
-                existingCompany.setAddress(updatedCompany.getAddress());
-                existingCompany.setPhone_number(updatedCompany.getPhone_number());
-                existingCompany.setOpening_year(updatedCompany.getOpening_year());
-                existingCompany.setDescription(updatedCompany.getDescription());
-                if(updatedCompany.getPassword() !=null && !updatedCompany.getPassword().isEmpty()){
-                    existingCompany.setPassword(passwordEncoder.encode(updatedCompany.getPassword()));
+
+    public CompanyDto updateCompany(Integer id, CompanyDto updatedCompanyDto) {
+        CompanyDto companyDto = new CompanyDto();
+        try {
+            Optional<Company> companyOptional = companyRepository.findById(id);
+            if (companyOptional.isPresent()) {
+                Company existingCompany = companyOptional.get();
+                existingCompany.setName(updatedCompanyDto.getName());
+                existingCompany.setEmail(updatedCompanyDto.getEmail());
+                existingCompany.setAddress(updatedCompanyDto.getAddress());
+                existingCompany.setPhone_number(updatedCompanyDto.getPhone_number());
+                existingCompany.setOpening_year(updatedCompanyDto.getOpening_year());
+                existingCompany.setDescription(updatedCompanyDto.getDescription());
+                if (updatedCompanyDto.getPassword() != null && !updatedCompanyDto.getPassword().isEmpty()) {
+                    existingCompany.setPassword(passwordEncoder.encode(updatedCompanyDto.getPassword()));
                 }
-                Company savedCompany=companyRepository.save(existingCompany);
-                companyDto.setCompany(savedCompany);
+                Company savedCompany = companyRepository.save(existingCompany);
+                companyDto = CompanyMapper.mapCompanyToDto(savedCompany);
                 companyDto.setStatusCode(200);
                 companyDto.setMessage("Company updated successfully");
-
-            } else{
+            } else {
                 companyDto.setStatusCode(404);
                 companyDto.setMessage("Company not found for update");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             companyDto.setStatusCode(500);
-            companyDto.setMessage("Error occurred while updating company "+e.getMessage());
+            companyDto.setMessage("Error occurred while updating company: " + e.getMessage());
         }
         return companyDto;
     }
 
-    public CompanyDto getMyInfo(String email){
-        CompanyDto companyDto=new CompanyDto();
-        try{
-            Optional<Company> companyOptional= companyRepository.findByEmail(email);
-            if(companyOptional.isPresent()){
-                companyDto.setCompany(companyOptional.get());
+    public CompanyDto getMyInfo(String email) {
+        CompanyDto companyDto = new CompanyDto();
+        try {
+            Optional<Company> companyOptional = companyRepository.findByEmail(email);
+            if (companyOptional.isPresent()) {
+                companyDto = CompanyMapper.mapCompanyToDto(companyOptional.get());
                 companyDto.setStatusCode(200);
                 companyDto.setMessage("Successful");
-            }else{
+            } else {
                 companyDto.setStatusCode(404);
                 companyDto.setMessage("Company not found");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             companyDto.setStatusCode(500);
-            companyDto.setMessage("Error occurred while getting company info "+e.getMessage());
+            companyDto.setMessage("Error occurred while getting company info: " + e.getMessage());
         }
         return companyDto;
     }
-
-
 }

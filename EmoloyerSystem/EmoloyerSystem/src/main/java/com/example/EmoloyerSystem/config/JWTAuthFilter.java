@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -44,16 +43,16 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String userEmail = jwtUtils.extractUsername(jwtToken);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails;
-            if (request.getRequestURI().startsWith("/employee/") || request.getRequestURI().startsWith("/admin")) {
-                // Check employee service for both employees and admins
-                userDetails = employeeDetailsService.loadUserByUsername(userEmail);
-            } else {
-                // Check company service for other endpoints
+            UserDetails userDetails = null;
+
+            // Determine whether to use CompanyDetailsService or EmployeeDetailsService
+            if (request.getRequestURI().startsWith("/company")) {
                 userDetails = companyDetailsService.loadUserByUsername(userEmail);
+            } else if (request.getRequestURI().startsWith("/employee") || request.getRequestURI().startsWith("/admin")) {
+                userDetails = employeeDetailsService.loadUserByUsername(userEmail);
             }
 
-            if (jwtUtils.isTokenValid(jwtToken, userDetails)) {
+            if (userDetails != null && jwtUtils.isTokenValid(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -63,4 +62,3 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

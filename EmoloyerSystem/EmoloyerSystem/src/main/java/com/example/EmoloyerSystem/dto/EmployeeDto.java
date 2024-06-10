@@ -37,5 +37,5 @@ public class EmployeeDto {
     private String role;
 
     private Employee employee;
-    private List<Employee> employeeList;
+    private List<EmployeeDto> employeeList;
 }

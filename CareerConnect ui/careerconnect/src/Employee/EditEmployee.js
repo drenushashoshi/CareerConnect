@@ -47,7 +47,7 @@ const EditEmployee = () => {
   const fetchEmployeeDataById = async (id) => {
     try {
       const response = await EmployeeService.getEmployeeById(id);
-      const { name, surname, email, address, age, phone, skills, jobPreferences } = response.employee;
+      const { name, surname, email, address, age, phone, skills, jobPreferences } = response;
       setEmployeeData({ name, surname, email, address, age, phone, skills, jobPreferences });
     } catch (error) {
       console.error('Error fetching employee data', error);

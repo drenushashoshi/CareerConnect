@@ -1,6 +1,7 @@
 package com.example.EmoloyerSystem.Service;
 
 import com.example.EmoloyerSystem.Entity.Employee;
+import com.example.EmoloyerSystem.Mapper.EmployeeMapper;
 import com.example.EmoloyerSystem.Repository.EmployeeRepository;
 import com.example.EmoloyerSystem.dto.EmployeeDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,8 @@ public class EmployeeService {
     public EmployeeDto register(EmployeeDto registrationRequest) {
         EmployeeDto response = new EmployeeDto();
         try {
-            Employee employee = new Employee();
-            employee.setName(registrationRequest.getName());
-            employee.setSurname(registrationRequest.getSurname());
-            employee.setAge(registrationRequest.getAge());
-            employee.setEmail(registrationRequest.getEmail());
-            employee.setAddress(registrationRequest.getAddress());
-            employee.setPhone(registrationRequest.getPhone());
-            employee.setJobPreferences(registrationRequest.getJobPreferences());
-            employee.setSkills(registrationRequest.getSkills());
+            Employee employee = EmployeeMapper.mapDtoToEmployee(registrationRequest);
             employee.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            employee.setRole(registrationRequest.getRole());
 
             Employee savedEmployee = employeeRepository.save(employee);
 
@@ -57,10 +49,9 @@ public class EmployeeService {
                 String refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), savedEmployee);
 
                 // Set details in the response
+                response = EmployeeMapper.mapEmployeeToDto(savedEmployee);
                 response.setStatusCode(200);
                 response.setToken(jwt);
-                response.setRole(savedEmployee.getRole());
-                response.setId(savedEmployee.getId());
                 response.setRefreshToken(refreshToken);
                 response.setExpirationTime("24Hrs");
                 response.setMessage("Employee registered and logged in successfully");
@@ -72,8 +63,6 @@ public class EmployeeService {
         return response;
     }
 
-
-
     public EmployeeDto login(EmployeeDto loginRequest) {
         EmployeeDto response = new EmployeeDto();
         try {
@@ -84,10 +73,9 @@ public class EmployeeService {
             String jwt = JWTUtils.generateToken(employee);
             String refreshToken = JWTUtils.generateRefreshToken(new HashMap<>(), employee);
 
+            response = EmployeeMapper.mapEmployeeToDto(employee);
             response.setStatusCode(200);
             response.setToken(jwt);
-            response.setRole(employee.getRole());
-            response.setId(employee.getId());
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully logged in");
@@ -98,7 +86,6 @@ public class EmployeeService {
         return response;
     }
 
-
     public EmployeeDto refreshToken(EmployeeDto refreshTokenRequest) {
         EmployeeDto response = new EmployeeDto();
         try {
@@ -108,6 +95,7 @@ public class EmployeeService {
 
             if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), employee)) {
                 String jwt = JWTUtils.generateToken(employee);
+                response = EmployeeMapper.mapEmployeeToDto(employee);
                 response.setStatusCode(200);
                 response.setToken(jwt);
                 response.setRefreshToken(refreshTokenRequest.getToken());
@@ -129,7 +117,7 @@ public class EmployeeService {
         try {
             List<Employee> result = employeeRepository.findAll();
             if (!result.isEmpty()) {
-                employeeDto.setEmployeeList(result);
+                employeeDto.setEmployeeList(result.stream().map(EmployeeMapper::mapEmployeeToDto).toList());
                 employeeDto.setStatusCode(200);
                 employeeDto.setMessage("Successful");
             } else {
@@ -148,7 +136,7 @@ public class EmployeeService {
         try {
             Employee employee = employeeRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Employee not found"));
-            employeeDto.setEmployee(employee);
+            employeeDto = EmployeeMapper.mapEmployeeToDto(employee);
             employeeDto.setStatusCode(200);
             employeeDto.setMessage("User with id " + id + " found successfully");
         } catch (Exception e) {
@@ -197,7 +185,7 @@ public class EmployeeService {
                     existingEmployee.setPassword(passwordEncoder.encode(updatedEmployee.getPassword()));
                 }
                 Employee savedEmployee = employeeRepository.save(existingEmployee);
-                employeeDto.setEmployee(savedEmployee);
+                employeeDto = EmployeeMapper.mapEmployeeToDto(savedEmployee);
                 employeeDto.setStatusCode(200);
                 employeeDto.setMessage("Employee updated successfully");
             } else {
@@ -216,7 +204,7 @@ public class EmployeeService {
         try {
             Employee employee = employeeRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Employee not found"));
-            employeeDto.setEmployee(employee);
+            employeeDto = EmployeeMapper.mapEmployeeToDto(employee);
             employeeDto.setStatusCode(200);
             employeeDto.setMessage("Successful");
         } catch (Exception e) {

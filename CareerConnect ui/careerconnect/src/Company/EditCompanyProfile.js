@@ -55,7 +55,7 @@ const EditCompanyProfile = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await CompanyService.getCompany(id, token);
-      const { name, email, address, phone_number, opening_year, description } = response.company;
+      const { name, email, address, phone_number, opening_year, description } = response;
       setCompanyData({ name, email, address, phone_number, opening_year, description });
     } catch (error) {
       console.error('Error fetching company data ', error);

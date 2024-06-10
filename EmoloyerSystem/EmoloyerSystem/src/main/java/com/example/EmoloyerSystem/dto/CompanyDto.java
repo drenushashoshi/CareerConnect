@@ -33,6 +33,8 @@ public class CompanyDto {
     private String role;
 
     private Company company;
-    private List<Company> companyList;
+    private List<CompanyDto> companyList;
 
+    public void setInternships(List<InternshipDto> collect) {
+    }
 }
