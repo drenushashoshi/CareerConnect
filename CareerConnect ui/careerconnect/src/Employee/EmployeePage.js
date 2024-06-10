@@ -20,6 +20,7 @@ import CompanyService from '../Services/CompanyService';
 import { Button } from 'react-bootstrap';
 import EmployeePostSignup from "./EmployeePostSignup";
 import EmployeePostList from "./EmployeePostList";
+import CvService from '../Services/CvService';
 
 
 const EmployeePage = () => {
@@ -30,11 +31,29 @@ const EmployeePage = () => {
   const isCompany = CompanyService.isCompany();
   const navigator = useNavigate();
   const loggedInEmployee= sessionStorage.getItem('employeeId');
+  const [cv,setCv] = useState(null);
 
 
   useEffect(() => {
     fetchProfileInfo();
   }, [id]);
+
+  useEffect(()=>
+  {
+    fetchCV();
+  },[id])
+
+  const fetchCV = async()=>
+    {
+      try{
+        const response = await CvService.getCvByEmployeeId(id);
+        setCv(response);
+      }
+      catch(error)
+      {
+        console.log('Cv not found');
+      }
+    }
 
   const fetchProfileInfo = async () => {
     try {
@@ -169,11 +188,9 @@ const EmployeePage = () => {
                   </MDBRow>
                 </MDBCardBody>
               </MDBCard>
-              {isCompany &&(
-                  <>
-                    <Button className='btn btn-primary' onClick={Click}>Shiko CVn</Button>
-                  </>
-                )}
+              {isCompany && cv ? (
+                <Button className="btn btn-primary" onClick={Click}>Shiko CVn</Button>
+              ) : null}
             </MDBCol>
           </MDBRow>
         </MDBContainer>

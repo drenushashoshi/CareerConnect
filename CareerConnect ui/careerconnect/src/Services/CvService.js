@@ -60,21 +60,14 @@ class CvService {
     }
     static async getCvByEmployeeId(id)
     {
-        const token = localStorage.getItem('token');
         try
         {
-            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/Employee/${id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+            const response = await axios.get(`${CvService.BASE_URL}/public/Cv/Employee/${id}`);
             console.log("Api Response:",response.data);
             return response.data;
         }catch(error)
         {
-            throw error;
+            throw null;
         }
     }
 
