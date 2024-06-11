@@ -77,11 +77,10 @@ const LocationDashboard = () => {
 
     if(role === 'ADMIN'){
     return (
-        <div className="container-fluid">
+        <div className='d-flex'>
+            <SideNavBar />
+        <div className="container-fluid" style={{ marginLeft: '250px', paddingTop: '20px', fontFamily: 'Arial, sans-serif' }}>
             <div className="row">
-                <div className="col-md-3">
-                    <SideNavBar />
-                </div>
                 <div className="col-md-9">
                     <h2 className="mt-5">Shto Vendndodhje të Re</h2>
                     <form onSubmit={handleCreateLocation} className="mb-4">
@@ -133,6 +132,8 @@ const LocationDashboard = () => {
                             </tbody>
                         </table>
                     </div>
+                </div>
+                </div>
                     {showDeleteModal && (
                         <div className="modal show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
                             <div className="modal-dialog" role="document">
@@ -156,7 +157,6 @@ const LocationDashboard = () => {
                     )}
                 </div>
             </div>
-        </div>
     );}
     else{
         return (

@@ -11,6 +11,7 @@ import {
     getEmployeePost
 } from '../Services/EmployeePostService';
 import EmployeeService from "../Services/EmployeeService";
+import { format } from 'date-fns';
 
 const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
     const [posts, setPosts] = useState([]);
@@ -145,14 +146,14 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
             console.error(error);
         }
     };
-
+    const sortedPosts = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     return (
-        <div className="container-lg"> {/* Changed from "container" to "container-lg" */}
-            <MDBRow className="row-cols-1 row-cols-md-2 g-4">
-                {posts.map(post => (
+        <div className="container-lg">
+            <MDBRow className="row-cols-1 g-4">
+                {sortedPosts.map(post => (
                     <MDBCol key={post.id} className="mb-4">
-                        <MDBCard className="h-100 position-relative" style={{ backgroundColor: '#e3f2fd', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
-                            <MDBCardBody className="text-center">
+                        <MDBCard className="h-100" style={{ backgroundColor: '#e3f2fd',margin: '0rem', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)' }}>
+                            <MDBCardBody className="text-center" style={{ padding: '1rem', margin: '0.5rem'}}>
                                 {post.employeeId == loggedInEmployeeId && isEmployee && (
                                     <div className="position-absolute top-0 end-0 mt-2 me-2">
                                         <button
@@ -184,12 +185,15 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
                                 <MDBCardText tag="h5" className="mb-3">{post.title}</MDBCardText>
 
                                 {images[post.id] ? (
-                                    <img src={images[post.id]} alt={`${post.title}`} className="img-fluid mb-3" style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
+                                    <img src={images[post.id]} alt={`${post.title}`} className="img-fluid mb-3" style={{ width: '50%', height: 'auto', objectFit: 'cover' }} />
                                 ) : (
-                                    <div className="placeholder mb-3" style={{ width: '100%', height: '200px', backgroundColor: '#f0f0f0' }}></div>
+                                    <div className="placeholder mb-3" style={{ width: '50%', height: '200px', backgroundColor: '#f0f0f0', margin: '0 auto' }}></div>
                                 )}
 
-                                <MDBCardText style={{ whiteSpace: 'pre-wrap' }}>{post.content}</MDBCardText>
+                                <MDBCardText style={{ whiteSpace: 'pre-wrap', fontSize: '1.2em' }}>{post.content}</MDBCardText>
+                                <MDBCardText className="text-muted" style={{ fontSize: '0.9em' }}>
+                                    {format(new Date(post.timestamp), 'yyyy-MM-dd HH:mm:ss')}
+                                </MDBCardText>
                             </MDBCardBody>
                         </MDBCard>
                     </MDBCol>

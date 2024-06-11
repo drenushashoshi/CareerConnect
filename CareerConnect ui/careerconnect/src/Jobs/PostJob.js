@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import CustomNavbar from '../CustomNavbar';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { createJob } from '../Services/JobService';
 import Footer from '../Footer';
 import { getLocations } from '../Services/LocationService';
 import { getIndustries } from '../Services/IndustriaService';
 import backgroundImage from "../Internships/background.jpg";
 import { Spinner } from 'react-bootstrap';
+import CompanyService from "../Services/CompanyService";
 
 function PostJob() {
     const [title, setTitle] = useState('');
@@ -22,6 +23,13 @@ function PostJob() {
     const [industries, setIndustries] = useState([]);
     const [loading, setLoading] = useState(false);
     const companyId = sessionStorage.getItem('companyId');
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        if (!CompanyService.isCompany()) {
+            navigator('/');
+        }
+    }, [navigator]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

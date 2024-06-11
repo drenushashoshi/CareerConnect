@@ -47,7 +47,15 @@ const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
             setError('Dështoi krijimi i postimit. Ju lutemi provoni përsëri.');
         }
     };
-    if (employeeId !== loggedInEmployeeId && isEmployee ) {
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && e.shiftKey === false) {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
+    if (employeeId !== loggedInEmployeeId || !isEmployee ) {
         return null;
     }
     return (
@@ -82,6 +90,7 @@ const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
                                         name="title"
                                         value={formData.title}
                                         onChange={handleChange}
+                                        onKeyPress={handleKeyPress}
                                         required
                                     />
                                 </MDBCol>
@@ -94,6 +103,7 @@ const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
                                         name="content"
                                         value={formData.content}
                                         onChange={handleChange}
+                                        onKeyPress={handleKeyPress}
                                         required
                                         style={{ width: '100%', minHeight: '150px', resize: 'vertical' }}
                                         rows={4}

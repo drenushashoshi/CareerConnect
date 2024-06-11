@@ -18,6 +18,7 @@ const EditJob = () => {
     const [salary, setSalary] = useState('');
     const [industriaName, setIndustriaName] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [companyId, setCompanyId] = useState('');
 
     const [titleError, setTitleError] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
@@ -30,11 +31,15 @@ const EditJob = () => {
     const [locationOptions, setLocationOptions] = useState([]);
     const [industryOptions, setIndustryOptions] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true);
+
                 const jobResponse = await getJob(id);
-                const { title, description, requirements, locationName, salary, industriaName, deadline } = jobResponse.data;
+                const { title, description, requirements, locationName, salary, industriaName, deadline, companyId } = jobResponse.data;
                 setTitle(title);
                 setDescription(description);
                 setRequirements(requirements);
@@ -42,22 +47,16 @@ const EditJob = () => {
                 setSalary(salary);
                 setIndustriaName(industriaName);
                 setDeadline(deadline);
-            } catch (error) {
-                console.error('Error fetching job details:', error);
-            }
+                setCompanyId(companyId);
+                console.log('Fetched companyId:', companyId);
 
-            try {
                 const locationResponse = await getLocations();
                 if (Array.isArray(locationResponse.data)) {
                     setLocationOptions(locationResponse.data);
                 } else {
                     console.error('Error: getLocations did not return an array');
                 }
-            } catch (error) {
-                console.error('Error fetching locations:', error);
-            }
 
-            try {
                 const industryResponse = await getIndustries();
                 if (Array.isArray(industryResponse)) {
                     setIndustryOptions(industryResponse);
@@ -65,7 +64,9 @@ const EditJob = () => {
                     console.error('Error: getIndustries did not return an array');
                 }
             } catch (error) {
-                console.error('Error fetching industries:', error);
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -75,17 +76,16 @@ const EditJob = () => {
     }, [id]);
 
     useEffect(() => {
-        if (!CompanyService.isCompany()) {
-            navigate('/');
-        } else {
+        if (companyId) {
             const storedCompanyId = sessionStorage.getItem('companyId');
-            const jobCompanyId = localStorage.getItem('jobCompanyId');
-            if (storedCompanyId !== jobCompanyId) {
-                CompanyService.logout();
+            console.log('Company ID from job:', companyId); // Debugging line
+            console.log('Company ID from session:', storedCompanyId); // Debugging line
+
+            if (!CompanyService.isCompany() || companyId.toString() !== storedCompanyId) {
                 navigate('/');
             }
         }
-    }, [navigate]);
+    }, [companyId, navigate]);
 
     const handleChange = (setter) => (e) => {
         setter(e.target.value);
@@ -159,6 +159,32 @@ const EditJob = () => {
         }
     };
 
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div style={{
+                    border: '4px solid rgba(0, 0, 0, 0.1)',
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    borderLeftColor: '#09f',
+                    animation: 'spin 1s ease infinite',
+                }} />
+                <style>
+                    {`
+                        @keyframes spin {
+                            0% {
+                                transform: rotate(0deg);
+                            }
+                            100% {
+                                transform: rotate(360deg);
+                            }
+                        }
+                    `}
+                </style>
+            </div>
+        );
+    }
     return (
         <>
             <CustomNavbar />
@@ -244,19 +270,21 @@ const EditJob = () => {
                                             {salaryError && <div style={{ color: 'red' }}>{salaryError}</div>}
                                         </li>
                                         <li>
-                                            Application Deadline:
-                                            <input
-                                                type="date"
-                                                value={deadline}
-                                                onChange={handleChange(setDeadline)}
-                                                className="form-control"
-                                                style={{ width: '100%' }}
-                                            />
-                                            <br />
+                                            Deadline: <input type="date" value={deadline} onChange={handleChange(setDeadline)}
+                                                             style={{
+                                                                 borderRadius: '5px',
+                                                                 padding: '5px',
+                                                                 marginBottom: '10px',
+                                                                 width: '100%'
+                                                             }}/>
                                             {deadlineError && <div style={{ color: 'red' }}>{deadlineError}</div>}
                                         </li>
                                     </ul>
-                                    <button onClick={handleSubmit} className="btn btn-primary">Save Changes</button>
+                                    <button onClick={handleSubmit}
+                                            className="btn btn-primary"
+                                            style={{ backgroundColor: '#4e8fff', borderColor: '#4e8fff' }}>
+                                        Update Job
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -269,3 +297,4 @@ const EditJob = () => {
 };
 
 export default EditJob;
+

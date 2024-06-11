@@ -77,11 +77,10 @@ const IndustriaDashboard = () => {
 
     if(role === 'ADMIN'){
     return (
-        <div className="container-fluid">
+        <div className="d-flex">
+            <SideNavBar/>
+        <div className="container-fluid" style={{ marginLeft: '250px', paddingTop: '20px', fontFamily: 'Arial, sans-serif' }}>
             <div className="row">
-                <div className="col-md-3">
-                    <SideNavBar />
-                </div>
                 <div className="col-md-9">
                     <h2 className="mt-5">Shto Industri të Re:</h2>
                     <form onSubmit={handleCreateIndustria} className="mb-4">
@@ -156,6 +155,7 @@ const IndustriaDashboard = () => {
                     </div>
                 </div>
             )}
+        </div>
         </div>
     );}
     else{
