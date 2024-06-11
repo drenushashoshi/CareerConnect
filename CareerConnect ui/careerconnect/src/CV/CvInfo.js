@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import CvService from '../Services/CvService';
-import CustomNavbar from '../CustomNavbar'
+import CustomNavbar from '../CustomNavbar';
+import Footer from '../Footer';
 
 const CvInfo = () => {
     const navigate = useNavigate();
@@ -193,9 +194,11 @@ const CvInfo = () => {
                         {imageError && <span className="text-danger mx-5">{imageError}</span>}
                         {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                     </div>
-                    <button type="submit" className="btn btn-primary">Vazhdo</button>
+                    <button type="submit" className="btn btn-primary">Vazhdo</button><br/>
                 </form>
+                <br/> <br/>
             </div>
+            <Footer/>
         </>
    
     );

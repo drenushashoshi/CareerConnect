@@ -60,6 +60,7 @@ const ApplicationJob = () => {
             {job && (
             <>
                 <CustomNavbar/>
+                <br/>
                 <h3 className='text-center'>{job.title}</h3>
                 <div className="flex-grow-1">
                     <Row xs={1} md={3} className="mx-5 g-4">
@@ -79,9 +80,11 @@ const ApplicationJob = () => {
                                             </Card.Text>
                                         )}
                                         <Button className='btn btn-primary mx-3' onClick={() => toggleDetails(application.applicationid)}>
-                                            {showDetails[application.applicationid] ? 'Shiko me shume' : 'Shiko me pak'}
-                                        </Button>
-                                        <Button 
+                                            {showDetails[application.applicationid] ? 'Shiko me pak' : 'Shiko me shume'}
+                                        </Button><br/>
+
+
+                                        <br/><Button 
                                             className='btn btn-primary mx-3' 
                                             onClick={() => navigate(`/EmployeePage/${application.employeeid}`)}>
                                             Shiko Aplikantin

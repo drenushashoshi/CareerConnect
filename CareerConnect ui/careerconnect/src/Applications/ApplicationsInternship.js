@@ -80,7 +80,7 @@ const ApplicationsInternship = () => {
                                         )}
                                         <Button className='btn btn-primary mx-3' onClick={() => toggleDetails(application.applicationid)}>
                                             {showDetails[application.applicationid] ? 'Shiko me pak' : 'Shiko me shume'}
-                                        </Button>
+                                        </Button><br/><br/>
                                         <Button 
                                             className='btn btn-primary mx-3' 
                                             onClick={() => navigate(`/EmployeePage/${application.employeeid}`)}>

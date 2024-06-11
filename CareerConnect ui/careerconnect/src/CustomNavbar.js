@@ -27,7 +27,9 @@ function CustomNavbar() {
         } else {
             navigate('/');
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    
 
     useEffect(() => {
         if (isCompany || isEmployee) {
@@ -122,7 +124,7 @@ function CustomNavbar() {
                             <>
                                 <NavDropdown title="Posto Shpallje" id="basic-nav-dropdown" className="nav-item dropdown mt-3">
                                     <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
-                                    <NavDropdown.Item href={`../PostInternship/${companyId}`}>Posto Praktike</NavDropdown.Item>
+                                    <NavDropdown.Item href={`../PostInternship`}>Posto Praktike</NavDropdown.Item>
                                 </NavDropdown>
                             </>
                         )}

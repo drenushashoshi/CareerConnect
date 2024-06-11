@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import WorkExperience from './WorkExperience';
 import Language from './Language';
 import { useNavigate, useParams } from 'react-router-dom';
-import CustomNavbar from '../CustomNavbar'
+import CustomNavbar from '../CustomNavbar';
+import Footer from '../Footer';
 
 const AdditionalInfo = () => {
   const { id } = useParams();
@@ -50,10 +51,11 @@ const AdditionalInfo = () => {
             </div>
             <div className="card mt-5 shadow">
             <button onClick={navigate} className='btn btn-primary'>Perfundo</button>
-            </div>
+            </div><br/><br/>
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

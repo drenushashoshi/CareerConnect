@@ -84,7 +84,7 @@ function Signup() {
           sessionStorage.setItem('companyId', data.id);
           setLoading(false);
           navigator(`/CompanyPage/${data.id}`);
-        }, 4000);
+        }, 2000);
       } else {
         setLoading(false);
         alert(data.message || 'Registration failed');

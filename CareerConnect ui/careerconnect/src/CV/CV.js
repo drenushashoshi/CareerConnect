@@ -6,6 +6,7 @@ import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
+import Footer from '../Footer';
 
 const CV = () => {
     const { id } = useParams();
@@ -166,6 +167,7 @@ const CV = () => {
                     </div>
                 )}
             </div>
+            
         </>
     );
 }

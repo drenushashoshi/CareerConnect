@@ -55,7 +55,7 @@ public class Company implements UserDetails {
     @JsonManagedReference
     private Collection<CompanyStaff> staff;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Collection<Job> jobs;
 

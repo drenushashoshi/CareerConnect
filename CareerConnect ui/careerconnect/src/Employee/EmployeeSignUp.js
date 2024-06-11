@@ -95,7 +95,7 @@ function EmployeeSignUp() {
             sessionStorage.setItem('employeeId', data.id);
             setLoading(false);
             navigator('/EmployeePage/'+data.id);
-          }, 4000);
+          }, 2000);
         } else {
           setLoading(false);
           alert(data.message || 'Registration failed');

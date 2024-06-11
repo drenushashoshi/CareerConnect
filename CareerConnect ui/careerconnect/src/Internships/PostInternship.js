@@ -25,7 +25,7 @@ function PostInternship() {
     const [showSpinner, setShowSpinner] = useState(false);
 
     const navigator = useNavigate();
-    const { companyId } = useParams();
+    const  companyId  = sessionStorage.getItem('companyId');
 
     useEffect(() => {
         if (!CompanyService.isCompany()) {

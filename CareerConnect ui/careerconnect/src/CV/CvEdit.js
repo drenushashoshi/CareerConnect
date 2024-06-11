@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import CustomNavbar from '../CustomNavbar';
 import { useNavigate } from 'react-router-dom';
 import CvService from '../Services/CvService';
+import Footer from '../Footer';
 
 const CvEdit = () => {
     const navigate = useNavigate();
@@ -295,10 +296,11 @@ const CvEdit = () => {
                             {fileError && <div className="invalid-feedback d-block">Ju lutem zgjidh fotografi!</div>}
                             {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                         </div>
-                        <button type="submit" className="btn btn-primary">Vazhdo</button>
+                        <button type="submit" className="btn btn-primary">Vazhdo</button><br/><br/>
                     </form>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 };

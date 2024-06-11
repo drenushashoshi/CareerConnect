@@ -4,7 +4,7 @@ import SideNavBar from './SideNavBar';
 import { useNavigate } from 'react-router-dom';
 import EmployeeService from './Services/EmployeeService';
 import Lottie from 'react-lottie';
-//import animationData from './lottie-welcome-animation.json';
+import animationData from './lottie-welcome-animation.json';
 
 const Dashboard = () => {
   const navigator = useNavigate();
@@ -21,7 +21,7 @@ const Dashboard = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-   // animationData: animationData,
+    animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice'
     }
