@@ -63,7 +63,7 @@ function CustomNavbar() {
     }, [employeeId]);
 
     const handleCvClick = async () => {
-        navigate(`/CvCreate/${employeeId}`);
+        navigate(`/CvCreate`);
     };
 
     const isCvCreateOrEdit = location.pathname.includes('/CvCreate') || location.pathname.includes('/CvEdit');
@@ -99,8 +99,8 @@ function CustomNavbar() {
                             <>
                                 {Cv ? (
                                     <NavDropdown title="CV" id="cv-nav-dropdown" className="nav-item dropdown mt-3">
-                                        <NavDropdown.Item onClick={() => navigate(`/CvEdit/${Cv.cvid}`)}>Edito CVn</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={() => navigate(`/Cv/${employeeId}`)}>Shiko CVn</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate(`/CvEdit`)}>Edito CVn</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => navigate(`/Cv`)}>Shiko CVn</NavDropdown.Item>
                                         <NavDropdown.Item onClick={handleModalOpen}>Fshij CVn</NavDropdown.Item>
                                     </NavDropdown>
                                 ) : (

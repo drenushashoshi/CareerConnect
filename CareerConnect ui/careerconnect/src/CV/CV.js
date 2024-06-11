@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
 import CvService from '../Services/CvService';
 import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
-import Footer from '../Footer';
 
 const CV = () => {
-    const { id } = useParams();
-    const idAsInteger = parseInt(id, 10);
+    const employee = sessionStorage.getItem('employeeId');
     const [Cv, setCv] = useState(null);
     const [references, setReferences] = useState([]);
     const [languages, setLanguages] = useState([]);
@@ -19,7 +16,7 @@ const CV = () => {
 
     const fetchCV = async () => {
         try {
-            const response = await CvService.getCvByEmployeeId(idAsInteger);
+            const response = await CvService.getCvByEmployeeId(employee);
             console.log('Fetched Cv:', response); // Debugging line
             setCv(response);
         } catch (error) {
@@ -44,7 +41,7 @@ const CV = () => {
 
     useEffect(() => {
         fetchCV();
-    }, [id]);
+    }, [employee]);
 
     useEffect(() => {
         if (Cv) {

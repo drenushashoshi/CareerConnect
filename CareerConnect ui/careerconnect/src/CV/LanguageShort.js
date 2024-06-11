@@ -6,18 +6,16 @@ import editSvg from '../assets/edit-svg.svg';
 import deleteSvg from '../assets/delete-svg.svg';
 
 const LanguageShort = ({ initialLanguage }) => {
-  const { id } = useParams();
-  const idAsInteger = parseInt(id, 10);
   const [Language, setLanguage] = useState(initialLanguage);
   const { language: lang, level, languageID } = Language || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
-    cvid: idAsInteger,
     language: lang || '',
     level: level || '',
     languageID: languageID
   });
+  const [errors, setErrors] = useState({});
 
   const iconStyle = {
     height: '30px',
@@ -37,6 +35,23 @@ const LanguageShort = ({ initialLanguage }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' });
+    }
+  };
+
+  const handleSelect = (e) => {
+    setFormData({ ...formData, level: e });
+    if (errors.level) {
+      setErrors({ ...errors, level: '' });
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.language) newErrors.language = 'Ju lutem plotesoni fushen!';
+    if (!formData.level) newErrors.level = 'Ju lutem zgjidhni nje opsion!';
+    return newErrors;
   };
 
   const handleEditClick = () => {
@@ -62,12 +77,13 @@ const LanguageShort = ({ initialLanguage }) => {
     setShowEditModal(false);
   };
 
-  const handleSelect = (e) => {
-    setFormData({ ...formData, level: e });
-  };
-
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     try {
       console.log('Updating with data:', formData);
       const updatedLanguage = await LanguageService.updateLanguage(languageID, formData);
@@ -135,16 +151,24 @@ const LanguageShort = ({ initialLanguage }) => {
             <div className="col-md-6">
               <div className="form-group">
                 <label>Gjuha:</label>
-                <input type="text" name="language" value={formData.language} onChange={handleChange} className="form-control" />
+                <input 
+                  type="text" 
+                  name="language" 
+                  value={formData.language} 
+                  onChange={handleChange} 
+                  className={`form-control ${errors.language ? 'is-invalid' : ''}`} 
+                />
+                {errors.language && <div className="invalid-feedback">{errors.language}</div>}
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
-                <label>Level:</label>
+                <label>Niveli:</label>
                 <DropdownButton
                   id="dropdown-basic-button"
                   title={formData.level || "Select Level"}
                   onSelect={handleSelect}
+                  className={`form-control ${errors.level ? 'is-invalid' : ''} border-0`}
                 >
                   <Dropdown.Item eventKey="Fillestar">Fillestar</Dropdown.Item>
                   <Dropdown.Item eventKey="Nen-Mesatar">Nen-Mesatar</Dropdown.Item>
@@ -152,6 +176,7 @@ const LanguageShort = ({ initialLanguage }) => {
                   <Dropdown.Item eventKey="Permbi-Mesatar">Permbi-Mesatar</Dropdown.Item>
                   <Dropdown.Item eventKey="Avancum">Avancum</Dropdown.Item>
                 </DropdownButton>
+                {errors.level && <div className="invalid-feedback d-block">{errors.level}</div>}
               </div>
             </div>
           </div>

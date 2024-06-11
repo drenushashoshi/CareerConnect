@@ -81,13 +81,13 @@ function App() {
           <Route path='/InternshipDetails/:id' element={<InternshipDetails/>}></Route>
           <Route path='/EditInternship' element={<EditInternship/>}></Route>
           <Route path='/EditInternship/:id' element={<EditInternship/>}></Route>
-          <Route path='/CvCreate/:id' element={<CvInfo/>}></Route>
+          <Route path='/CvCreate' element={<CvInfo/>}></Route>
           <Route path='/Dashboard' element={<Dashboard/>}></Route>
           <Route path='/LocationDashboard' element={<LocationDashboard/>}></Route>
           <Route path='/IndustriaDashboard' element={<IndustriaDashboard/>}></Route>
-          <Route path='/CvInfo/:id' element={<AdditionalInfo/>}></Route>
-          <Route path='/Cv/:id' element={<CV/>}></Route>
-          <Route path='/CvEdit/:id' element={<CvEdit/>}></Route>
+          <Route path='/CvInfo' element={<AdditionalInfo/>}></Route>
+          <Route path='/Cv' element={<CV/>}></Route>
+          <Route path='/CvEdit' element={<CvEdit/>}></Route>
           <Route path='/InternshipApplication/:id' element={<InternshipApplication/>}></Route>
           <Route path='/ApplicationsJob/:id' element={<ApplicationJob/>}></Route>
           <Route path='/ApplicationsInternship/:id' element={<ApplicationInternship/>}></Route>

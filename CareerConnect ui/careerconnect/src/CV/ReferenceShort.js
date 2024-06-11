@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import ReferenceService from '../Services/ReferenceService';
 import editSvg from '../assets/edit-svg.svg'; // Adjust the path as necessary
 import deleteSvg from '../assets/delete-svg.svg'; // Adjust the path as necessary
@@ -19,6 +18,7 @@ const ReferenceShort = ({ reference: initialReference }) => {
     phone_nr: phone_nr || '',
     email: email || '',
   });
+  const [errors, setErrors] = useState({});
 
   const iconStyle = {
     height: '30px',
@@ -63,8 +63,28 @@ const ReferenceShort = ({ reference: initialReference }) => {
     setShowEditModal(false);
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name) errors.name = 'Ju lutem plotesoni fushen!';
+    if (!formData.surname) errors.surname = 'Ju lutem plotesoni fushen!';
+    if (!formData.jobposition) errors.jobposition = 'Ju lutem plotesoni fushen!';
+    if (!formData.companyname) errors.companyname = 'Ju lutem plotesoni fushen!';
+    if (!formData.phone_nr) {errors.phone_nr = 'Ju lutem plotesoni fushen!';
+    } else if (!/^\d{9}$/.test(formData.phone_nr)) {
+      errors.phone_nr = 'Numri duhet te kete 9 karaktera';
+    }
+    if (!formData.email) {
+      errors.email = 'Ju lutem plotesoni fushen!';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email nuk është i vlefshëm';
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     try {
       const updatedReference = await ReferenceService.updateReference(reference_id, formData);
       setReference(updatedReference); // Update local state with new data
@@ -132,28 +152,34 @@ const ReferenceShort = ({ reference: initialReference }) => {
               <div className="form-group">
                 <label>Emri:</label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} className="form-control" />
+                {errors.name && <small className="text-danger">{errors.name}</small>}
               </div>
               <div className="form-group">
                 <label>Mbiemri:</label>
-                <input type="text"               name="surname" value={formData.surname} onChange={handleChange} className="form-control" />
+                <input type="text" name="surname" value={formData.surname} onChange={handleChange} className="form-control" />
+                {errors.surname && <small className="text-danger">{errors.surname}</small>}
               </div>
               <div className="form-group">
                 <label>Pozita e punes:</label>
                 <input type="text" name="jobposition" value={formData.jobposition} onChange={handleChange} className="form-control" />
+                {errors.jobposition && <small className="text-danger">{errors.jobposition}</small>}
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
                 <label>Emri i kompanis:</label>
                 <input type="text" name="companyname" value={formData.companyname} onChange={handleChange} className="form-control" />
+                {errors.companyname && <small className="text-danger">{errors.companyname}</small>}
               </div>
               <div className="form-group">
                 <label>Nr. telefonit:</label>
                 <input type="text" name="phone_nr" value={formData.phone_nr} onChange={handleChange} className="form-control" />
+                {errors.phone_nr && <small className="text-danger">{errors.phone_nr}</small>}
               </div>
               <div className="form-group">
                 <label>Email:</label>
                 <input type="email" name="email" value={formData.email} onChange={handleChange} className="form-control" />
+                {errors.email && <small className="text-danger">{errors.email}</small>}
               </div>
             </div>
           </div>
@@ -162,7 +188,7 @@ const ReferenceShort = ({ reference: initialReference }) => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Anulo
           </Button>
-          <Button variant="danger" onClick={handleConfirmEdit}>
+          <Button variant="primary" onClick={handleConfirmEdit}>
             Ruaj Ndryshimet
           </Button>
         </Modal.Footer>
@@ -172,4 +198,3 @@ const ReferenceShort = ({ reference: initialReference }) => {
 };
 
 export default ReferenceShort;
-

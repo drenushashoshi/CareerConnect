@@ -110,7 +110,7 @@ const CvInfo = () => {
             console.log(response);
             console.log(response.status);
             if (response.status === 200) {
-                navigate(`/CvInfo/${response.data.cvid}`);
+                navigate(`/CvInfo`);
             } else if (response.status === 409) {
                 setUniqueError('Email/Numri i telefonit eshte ne perdorim');
             } else if (response.status === 404) {

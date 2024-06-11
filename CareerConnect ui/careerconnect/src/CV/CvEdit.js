@@ -127,7 +127,7 @@ const CvEdit = () => {
             const response = await CvService.updateCv(Cv.cvid, formData, token);
     
             if (response.status === 200) {
-                navigate(`/CvInfo/${Cv.cvid}`);
+                navigate(`/CvInfo`);
             } else if (response.status === 409) {
                 setUniqueError('Email/Numri i telefonit eshte ne perdorim');
             } else if (response.status === 404) {

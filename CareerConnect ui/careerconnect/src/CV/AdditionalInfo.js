@@ -8,12 +8,10 @@ import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
 
 const AdditionalInfo = () => {
-  const { id } = useParams();
   const navigator = useNavigate();
   const [isReferenceVisible, setIsReferenceVisible] = useState(false);
   const [isExpereienceVisible, setIsExpereienceVisible] = useState(false);
   const [isLanguageVisible, setIsLanguageVisible] = useState(false);
-  const employee = sessionStorage.getItem("employeeId");
 
   const handleReferenceClick = () => {
     setIsReferenceVisible(!isReferenceVisible);
@@ -27,7 +25,7 @@ const AdditionalInfo = () => {
     setIsLanguageVisible(!isLanguageVisible);
   };
   const navigate = () => {
-    navigator(`/Cv/` + employee)
+    navigator(`/Cv`)
   }
 
   return (

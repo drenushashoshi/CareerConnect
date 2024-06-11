@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import editSvg from '../assets/edit-svg.svg';
 import deleteSvg from '../assets/delete-svg.svg';
 
 const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
-  const { ID } = useParams();
-  const idAsInteger = parseInt(ID, 10);
   const [workExperience, setWorkExperience] = useState(initialWorkExperience);
   const { experience_id, companyname, startingyear, lastyear, street, city, jobposition, description, CV } = workExperience || {};
   
@@ -22,8 +19,8 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
     city: city || '',
     jobposition: jobposition || '',
     description: description || '',
-    CV: CV || idAsInteger
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setFormData({
@@ -35,7 +32,6 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
       city: city || '',
       jobposition: jobposition || '',
       description: description || '',
-      CV: CV || idAsInteger
     });
   }, [workExperience]);
 
@@ -83,8 +79,22 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
     setShowEditModal(false);
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.startingyear) errors.startingyear = 'Ju lutem plotesoni fushen!';
+    if (!formData.lastyear) errors.lastyear = 'Ju lutem plotesoni fushen!';
+    if (!formData.companyname) errors.companyname = 'Ju lutem plotesoni fushen!';
+    if (!formData.street) errors.street = 'Ju lutem plotesoni fushen!';
+    if (!formData.city) errors.city = 'Ju lutem plotesoni fushen!';
+    if (!formData.jobposition) errors.jobposition = 'Ju lutem plotesoni fushen!';
+    if (!formData.description) errors.description = 'Ju lutem plotesoni fushen!';
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     try {
       const updatedExperience = await WorkExperienceService.updateWorkExperience(experience_id, formData);
       setWorkExperience(updatedExperience); // Update local state with new data
@@ -152,34 +162,41 @@ const WorkExperienceShort = ({ workExperience: initialWorkExperience }) => {
               <div className="form-group">
                 <label>Viti fillestar:</label>
                 <input type="number" name="startingyear" value={formData.startingyear} onChange={handleChange} className="form-control" />
+                {errors.startingyear && <small className="text-danger">{errors.startingyear}</small>}
               </div>
               <div className="form-group">
                 <label>Lagja:</label>
                 <input type="text" name="street" value={formData.street} onChange={handleChange} className="form-control" />
+                {errors.street && <small className="text-danger">{errors.street}</small>}
               </div>
               <div className="form-group">
                 <label>Emri i kompanis:</label>
                 <input type="text" name="companyname" value={formData.companyname} onChange={handleChange} className="form-control" />
+                {errors.companyname && <small className="text-danger">{errors.companyname}</small>}
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
                 <label>Viti perfundimtar:</label>
                 <input type="number" name="lastyear" value={formData.lastyear} onChange={handleChange} className="form-control" />
+                {errors.lastyear && <small className="text-danger">{errors.lastyear}</small>}
               </div>
               <div className="form-group">
                 <label>Qyteti:</label>
                 <input type="text" name="city" value={formData.city} onChange={handleChange} className="form-control" />
+                {errors.city && <small className="text-danger">{errors.city}</small>}
               </div>
               <div className="form-group">
                 <label>Pozita e punes:</label>
                 <input type="text" name="jobposition" value={formData.jobposition} onChange={handleChange} className="form-control" />
+                {errors.jobposition && <small className="text-danger">{errors.jobposition}</small>}
               </div>
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="description">Pershkrim:</label>
             <textarea className="form-control" id="description" name="description" style={{ height: '200px' }} placeholder='' value={formData.description} onChange={handleChange}></textarea>
+            {errors.description && <small className="text-danger">{errors.description}</small>}
           </div>
         </Modal.Body>
         <Modal.Footer>
