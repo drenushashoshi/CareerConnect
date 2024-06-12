@@ -90,7 +90,7 @@ const EmployeePage = () => {
   };
   const Click = () =>
     {
-      navigator(`/Cv/`+id);
+      navigator(`/EmployeeCV`,{state:{employeeId:id}});
     }
 
   return (
