@@ -51,7 +51,7 @@ public class CompanyManagementController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @DeleteMapping("/admincompany/deleteCompany/{id}")
+    @DeleteMapping("/admin/deleteCompany/{id}")
     public ResponseEntity<CompanyDto> deleteCompany(@PathVariable Integer id) {
         return ResponseEntity.ok(companyMenagmentService.deleteCompany(id));
     }

@@ -87,7 +87,7 @@ class CompanyService{
     }
     static async deleteCompany(id, token){
         try{
-            const response= await axios.delete(`${CompanyService.BASE_URL}/admincompany/deleteCompany/${id}`, {
+            const response= await axios.delete(`${CompanyService.BASE_URL}/admin/deleteCompany/${id}`, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;

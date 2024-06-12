@@ -52,7 +52,7 @@ public class EmployeeController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @DeleteMapping("/employee/deleteEmployee/{id}")
+    @DeleteMapping("/admin/deleteEmployee/{id}")
     public ResponseEntity<EmployeeDto> deleteEmployee(@PathVariable Integer id){
         return ResponseEntity.ok(employeeService.deleteEmployee(id));
     }

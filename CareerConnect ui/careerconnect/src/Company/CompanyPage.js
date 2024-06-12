@@ -7,9 +7,8 @@ import {
   MDBCardBody,
   MDBCardText
 } from 'mdb-react-ui-kit';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Modal from 'react-bootstrap/Modal';
 import CompanyStaff from './CompanyStaff';
 import { ReactComponent as GearIcon } from './gear.svg';
 import Footer from '../Footer';
@@ -52,21 +51,6 @@ const CompanyPage = () => {
 
   const updateCompany = () => {
     navigator(`/EditCompanyProfile/${profileInfo?.id}`);
-  };
-
-  const removeCompany = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      setShowSpinner(true);
-      await CompanyService.deleteCompany(profileInfo.id, token);
-      setTimeout(() => {
-        setShowSpinner(false);
-        navigator('/');
-      }, 6000);
-    } catch (error) {
-      setShowSpinner(false);
-      console.error('Error deleting company', error);
-    }
   };
 
   const handleShowModal = () => setShowModal(true);
@@ -158,7 +142,6 @@ const CompanyPage = () => {
             {isCompany && id === storedCompanyId && (
               <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={updateCompany} href="#">Ndrysho Profilin</NavDropdown.Item>
-                <NavDropdown.Item onClick={handleSignUpClick} href="#">Fshij Profilin</NavDropdown.Item>
                 <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
               </NavDropdown>
             )}
@@ -235,15 +218,6 @@ const CompanyPage = () => {
         )}
         <Footer />
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Body className='text-center custom-font' style={{ zIndex: 1050 }}>
-          <h5 className='mt-3'>Me fshirjen e profilit, të gjitha të dhënat e juaja do të fshihen. A doni të vazhdoni?</h5>
-          <div className='mt-4 mb-4'>
-            <Link to='' className='btn' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
-            <Link to='' onClick={removeCompany} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link>
-          </div>
-        </Modal.Body>
-      </Modal>
     </>
   );
 };

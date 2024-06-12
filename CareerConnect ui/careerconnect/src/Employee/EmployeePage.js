@@ -8,9 +8,8 @@ import {
   MDBCardText,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Modal from 'react-bootstrap/Modal';
 import CustomNavbar from "../CustomNavbar";
 import EmployeeService from '../Services/EmployeeService';
 import backgroundImage from '../Company/background.jpg';
@@ -25,7 +24,7 @@ import CvService from '../Services/CvService';
 
 const EmployeePage = () => {
   const {id} = useParams();
-  const [showModal, setShowModal] = useState(false);
+  const [setShowModal] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
   const isEmployee = EmployeeService.isEmployee();
   const isCompany = CompanyService.isCompany();
@@ -79,15 +78,7 @@ const EmployeePage = () => {
     EmployeeService.logout();
   }
 
-  const removeEmployee = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      await EmployeeService.deleteEmployee(id, token);
-      navigator('/');
-    } catch (error) {
-      console.error('Error deleting employee ', error);
-    }
-  };
+ 
   const Click = () =>
     {
       navigator(`/EmployeeCV`,{state:{employeeId:id}});
@@ -121,7 +112,6 @@ const EmployeePage = () => {
             {isEmployee && id === loggedInEmployee &&(
               <NavDropdown title={<><GearIcon /> Parametrat</>} id="basic-nav-dropdown" className="nav-item dropdown">
                 <NavDropdown.Item onClick={() => updateEmployee(profileInfo.id)} href="#">Ndrysho Profilin</NavDropdown.Item>
-                <NavDropdown.Item onClick={handleShowModal} href="#">Fshij Profilin</NavDropdown.Item>
                 <NavDropdown.Item href={`/Rate/${profileInfo.id}`}>Na vlerësoni</NavDropdown.Item>
                 <NavDropdown.Item href="/" onClick={handelLogOut}>Shkyçu</NavDropdown.Item>
               </NavDropdown>
@@ -197,15 +187,6 @@ const EmployeePage = () => {
         <EmployeePostSignup employeeId={id} loggedInEmployeeId={loggedInEmployee}></EmployeePostSignup>
         <EmployeePostList employeeId={id} loggedInEmployeeId={loggedInEmployee}></EmployeePostList>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Body className='text-center custom-font'>
-          <h5 className='mt-3'>Me fshirjen e profilit, të dhënat e juaja do fshihen. Doni të vazhdoni?</h5>
-          <div className='mt-4 mb-4'>
-            <Link to='' className='btn' onClick={handleCloseModal} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
-            <Link to='' onClick={() => removeEmployee(profileInfo.id)} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Link>
-          </div>
-        </Modal.Body>
-      </Modal>
       <Footer/>
     </>
     )}

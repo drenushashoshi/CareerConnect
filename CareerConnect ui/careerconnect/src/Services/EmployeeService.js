@@ -53,7 +53,7 @@ class EmployeeService{
 
     static async deleteEmployee(id, token){
         try{
-            const response= await axios.delete(`${EmployeeService.BASE_URL}/employee/deleteEmployee/${id}`, {
+            const response= await axios.delete(`${EmployeeService.BASE_URL}/admin/deleteEmployee/${id}`, {
                 headers:{Authorization: `Bearer ${token}`}
             })
             return response.data;

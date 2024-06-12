@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import EmployeeService from '../Services/EmployeeService';
 import SideNavBar from '../SideNavBar';
-import { useNavigate } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
-    const navigator=useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const navigator = useNavigate();
 
     useEffect(() => {
         if (!EmployeeService.isAdmin()) {
@@ -17,16 +21,6 @@ const EmployeeList = () => {
         fetchEmployees();
     }, []);
 
-    const removeEmployee = async (id) => {
-        try {
-            const token = localStorage.getItem('token');
-            await EmployeeService.deleteEmployee(id, token);
-            fetchEmployees();
-        } catch (error) {
-            console.error('Error deleting employee', error);
-        }
-    };
-
     const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -37,11 +31,43 @@ const EmployeeList = () => {
         }
     };
 
+    const openModal = (id) => {
+        setSelectedEmployeeId(id);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedEmployeeId(null);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            await EmployeeService.deleteEmployee(selectedEmployeeId, token);
+            fetchEmployees();
+            closeModal();
+        } catch (error) {
+            console.error('Error deleting employee', error);
+        }
+    };
+    const DeleteConfirmationModal = ({ show, handleClose, handleDelete }) => (
+        <Modal show={show} onHide={handleClose} centered>
+          <Modal.Body className='text-center custom-font'>
+            <h5 className='mt-3'>Me fshirjen e profilit, të gjitha te dhënat do fshihen. Doni të vazhdoni?</h5>
+            <div className='mt-4 mb-4'>
+              <Link to='' className='btn' onClick={handleClose} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Cancel</Link>
+              <Button onClick={handleDelete} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Button>
+            </div>
+          </Modal.Body>
+        </Modal>
+      );
+
     return (
         <div className="d-flex">
             <SideNavBar />
-            <div className='container-fluid' style={{ marginLeft: '250px',marginTop:'100px', paddingTop: '20px' }}>
-                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LISTA E PUNONJËSVE TË REGJISTRUAR:</h2><br/>
+            <div className='container-fluid' style={{ marginLeft: '250px', marginTop: '100px', paddingTop: '20px' }}>
+                <h2 style={{ fontFamily: 'Arial, sans-serif' }}>LISTA E PUNONJËSVE TË REGJISTRUAR:</h2><br />
                 <div className="table-responsive">
                     <table className='table table-striped table-bordered'>
                         <thead className="thead-dark">
@@ -78,10 +104,9 @@ const EmployeeList = () => {
                                         </a>
                                     </td>
                                     <td>
-                                    <button className="btn btn-danger" onClick={() => removeEmployee(employee.id)}>
-                                        Fshij profilin
-                                    </button>
-
+                                        <button className="btn btn-danger" onClick={() => openModal(employee.id)}>
+                                            Fshij profilin
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -89,6 +114,11 @@ const EmployeeList = () => {
                     </table>
                 </div>
             </div>
+            <DeleteConfirmationModal 
+                show={showModal} 
+                handleClose={closeModal} 
+                handleDelete={handleDelete} 
+            />
         </div>
     );
 };
