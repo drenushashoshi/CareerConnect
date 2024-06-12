@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CompanyService from '../Services/CompanyService';
 import SideNavBar from '../SideNavBar';
-import { useNavigate } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
@@ -20,17 +21,6 @@ const CompanyList = () => {
         fetchCompanies();
     }, []);
 
-    const removeCompany = async (id) => {
-        try {
-            const token = localStorage.getItem('token');
-            await CompanyService.deleteCompany(id, token);
-            setShowModal(false);
-            fetchCompanies();
-        } catch (error) {
-            console.error('Error deleting company', error);
-        }
-    };
-
     const fetchCompanies = async () => {
         setLoading(true);
         try {
@@ -40,7 +30,6 @@ const CompanyList = () => {
         } catch (error) {
             console.log('Error fetching companies ', error);
         }
-
         setTimeout(() => {
             setLoading(false);
         }, 1000);
@@ -53,7 +42,31 @@ const CompanyList = () => {
 
     const closeModal = () => {
         setShowModal(false);
+        setSelectedCompanyId(null);
     };
+
+    const removeCompany = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            await CompanyService.deleteCompany(selectedCompanyId, token);
+            closeModal();
+            fetchCompanies();
+        } catch (error) {
+            console.error('Error deleting company', error);
+        }
+    };
+
+    const DeleteConfirmationModal = ({ show, handleClose, handleDelete }) => (
+        <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body className='text-center custom-font'>
+                <h5 className='mt-3'>A jeni të sigurtë që dëshironi të fshini këtë kompani?</h5>
+                <div className='mt-4 mb-4'>
+                    <Link to='' className='btn' onClick={handleClose} style={{ marginRight: '40px', textDecoration: 'none', color: '#007bff', borderColor: '#007bff' }}>Anulo</Link>
+                    <Button onClick={handleDelete} className='btn btn-primary' style={{ marginRight: '40px', textDecoration: 'none', color: '#fff', width: '80px' }}>OK</Button>
+                </div>
+            </Modal.Body>
+        </Modal>
+    );
 
     return (
         <div className="d-flex">
@@ -105,25 +118,12 @@ const CompanyList = () => {
                         </table>
                     </div>
                 )}
-
                 
-                {showModal && (
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-                        <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">A jeni të sigurtë që dëshironi të fshini këtë kompani?</h5>
-                                </div>
-                                
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>Anulo</button>
-                                    <button type="button" className="btn btn-danger" onClick={() => removeCompany(selectedCompanyId)}>Fshij</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                
+                <DeleteConfirmationModal 
+                    show={showModal} 
+                    handleClose={closeModal} 
+                    handleDelete={removeCompany} 
+                />
             </div>
         </div>
     );
