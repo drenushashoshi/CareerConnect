@@ -10,6 +10,9 @@ import com.example.EmoloyerSystem.Entity.Employee;
 import com.example.EmoloyerSystem.Repository.CvRepository;
 import com.example.EmoloyerSystem.Repository.EmployeeRepository;
 import com.example.EmoloyerSystem.dto.CVDto;
+
+import jakarta.transaction.Transactional;
+
 import com.example.EmoloyerSystem.Service.CvService;
 import com.example.EmoloyerSystem.Service.ImageUtils;
 
@@ -61,13 +64,18 @@ public class CvServiceImpl implements CvService{
        return CVMapper.mapToCvDto(Cv);
    }
 
-   @Override
-   public void deleteCv(int CvID) {
-       CV Cv=CvRepository.findById(CvID).orElseThrow(
-               ()-> new ResourceNotFoundException("Cv does not exist")
-       );
-       CvRepository.deleteById(CvID);
-   }
+    @Override
+    public void deleteCv(int cvId) {
+        CV cv = CvRepository.findById(cvId).orElseThrow(
+            () -> new ResourceNotFoundException("CV does not exist with id: " + cvId)
+        );
+        cv.getReferences().clear();
+        cv.getWorkExperiences().clear();
+        cv.getLanguage().clear();
+        CvRepository.delete(cv);
+        System.out.println("CV deleted with id: " + cv.getCvid()+"       "+cv.getEmployee().getId());
+        System.out.println("CV deleted with id: " + cvId);
+    }
 
    @Override
    public CVDto updateCv(int CvID, CVDto updatedCv, MultipartFile file) throws IOException, IllegalArgumentException {

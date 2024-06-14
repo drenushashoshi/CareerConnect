@@ -55,17 +55,16 @@ public class CV{
     @Column(name="highschool",nullable = true)
     private String highschool;
 
-    @OneToMany(mappedBy = "CV",orphanRemoval = true)
+    @OneToMany(mappedBy = "CV",orphanRemoval = true,cascade = CascadeType.ALL)
     private List<Reference> references;
 
-    @OneToMany(mappedBy = "CV",orphanRemoval = true)
+    @OneToMany(mappedBy = "CV",orphanRemoval = true,cascade = CascadeType.ALL)
     private List<WorkExperience> workExperiences;
 
-    @OneToMany(mappedBy = "cvid",orphanRemoval = true)
+    @OneToMany(mappedBy = "cvid",orphanRemoval = true,cascade = CascadeType.ALL)
     private List<Language> Language;
 
     @OneToOne()
-    @JoinColumn(name = "employeeid",nullable = true)
+    @JoinColumn(name = "employeeid")
     private Employee employee;
-
 }

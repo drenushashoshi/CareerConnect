@@ -107,7 +107,7 @@ class CvService {
                     headers:{Authorization: `Bearer ${token}`}
                 }
             );
-            
+            console.log(response);
             return response.data;
         }
         catch(err)

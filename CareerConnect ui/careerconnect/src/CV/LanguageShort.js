@@ -7,10 +7,11 @@ import deleteSvg from '../assets/delete-svg.svg';
 
 const LanguageShort = ({ initialLanguage }) => {
   const [Language, setLanguage] = useState(initialLanguage);
-  const { language: lang, level, languageID } = Language || {};
+  const { language: lang, level, languageID,cvid } = Language || {};
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
+    cvid:cvid,
     language: lang || '',
     level: level || '',
     languageID: languageID
@@ -93,6 +94,8 @@ const LanguageShort = ({ initialLanguage }) => {
       console.error('Error updating language:', error);
     }
   };
+  console.log(initialLanguage);
+  console.log(formData);
 
   return (
     <div className="container">

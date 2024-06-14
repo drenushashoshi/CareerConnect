@@ -30,9 +30,6 @@ import IndustriaDashboard from "./Industria/IndustriaDashboard";
 import AdditionalInfo from './CV/AdditionalInfo';
 import CV from './CV/CV';
 
-import EmployeePostList from './Employee/EmployeePostList';
-import EmployeePostSignup from './Employee/EmployeePostSignup';
-
 import RatesList from './Rate/RatesList';
 import CvInfo from './CV/CvInfo';
 import CompanysInternships from './Internships/CompanysInternships';
