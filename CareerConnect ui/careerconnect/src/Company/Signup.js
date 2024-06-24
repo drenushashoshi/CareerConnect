@@ -82,6 +82,9 @@ function Signup() {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', role);
           sessionStorage.setItem('companyId', data.id);
+          localStorage.setItem('refreshToken', data.refreshToken);
+        const expirationTime = CompanyService.parseExpirationTime(data.expirationTime);
+        localStorage.setItem('tokenExpiry', expirationTime);
           setLoading(false);
           navigator(`/CompanyPage/${data.id}`);
         }, 2000);

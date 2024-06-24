@@ -93,6 +93,9 @@ function EmployeeSignUp() {
             localStorage.setItem('token', data.token);
             localStorage.setItem('role', role);
             sessionStorage.setItem('employeeId', data.id);
+            localStorage.setItem('refreshToken', data.refreshToken);
+            const expirationTime = EmployeeService.parseExpirationTime(data.expirationTime);
+            localStorage.setItem('tokenExpiry', expirationTime);
             setLoading(false);
             navigator('/EmployeePage/'+data.id);
           }, 2000);

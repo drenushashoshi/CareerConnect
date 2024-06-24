@@ -30,34 +30,32 @@ function Login() {
       let data;
       if (userType === 'company') {
         data = await CompanyService.login(email, password);
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('role', data.role);
-          sessionStorage.setItem('companyId', data.id);
-          const id = (data.id);
-          navigator(`/CompanyPage/${id}`);
-        } else {
-          setError(data.message);
-        }
       } else {
         data = await EmployeeService.login(email, password);
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('role', data.role);
+      }
+      
+      if (data.token && data.refreshToken) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        localStorage.setItem('role', data.role);
+        const expirationTime = EmployeeService.parseExpirationTime(data.expirationTime);
+        localStorage.setItem('tokenExpiry', expirationTime);
+
+        if (userType === 'company') {
+          sessionStorage.setItem('companyId', data.id);
+          navigator(`/CompanyPage/${data.id}`);
+        } else {
           sessionStorage.setItem('employeeId', data.id);
-          console.log(data.role)
-          
           if (data.role === 'Employee') {
-            const id=(data.id);
-            navigator(`/EmployeePage/${id}`);
+            navigator(`/EmployeePage/${data.id}`);
           } else if (data.role === 'ADMIN') {
             navigator('/Dashboard');
           } else {
             setError('Unknown role');
           }
-        } else {
-          setError(data.message);
         }
+      } else {
+        setError(data.message);
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -90,32 +88,57 @@ function Login() {
         <div className='w-40 p-3 bg-transparent'>
           <form onSubmit={handleSubmit}>
             <h3 className='text-center'>Sign In</h3>
-            {error && <div className="text-danger font-weight-bold">{error}</div>}
+            {error && <div className="alert alert-danger">{error}</div>}
             <div className='mb-2'>
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='email' className='form-control'/>
+              <input 
+                type="email" 
+                className="form-control" 
+                id="email"
+                placeholder='Enter Email' 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
             <div className='mb-2'>
-              <label htmlFor="password">Fjalekalimi</label>
-              <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='fjalekalimi' className='form-control'/>
+              <label htmlFor="password">Password</label>
+              <input 
+                type="password" 
+                className="form-control" 
+                id="password"
+                placeholder='Enter Password' 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
-            <div className='mb-2'>
-              <label htmlFor="userType">Roli juaj</label>
-              <select id="userType" value={userType} onChange={(e) => setUserType(e.target.value)} className='form-control'>
-                <option value="company">Kompani</option>
-                <option value="employee">Punetor</option>
+            <div className="mb-3">
+              <label htmlFor="userType">User Type</label>
+              <select
+                id="userType"
+                className="form-control"
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
+                required
+              >
+                <option value="company">Company</option>
+                <option value="employee">Employee</option>
               </select>
             </div>
-            
             <div className='d-grid'>
-              <button type="submit" className='btn btn-primary'>Sign in</button>
+              <button type="submit" className='btn btn-primary'>
+                Sign In
+              </button>
             </div>
-            <p className='text-start mt-2'>
-              <a href="" className='ms-2' onClick={handleSignUpClick}>Regjistrohu</a>
+            <p className="text-right">
+              Nuk keni profil? <Link onClick={handleSignUpClick}>Sign Up</Link>
             </p>
           </form>
         </div>
-      </div><br/><br/><br/>
+      </div>
+
+      
       
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Body className='text-center custom-font'>
@@ -126,11 +149,10 @@ function Login() {
           </div>
         </Modal.Body>
       </Modal>
-      
       <div className='w-100 mt-3'>
         <RatesForVisitors />
       </div><br/><br/>
-    </div>
+      </div>
   );
 }
 

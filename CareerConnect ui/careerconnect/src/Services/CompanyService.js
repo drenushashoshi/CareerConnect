@@ -3,15 +3,63 @@ import axios from "axios";
 
 class CompanyService{
     static BASE_URL="http://localhost:8080"
-
-    static async login(email, password){
-        try{
-            const response= await axios.post(`${CompanyService.BASE_URL}/auth/login`,{email, password} )
-            return response.data;
-        }catch(err){
-            throw err;
+    static parseExpirationTime(expirationTime) {
+        const timeUnit = expirationTime.slice(-3);
+        const timeValue = parseInt(expirationTime.slice(0, -3), 10);
+    
+        let expirationDuration = 0;
+        switch (timeUnit) {
+          case 'Hrs':
+            expirationDuration = timeValue * 3600 * 1000;
+            break;
+          case 'Min':
+            expirationDuration = timeValue * 60 * 1000;
+            break;
+          default:
+            throw new Error(`Unknown time unit: ${timeUnit}`);
         }
-    }
+    
+        return new Date().getTime() + expirationDuration;
+      }
+    
+      static async refreshToken() {
+        const token = localStorage.getItem('refreshToken');
+        if (!token) return null;
+    
+        try {
+          const response = await axios.post(`${CompanyService.BASE_URL}/auth/refresh`, { refreshToken: token });
+          const newExpirationTime = CompanyService.parseExpirationTime(response.data.expirationTime);
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('tokenExpiry', newExpirationTime);
+          return response.data.token;
+        } catch (error) {
+          console.error('Failed to refresh token:', error);
+          return null;
+        }
+      }
+    
+      static async getAuthToken() {
+        const token = localStorage.getItem('token');
+        const tokenExpiry = localStorage.getItem('tokenExpiry');
+        if (new Date().getTime() > tokenExpiry) {
+          return await CompanyService.refreshToken();
+        }
+        return token;
+      }
+
+      static async login(email, password) {
+        try {
+          const response = await axios.post(`${CompanyService.BASE_URL}/auth/login`, { email, password });
+          const expirationTime = CompanyService.parseExpirationTime(response.data.expirationTime);
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('tokenExpiry', expirationTime);
+          localStorage.setItem('role', response.data.role);
+          return response.data;
+        } catch (err) {
+          throw err;
+        }
+      }
     static async downloadImage(staffId) {
         try {
           const response = await axios.get(`${CompanyService.BASE_URL}/public/downloadImagee/${staffId}`, {
