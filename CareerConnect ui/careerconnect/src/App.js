@@ -40,6 +40,7 @@ import InternshipApplication from './Applications/InternshipApplication';
 import ApplicationJob from './Applications/ApplicationJob'
 import ApplicationInternship from './Applications/ApplicationsInternship'
 import CompanyCV from './CV/CompanyCV';
+import NotificationDropdown from "./Notification/Notification";
 
 
 
@@ -85,11 +86,11 @@ function App() {
           <Route path='/IndustriaDashboard' element={<IndustriaDashboard/>}></Route>
           <Route path='/CvInfo' element={<AdditionalInfo/>}></Route>
           <Route path='/Cv' element={<CV/>}></Route>
-          <Route path='/EmployeeCV' element={<CompanyCV/>}></Route>
           <Route path='/CvEdit' element={<CvEdit/>}></Route>
           <Route path='/InternshipApplication/:id' element={<InternshipApplication/>}></Route>
           <Route path='/ApplicationsJob/:id' element={<ApplicationJob/>}></Route>
           <Route path='/ApplicationsInternship/:id' element={<ApplicationInternship/>}></Route>
+          <Route path='/Notification' element={<NotificationDropdown/>}></Route>
       </Routes>
     </BrowserRouter>
   );

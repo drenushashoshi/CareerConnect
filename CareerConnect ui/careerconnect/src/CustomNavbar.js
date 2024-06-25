@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import CompanyService from './Services/CompanyService';
 import EmployeeService from './Services/EmployeeService';
 import CvService from './Services/CvService';
+import NotificationDropdown from "./Notification/Notification";
 
 function CustomNavbar() {
     const [profileInfo, setProfileInfo] = useState({});
@@ -126,6 +127,9 @@ function CustomNavbar() {
                                     <NavDropdown.Item href="../PostJob">Posto Pune</NavDropdown.Item>
                                     <NavDropdown.Item href={`../PostInternship`}>Posto Praktike</NavDropdown.Item>
                                 </NavDropdown>
+                                <Nav id="basic-nav-dropdown" className="nav-item dropdown mt-3">
+                                    <NotificationDropdown />
+                                </Nav>
                             </>
                         )}
                         <Button variant="primary" className="rounded-0 py-4 px-lg-5 mt-3 mt-lg-0" onClick={handleProfileButtonClick}>

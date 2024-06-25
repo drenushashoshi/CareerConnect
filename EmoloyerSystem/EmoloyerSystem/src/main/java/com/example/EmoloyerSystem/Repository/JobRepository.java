@@ -23,4 +23,8 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     void deleteByLocation(Location location);
     List<Job> findByCompanyId(int companyId);
     Optional<Job> findById(Long id);
+
+    List<Job> findByIndustria(Industria industria);
+
+    List<Job> findByLocation(Location location);
 }

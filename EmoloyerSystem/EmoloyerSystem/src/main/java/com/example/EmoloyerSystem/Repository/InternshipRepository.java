@@ -20,4 +20,7 @@ public interface InternshipRepository extends JpaRepository<Internship, Integer>
 
     void deleteByCompany(Company company);
 
+    List<Internship> findByIndustria(Industria industria);
+
+    List<Internship> findByLocation(Location location);
 }

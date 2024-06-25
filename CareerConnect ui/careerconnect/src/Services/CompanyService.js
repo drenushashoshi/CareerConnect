@@ -182,6 +182,9 @@ class CompanyService{
         localStorage.removeItem('role');
         sessionStorage.clear();
         window.history.pushState(null, '', '/');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('tokenExpiry');
+        localStorage.removeItem('id');
     }
     
     static isAuthenticated(){

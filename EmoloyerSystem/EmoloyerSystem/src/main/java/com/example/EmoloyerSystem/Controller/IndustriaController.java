@@ -3,6 +3,8 @@ package com.example.EmoloyerSystem.Controller;
 import com.example.EmoloyerSystem.Exception.ResourceNotFoundException;
 import com.example.EmoloyerSystem.Service.IndustriaService;
 import com.example.EmoloyerSystem.dto.IndustriaDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ import java.util.List;
 public class IndustriaController {
 
     private final IndustriaService industriaService;
+    private static final Logger logger = LoggerFactory.getLogger(IndustriaController.class);
+
 
     public IndustriaController(IndustriaService industriaService) {
         this.industriaService = industriaService;

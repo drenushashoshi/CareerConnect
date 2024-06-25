@@ -96,49 +96,49 @@ const EditJob = () => {
         let isValid = true;
 
         if (!title.trim()) {
-            setTitleError('Title cannot be empty');
+            setTitleError('Titulli nuk mund të jetë bosh');
             isValid = false;
         } else {
             setTitleError('');
         }
 
         if (!description.trim()) {
-            setDescriptionError('Description cannot be empty');
+            setDescriptionError('Përshkrimi nuk mund të jetë bosh');
             isValid = false;
         } else {
             setDescriptionError('');
         }
 
         if (!requirements.trim()) {
-            setRequirementsError('Requirements cannot be empty');
+            setRequirementsError('Kërkesat nuk mund të jenë bosh');
             isValid = false;
         } else {
             setRequirementsError('');
         }
 
         if (!locationName.trim()) {
-            setLocationError('Location cannot be empty');
+            setLocationError('Vendndodhja nuk mund të jetë bosh');
             isValid = false;
         } else {
             setLocationError('');
         }
 
         if (!salary.trim()) {
-            setSalaryError('Salary cannot be empty');
+            setSalaryError('Paga nuk mund të jetë bosh');
             isValid = false;
         } else {
             setSalaryError('');
         }
 
         if (!industriaName.trim()) {
-            setIndustryError('Job type cannot be empty');
+            setIndustryError('Lloji i punës nuk mund të jetë bosh');
             isValid = false;
         } else {
             setIndustryError('');
         }
 
         if (!deadline.trim()) {
-            setDeadlineError('Deadline cannot be empty');
+            setDeadlineError('Afati nuk mund të jetë bosh');
             isValid = false;
         } else {
             setDeadlineError('');
@@ -197,7 +197,7 @@ const EditJob = () => {
                                 <div className="single-job-items mb-50">
                                     <div className="job-items">
                                         <div className="job-tittle">
-                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Title</h4>
+                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Titulli</h4>
                                             <p style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>
                                                 <input type="text" value={title} onChange={handleChange(setTitle)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '400px' }} />
                                                 {titleError && <div style={{ color: 'red' }}>{titleError}</div>}
@@ -208,14 +208,14 @@ const EditJob = () => {
                                 <div className="job-post-details">
                                     <div className="post-details1 mb-50">
                                         <div className="small-section-tittle">
-                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Description</h4>
+                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Përshkrimi</h4>
                                         </div>
                                         <textarea value={description} onChange={handleChange(setDescription)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '100%', height: '200px', resize: 'none' }}></textarea>
                                         {descriptionError && <div style={{ color: 'red' }}>{descriptionError}</div>}
                                     </div>
                                     <div className="post-details2 mb-50">
                                         <div className="small-section-tittle">
-                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Requirements</h4>
+                                            <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Kërkesat</h4>
                                         </div>
                                         <textarea value={requirements} onChange={handleChange(setRequirements)} style={{ borderRadius: '5px', padding: '5px', marginBottom: '10px', width: '100%', height: '200px', resize: 'none' }}></textarea>
                                         {requirementsError && <div style={{ color: 'red' }}>{requirementsError}</div>}
@@ -225,18 +225,18 @@ const EditJob = () => {
                             <div className="col-xl-4 col-lg-4">
                                 <div className="post-details3 mb-4">
                                     <div className="small-section-tittle">
-                                        <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>General Information</h4>
+                                        <h4 style={{ color: '#4e8fff', fontFamily: 'Verdana' }}>Informacion i Përgjithshëm</h4>
                                     </div>
                                     <ul style={{ listStyle: 'none' }}>
                                         <li>
-                                            Location:
+                                            Vendndodhja:
                                             <select
                                                 value={locationName}
                                                 onChange={handleChange(setLocationName)}
                                                 className="form-control"
                                                 style={{ width: '100%' }}
                                             >
-                                                <option value="">Select Location</option>
+                                                <option value="">Zgjidh Vendndodhjen</option>
                                                 {locationOptions.map((location) => (
                                                     <option key={location.name} value={location.name}>{location.name}</option>
                                                 ))}
@@ -244,14 +244,14 @@ const EditJob = () => {
                                             {locationError && <div style={{ color: 'red' }}>{locationError}</div>}
                                         </li>
                                         <li>
-                                            Job Type:
+                                            Lloji i Punës:
                                             <select
                                                 value={industriaName}
                                                 onChange={handleChange(setIndustriaName)}
                                                 className="form-control"
                                                 style={{ width: '100%' }}
                                             >
-                                                <option value="">Select Job Type</option>
+                                                <option value="">Zgjidh Llojin e Punës</option>
                                                 {industryOptions.map((industria) => (
                                                     <option key={industria.name} value={industria.name}>{industria.name}</option>
                                                 ))}
@@ -260,30 +260,30 @@ const EditJob = () => {
                                             {industryError && <div style={{ color: 'red' }}>{industryError}</div>}
                                         </li>
                                         <li>
-                                            Salary: <input type="text" value={salary} onChange={handleChange(setSalary)}
-                                                           style={{
-                                                               borderRadius: '5px',
-                                                               padding: '5px',
-                                                               marginBottom: '10px',
-                                                               width: '100%'
-                                                           }}/>
+                                            Paga: <input type="text" value={salary} onChange={handleChange(setSalary)}
+                                                         style={{
+                                                             borderRadius: '5px',
+                                                             padding: '5px',
+                                                             marginBottom: '10px',
+                                                             width: '100%'
+                                                         }}/>
                                             {salaryError && <div style={{ color: 'red' }}>{salaryError}</div>}
                                         </li>
                                         <li>
-                                            Deadline: <input type="date" value={deadline} onChange={handleChange(setDeadline)}
-                                                             style={{
-                                                                 borderRadius: '5px',
-                                                                 padding: '5px',
-                                                                 marginBottom: '10px',
-                                                                 width: '100%'
-                                                             }}/>
+                                            Afati: <input type="date" value={deadline} onChange={handleChange(setDeadline)}
+                                                          style={{
+                                                              borderRadius: '5px',
+                                                              padding: '5px',
+                                                              marginBottom: '10px',
+                                                              width: '100%'
+                                                          }}/>
                                             {deadlineError && <div style={{ color: 'red' }}>{deadlineError}</div>}
                                         </li>
                                     </ul>
                                     <button onClick={handleSubmit}
                                             className="btn btn-primary"
                                             style={{ backgroundColor: '#4e8fff', borderColor: '#4e8fff' }}>
-                                        Update Job
+                                        Përditëso Punën
                                     </button>
                                 </div>
                             </div>
@@ -297,4 +297,3 @@ const EditJob = () => {
 };
 
 export default EditJob;
-

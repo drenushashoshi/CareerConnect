@@ -135,6 +135,9 @@ class EmployeeService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('tokenExpiry');
     localStorage.removeItem('role');
+    sessionStorage.clear();
+    window.history.pushState(null, '', '/');
+    localStorage.removeItem('id');
   }
 
   static isAuthenticated() {
