@@ -3,7 +3,7 @@ import { MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBRow, MDBCol } from 'mdb-reac
 import { createEmployeePost } from '../Services/EmployeePostService';
 import EmployeeService from "../Services/EmployeeService";
 
-const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
+const EmployeePostSignup = ({ employeeId, loggedInEmployeeId }) => {
     const [formData, setFormData] = useState({
         media_url: null,
         title: '',
@@ -27,6 +27,12 @@ const EmployeePostSignup = ({ employeeId, loggedInEmployeeId}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
+
+        if (!formData.media_url) {
+            setError('Ju lutemi ngarkoni një imazh.');
+            return;
+        }
+
         try {
             const postData = new FormData();
             if (formData.media_url != null) {

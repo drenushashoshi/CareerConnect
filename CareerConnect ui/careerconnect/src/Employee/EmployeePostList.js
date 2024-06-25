@@ -25,6 +25,8 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
     const [images, setImages] = useState({});
     const [modalImage, setModalImage] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletePostId, setDeletePostId] = useState(null);
     const isEmployee = EmployeeService.isEmployee();
 
     useEffect(() => {
@@ -131,7 +133,12 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
         }
     };
 
-    const deletePost = async (postId) => {
+    const confirmDeletePost = (postId) => {
+        setDeletePostId(postId);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeletePost = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Ju nuk jeni të autentifikuar. Ju lutemi hyni fillimisht.');
@@ -139,14 +146,17 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
         }
 
         try {
-            const response = await deleteEmployeePost(postId, token);
+            const response = await deleteEmployeePost(deletePostId, token);
             console.log(response);
             setPostChanges(prev => prev + 1);
+            setShowDeleteModal(false);
         } catch (error) {
             console.error(error);
         }
     };
+
     const sortedPosts = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
     return (
         <div className="container-lg d-flex justify-content-center">
             <MDBRow className="row-cols-1 g-4">
@@ -169,7 +179,7 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
                                         </button>
                                         <br />
                                         <button
-                                            onClick={() => deletePost(post.id)}
+                                            onClick={() => confirmDeletePost(post.id)}
                                             style={{
                                                 border: 'none',
                                                 background: 'none',
@@ -189,7 +199,6 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
                                 ) : (
                                     <div className="placeholder mb-3" style={{ width: '100%', height: '200px', backgroundColor: '#f0f0f0' }}></div>
                                 )}
-    
                                 <MDBCardText style={{ whiteSpace: 'pre-wrap', fontSize: '1.2em' }}>{post.content}</MDBCardText>
                                 <MDBCardText className="text-muted" style={{ fontSize: '0.9em' }}>
                                     {format(new Date(post.timestamp), 'yyyy-MM-dd HH:mm:ss')}
@@ -253,6 +262,29 @@ const EmployeePostList = ({ employeeId, loggedInEmployeeId }) => {
                             </MDBCardBody>
                         </form>
                     </MDBCard>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+                <Modal.Body className='text-center custom-font'>
+                    <h5>A jeni i sigurt qe doni ta fshini?</h5>
+                    <div className="d-flex justify-content-center mt-4">
+                        <MDBBtn
+                            className='me-2'
+                            style={{ width: '100px' }}
+                            onClick={() => setShowDeleteModal(false)}
+                        >
+                            Anulo
+                        </MDBBtn>
+                        <MDBBtn
+                            className='ms-2'
+                            color='danger'
+                            style={{ width: '100px' }}
+                            onClick={handleDeletePost}
+                        >
+                            Fshij
+                        </MDBBtn>
+                    </div>
                 </Modal.Body>
             </Modal>
         </div>

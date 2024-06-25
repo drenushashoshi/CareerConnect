@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getLocations, createLocation, deleteLocation } from '../Services/LocationService';
 import SideNavBar from "../SideNavBar";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LocationDashboard = () => {
     const [locations, setLocations] = useState([]);
@@ -13,12 +13,15 @@ const LocationDashboard = () => {
 
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (token && role === 'ADMIN') {
             fetchLocations();
+        } else {
+            navigate('/');
         }
-    }, [token, role]);
+    }, [token, role, navigate]);
 
     const fetchLocations = async () => {
         setLoading(true);
@@ -46,6 +49,7 @@ const LocationDashboard = () => {
         }
 
         setLoading(true);
+        setError(null);
         try {
             await createLocation({ name: newLocationName }, token);
             setNewLocationName('');
@@ -59,6 +63,7 @@ const LocationDashboard = () => {
 
     const handleDeleteLocation = async () => {
         setLoading(true);
+        setError(null);
         try {
             await deleteLocation(locationToDelete, token);
             await fetchLocations();
@@ -75,7 +80,6 @@ const LocationDashboard = () => {
         setLocationToDelete(locationName);
     };
 
-    if(role === 'ADMIN'){
     return (
         <div className='d-flex'>
             <SideNavBar />
@@ -157,15 +161,7 @@ const LocationDashboard = () => {
                     )}
                 </div>
             </div>
-    );}
-    else{
-        return (
-            <div>
-                <h2 className="mt-5">Vetem ADMINI ka akses ne dashboard</h2>
-                <Link to="/">Kliko ketu per tu loguar si ADMIN</Link>
-            </div>
-        );
-    }
+    );
 };
 
 export default LocationDashboard;

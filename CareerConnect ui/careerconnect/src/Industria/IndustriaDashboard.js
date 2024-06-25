@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getIndustries, createIndustria, deleteIndustria } from '../Services/IndustriaService';
 import SideNavBar from "../SideNavBar";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const IndustriaDashboard = () => {
     const [industries, setIndustries] = useState([]);
@@ -13,12 +13,15 @@ const IndustriaDashboard = () => {
 
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (token && role === 'ADMIN') {
             fetchIndustries();
+        } else {
+            navigate('/');
         }
-    }, [token, role]);
+    }, [token, role, navigate]);
 
     const fetchIndustries = async () => {
         setLoading(true);
@@ -46,6 +49,7 @@ const IndustriaDashboard = () => {
         }
 
         setLoading(true);
+        setError(null);
         try {
             await createIndustria({ name: newIndustriaName }, token);
             setNewIndustriaName('');
@@ -59,6 +63,7 @@ const IndustriaDashboard = () => {
 
     const handleDeleteIndustria = async () => {
         setLoading(true);
+        setError(null);
         try {
             await deleteIndustria(industriaToDelete, token);
             await fetchIndustries();
@@ -75,7 +80,6 @@ const IndustriaDashboard = () => {
         setIndustriaToDelete(industriaName);
     };
 
-    if(role === 'ADMIN'){
     return (
         <div className="d-flex">
             <SideNavBar/>
@@ -157,15 +161,7 @@ const IndustriaDashboard = () => {
             )}
         </div>
         </div>
-    );}
-    else{
-        return (
-            <div>
-                <h2 className="mt-5">Vetem ADMINI ka akses ne dashboard</h2>
-                <Link to="/">Kliko ketu per tu loguar si ADMIN</Link>
-            </div>
-        );
-    }
+    );
 };
 
 export default IndustriaDashboard;
