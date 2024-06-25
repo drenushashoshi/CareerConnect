@@ -6,12 +6,19 @@ import Footer from '../Footer';
 import { Button, Card, Row, Col } from 'react-bootstrap';
 import backgroundImage from '../Company/background.jpg';
 import CompanyService from '../Services/InterService';
+import EmployeeService from '../Services/EmployeeService';
 
 const ApplicationsInternship = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [applications, setApplications] = useState([]);
     const [job, setJob] = useState(null);
+    useEffect(()=>{
+
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    },[navigate])
 
     const fetchedApplicationsByJob = async () => {
         try {

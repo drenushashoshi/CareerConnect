@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomNavbar from '../CustomNavbar';
 import { useNavigate } from 'react-router-dom';
 import CvService from '../Services/CvService';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const CvEdit = () => {
     const navigate = useNavigate();
@@ -10,23 +11,29 @@ const CvEdit = () => {
     const employee = sessionStorage.getItem('employeeId');
     const [errors, setErrors] = useState({});
     const [fileError, setFileError] = useState('');
-    const [name,setName] = useState('');
-    const [surname,setSurname] = useState('');
-    const [email,setEmail] = useState('');
-    const [phone_nr,setPhone_nr] = useState('');
-    const [college,setCollege] = useState('');
-    const [degree,setDegree] = useState('');
-    const [city,setCity] = useState('');
-    const [highschool,setHighschool] = useState('');
-    const [description,setDescription] = useState('');
-    const [street,setStreet] = useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone_nr, setPhone_nr] = useState('');
+    const [college, setCollege] = useState('');
+    const [degree, setDegree] = useState('');
+    const [city, setCity] = useState('');
+    const [highschool, setHighschool] = useState('');
+    const [description, setDescription] = useState('');
+    const [street, setStreet] = useState('');
     const [image, setImage] = useState(null); 
-    const [uniqueError,setUniqueError] = useState('');
+    const [uniqueError, setUniqueError] = useState('');
+
+    useEffect(() => {
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     const fetchCV = async () => {
         try {
             const response = await CvService.getCvByEmployeeId(employee);
-            console.log('Fetched Cv:', response); // Debugging line
+            console.log('Fetched Cv:', response);
             setCv(response);
             setName(response.name || '');
             setSurname(response.surname || '');
@@ -50,7 +57,7 @@ const CvEdit = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        switch(name) {
+        switch (name) {
             case 'name':
                 setName(value);
                 break;
@@ -62,7 +69,9 @@ const CvEdit = () => {
                 setUniqueError('');
                 break;
             case 'phone_nr':
-                setPhone_nr(value);
+                if (/^\d*$/.test(value)) {
+                    setPhone_nr(value);
+                }
                 setUniqueError('');
                 break;
             case 'college':
@@ -95,6 +104,7 @@ const CvEdit = () => {
         if (!surname) newErrors.surname = 'Ju lutem plotesoni fushen e duhur';
         if (!email) newErrors.email = 'Ju lutem plotesoni fushen e duhur';
         if (!phone_nr) newErrors.phone_nr = 'Ju lutem plotesoni fushen e duhur';
+        if (phone_nr && phone_nr.length !== 9) newErrors.phone_nr = 'Numri i telefonit duhet te kete 9 karaktere';
         if (!description) newErrors.description = 'Ju lutem plotesoni fushen e duhur';
         if (!college) newErrors.college = 'Ju lutem plotesoni fushen e duhur';
         if (!degree) newErrors.degree = 'Ju lutem plotesoni fushen e duhur';
@@ -102,7 +112,7 @@ const CvEdit = () => {
         if (!phone_nr) newErrors.phone_nr = 'Ju lutem plotesoni fushen e duhur';
         if (!street) newErrors.street = 'Ju lutem plotesoni fushen e duhur';
         if (!city) newErrors.city = 'Ju lutem plotesoni fushen e duhur';
-        if (!image) newErrors.fileInput = 'Ju lutem plotesoni fushen e duhur';
+        if (!image) newErrors.fileInput = 'Ju lutem zgjidhni nje fotografi!';
         return newErrors;
     };
 
@@ -119,13 +129,13 @@ const CvEdit = () => {
             if (image) {
                 formData.append('image', image);
             }
-    
+
             const token = localStorage.getItem('token');
-            console.log("Sending request to update CV with ID:", Cv.cvid); // Log the ID
-            console.log("Form Data:", formData); // Log the form data for debugging
-    
+            console.log("Sending request to update CV with ID:", Cv.cvid);
+            console.log("Form Data:", formData);
+
             const response = await CvService.updateCv(Cv.cvid, formData, token);
-    
+
             if (response.status === 200) {
                 navigate(`/CvInfo`);
             } else if (response.status === 409) {
@@ -141,7 +151,6 @@ const CvEdit = () => {
             setUniqueError('An error occurred while updating the CV');
         }
     };
-    
 
     return (
         <div>
@@ -290,17 +299,17 @@ const CvEdit = () => {
                                 id="fileInput"
                                 accept="image/*"
                                 onChange={(e) => setImage(e.target.files[0])}
-                                style={{display:'none'}}
+                                style={{ display: 'none' }}
                             />
                             <label htmlFor="fileInput" className="btn btn-primary">Zgjidh fotografi per CV</label>
                             {fileError && <div className="invalid-feedback d-block">Ju lutem zgjidh fotografi!</div>}
                             {uniqueError && <span className="text-danger mx-5">{uniqueError}</span>}
                         </div>
-                        <button type="submit" className="btn btn-primary">Vazhdo</button><br/><br/>
+                        <button type="submit" className="btn btn-primary">Vazhdo</button><br /><br />
                     </form>
                 )}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

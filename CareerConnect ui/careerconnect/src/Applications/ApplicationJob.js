@@ -6,6 +6,7 @@ import { getJob } from '../Services/JobService';
 import Footer from '../Footer';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import backgroundImage from '../Company/background.jpg';
+import EmployeeService from '../Services/EmployeeService';
 
 const ApplicationJob = () => {
     const navigate = useNavigate();
@@ -21,6 +22,12 @@ const ApplicationJob = () => {
             console.error(err);
         }
     };
+    useEffect(()=>{
+
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    },[navigate])
 
     useEffect(() => {
         fetchedApplicationsByJob();

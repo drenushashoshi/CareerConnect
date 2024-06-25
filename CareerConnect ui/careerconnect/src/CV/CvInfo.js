@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import CvService from '../Services/CvService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const CvInfo = () => {
     const navigate = useNavigate();
@@ -42,6 +43,13 @@ const CvInfo = () => {
             setImageError('');
         }
     };
+    useEffect(()=>{
+
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    },[navigate])
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -59,8 +67,10 @@ const CvInfo = () => {
                 setUniqueError('');
                 break;
             case 'phone_nr':
-                setPhone_nr(value);
-                setPhoneError(value ? '' : 'Ju lutem plotesoni fushen e duhur');
+                if (/^\d*$/.test(value)) {
+                    setPhone_nr(value);
+                    setPhoneError(value.length === 9 ? '' : 'Numri i telefonit duhet të përmbajë 9 shifra');
+                }
                 setUniqueError('');
                 break;
             case 'college':

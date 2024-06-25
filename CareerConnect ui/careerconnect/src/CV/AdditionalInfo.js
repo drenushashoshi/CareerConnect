@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Reference from './Reference';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WorkExperience from './WorkExperience';
@@ -6,6 +6,7 @@ import Language from './Language';
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const AdditionalInfo = () => {
   const navigator = useNavigate();
@@ -27,6 +28,12 @@ const AdditionalInfo = () => {
   const navigate = () => {
     navigator(`/Cv`)
   }
+  useEffect(()=>{
+
+    if (!EmployeeService.isAuthenticated()) {
+        navigator('/');
+    }
+  },[navigator])
 
   return (
     <>

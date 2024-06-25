@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import { FaCheckCircle } from 'react-icons/fa';
 import ApplicationService from '../Services/ApplicationService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const JobApplication = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const employeeId = sessionStorage.getItem('employeeId');
-    console.log(token)
-    console.log(employeeId)
-    console.log(id)
+    console.log(token);
+    console.log(employeeId);
+    console.log(id);
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -24,7 +25,7 @@ const JobApplication = () => {
         gender: '',
         jobid: id,
         internshipid: 0,
-        employeeid: employeeId
+        employeeid: employeeId,
     });
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -35,52 +36,61 @@ const JobApplication = () => {
 
         // Validate name
         if (!values.name.trim()) {
-            errors.name = 'Name is required';
+            errors.name = 'Ju lutem plotesoni fushen';
             isValid = false;
         }
 
         // Validate email
         if (!values.email.trim()) {
-            errors.email = 'Email is required';
+            errors.email = 'Ju lutem plotesoni fushen';
             isValid = false;
         } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-            errors.email = 'Email is invalid';
+            errors.email = 'Email eshte invalid';
             isValid = false;
         }
 
         // Validate phone number
         if (!values.phone_nr.trim()) {
-            errors.phone_nr = 'Phone number is required';
+            errors.phone_nr = 'Ju lutem plotesoni fushen';
+            isValid = false;
+        } else if (!/^\d{9}$/.test(values.phone_nr)) {
+            errors.phone_nr = 'Numri i telefonit duhet të përmbajë 9 shifra';
             isValid = false;
         }
 
         // Validate age
         if (!values.age) {
-            errors.age = 'Age is required';
+            errors.age = 'Ju lutem plotesoni fushen';
             isValid = false;
         }
 
         // Validate city
         if (!values.city.trim()) {
-            errors.city = 'City is required';
+            errors.city = 'Ju lutem plotesoni fushen';
             isValid = false;
         }
 
         // Validate description
         if (!values.description.trim()) {
-            errors.description = 'Description is required';
+            errors.description = 'Ju lutem plotesoni fushen';
             isValid = false;
         }
 
         // Validate gender
         if (!values.gender.trim()) {
-            errors.gender = 'Gender is required';
+            errors.gender = 'Ju lutem zgjidh nje opsion';
             isValid = false;
         }
 
         setErrors(errors);
         return isValid;
     };
+
+    useEffect(() => {
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });

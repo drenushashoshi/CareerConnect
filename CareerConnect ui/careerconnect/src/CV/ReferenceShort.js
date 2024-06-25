@@ -71,7 +71,7 @@ const ReferenceShort = ({ reference: initialReference }) => {
     if (!formData.companyname) errors.companyname = 'Ju lutem plotesoni fushen!';
     if (!formData.phone_nr) {errors.phone_nr = 'Ju lutem plotesoni fushen!';
     } else if (!/^\d{9}$/.test(formData.phone_nr)) {
-      errors.phone_nr = 'Numri duhet te kete 9 karaktera';
+      errors.phone_nr = 'Numri i telefonit duhet të përmbajë 9 shifra';
     }
     if (!formData.email) {
       errors.email = 'Ju lutem plotesoni fushen!';

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import { FaCheckCircle } from 'react-icons/fa';
 import ApplicationService from '../Services/ApplicationService';
 import CustomNavbar from '../CustomNavbar';
 import Footer from '../Footer';
+import EmployeeService from '../Services/EmployeeService';
 
 const JobApplication = () => {
     const { id } = useParams();
@@ -28,6 +29,12 @@ const JobApplication = () => {
     });
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
+    useEffect(()=>{
+
+        if (!EmployeeService.isAuthenticated()) {
+            navigate('/');
+        }
+    },[navigate])
 
     const validateForm = () => {
         const errors = {};
@@ -50,7 +57,10 @@ const JobApplication = () => {
 
         // Validate phone number
         if (!values.phone_nr.trim()) {
-            errors.phone_nr = 'Ju lutem plotesoni fushen e duhur!';
+            errors.phone_nr = 'Ju lutem plotesoni fushen';
+            isValid = false;
+        } else if (!/^\d{9}$/.test(values.phone_nr)) {
+            errors.phone_nr = 'Numri i telefonit duhet të përmbajë 9 shifra';
             isValid = false;
         }
 

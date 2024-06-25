@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CvService from '../Services/CvService';
 import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
+import EmployeeService from '../Services/EmployeeService';
 
 const CompanyCV = () => {
   const location = useLocation();
+  const navigator = useNavigate();
   const { employeeId } = location.state || {};
   console.log('Employee ID:', employeeId); // Debugging line
   const [Cv, setCv] = useState(null);
@@ -41,6 +43,13 @@ const CompanyCV = () => {
       }
     }
   };
+
+  useEffect(()=>{
+
+    if (!EmployeeService.isAuthenticated()) {
+        navigator('/');
+    }
+},[navigator])
 
   useEffect(() => {
     fetchCV();

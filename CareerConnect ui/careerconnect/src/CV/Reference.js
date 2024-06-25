@@ -64,7 +64,7 @@ const Reference = () => {
     if (!formData.phone_nr) {
       newErrors.phone_nr = 'Ju lutem plotesoni fushen!';
     } else if (!/^\d{9}$/.test(formData.phone_nr)) {
-      newErrors.phone_nr = 'Numri duhet te kete 9 karaktera';
+      newErrors.phone_nr = 'Numri i telefonit duhet të përmbajë 9 shifra';
     }
     if (!formData.email) {
       newErrors.email = 'Ju lutem plotesoni fushen!';

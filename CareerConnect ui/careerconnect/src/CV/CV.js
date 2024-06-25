@@ -5,8 +5,11 @@ import ReferenceService from '../Services/ReferenceService';
 import WorkExperienceService from '../Services/WorkExperienceService';
 import LanguageService from '../Services/LanguageService';
 import CustomNavbar from '../CustomNavbar';
+import EmployeeService from '../Services/EmployeeService';
+import { useNavigate } from 'react-router-dom';
 
 const CV = () => {
+    const navigator = useNavigate();
     const employee = sessionStorage.getItem('employeeId');
     const [Cv, setCv] = useState(null);
     const [references, setReferences] = useState([]);
@@ -43,6 +46,12 @@ const CV = () => {
         fetchCV();
     }, [employee]);
 
+    useEffect(()=>{
+
+        if (!EmployeeService.isAuthenticated()) {
+            navigator('/');
+        }
+    },[navigator])
     useEffect(() => {
         if (Cv) {
             fetchProfileImage();
