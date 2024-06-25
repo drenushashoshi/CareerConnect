@@ -41,12 +41,12 @@ function EmployeeSignUp() {
   const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
-    const isNameValid = name.trim() !== '';
-    const isSurnameValid = surname.trim() !== '';
+    const isNameValid = /^[A-Z][a-z]*$/.test(name.trim());
+    const isSurnameValid = /^[A-Z][a-z]*$/.test(surname.trim());
     const isAgeValid = age.trim() !== '';
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isAddressValid = address.trim() !== '';
-    const isPasswordValid = password.trim() !== '';
+    const isAddressValid = /^[A-Z][a-zA-Z0-9\s]*$/.test(address.trim());
+    const isPasswordValid = /^(?=.*\d).{8,}$/.test(password);
     const isRepeatPasswordValid = repeatPassword === password;
     const isPhoneValid = phone.trim() !== '';
     const isJobPreferencesValid = jobPreferences.trim() !== '';
@@ -140,9 +140,9 @@ function EmployeeSignUp() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           onBlur={() => setNameTouched(true)}
-                          invalid={nameTouched && !name.trim()}
+                          invalid={nameTouched && !/^[A-Z][a-z]*$/.test(name.trim())}
                         />
-                        {nameTouched && !name.trim() && <div className="text-danger">Name is required</div>}
+                        {nameTouched && !/^[A-Z][a-z]*$/.test(name.trim()) && <div className="text-danger">Name must start with a capital letter and contain only letters</div>}
                       </MDBCol>
                       <MDBCol md='6'>
                         <MDBInput
@@ -153,9 +153,9 @@ function EmployeeSignUp() {
                           value={surname}
                           onChange={(e) => setSurname(e.target.value)}
                           onBlur={() => setSurnameTouched(true)}
-                          invalid={surnameTouched && !surname.trim()}
+                          invalid={surnameTouched && !/^[A-Z][a-z]*$/.test(surname.trim())}
                         />
-                        {surnameTouched && !surname.trim() && <div className="text-danger">Surname is required</div>}
+                        {surnameTouched && !/^[A-Z][a-z]*$/.test(surname.trim()) && <div className="text-danger">Surname must start with a capital letter and contain only letters</div>}
                       </MDBCol>
                     </MDBRow>
                     <MDBRow>
@@ -181,9 +181,9 @@ function EmployeeSignUp() {
                           value={address}
                           onChange={(e) => setAddress(e.target.value)}
                           onBlur={() => setAddressTouched(true)}
-                          invalid={addressTouched && !address.trim()}
+                          invalid={addressTouched && !/^[A-Z][a-zA-Z0-9\s]*$/.test(address.trim())}
                         />
-                        {addressTouched && !address.trim() && <div className="text-danger">Address is required</div>}
+                        {addressTouched && !/^[A-Z][a-zA-Z0-9\s]*$/.test(address.trim()) && <div className="text-danger">Address must start with a capital letter</div>}
                       </MDBCol>
                     </MDBRow>
                     <MDBRow>
@@ -224,9 +224,9 @@ function EmployeeSignUp() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           onBlur={() => setPasswordTouched(true)}
-                          invalid={passwordTouched && !password.trim()}
+                          invalid={passwordTouched && !/^(?=.*\d).{8,}$/.test(password)}
                         />
-                        {passwordTouched && !password.trim() && <div className="text-danger">Password is required</div>}
+                        {passwordTouched && !/^(?=.*\d).{8,}$/.test(password) && <div className="text-danger">Password must be at least 8 characters long and contain at least one number</div>}
                       </MDBCol>
                       <MDBCol md='6'>
                         <MDBInput
@@ -296,6 +296,6 @@ function EmployeeSignUp() {
       </MDBContainer>
     </div>
   );
-}  
+}
 
 export default EmployeeSignUp;

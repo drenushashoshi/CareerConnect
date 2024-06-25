@@ -28,9 +28,16 @@ const EmployeePage = () => {
   const [profileInfo, setProfileInfo] = useState({});
   const isEmployee = EmployeeService.isEmployee();
   const isCompany = CompanyService.isCompany();
+  const isAuthenticated = CompanyService.isAuthenticated();
   const navigator = useNavigate();
   const loggedInEmployee= sessionStorage.getItem('employeeId');
   const [cv,setCv] = useState(null);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+        navigator('/');
+    } 
+}, [navigator]);
 
 
   useEffect(() => {

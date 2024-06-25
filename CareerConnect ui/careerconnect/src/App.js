@@ -53,7 +53,6 @@ function App() {
           <Route path='/EmployeeSignUp' element={<EmployeeSignUp/>}></Route>
           <Route path='/CompanyList' element={<CompanyList/>}></Route>
           <Route path='/CompanyPage' element={<CompanyPage/>}></Route>
-          <Route path='/CompanyStaff' element={<CompanyStaff/>}></Route>
           <Route path='/postJob' element={<PostJob/>}></Route>
           <Route path='/jobListing' element={<JobListing/>}></Route>
           <Route path='/alljobs' element={<AllJobs/>}></Route>

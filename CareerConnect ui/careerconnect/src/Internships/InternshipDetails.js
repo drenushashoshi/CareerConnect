@@ -21,9 +21,15 @@ const InternshipDetails = () => {
     const [deadline, setDeadline] = useState('');
     const [companyId, setCompanyId] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const isAuthenticated = CompanyService.isAuthenticated();
 
     const { id } = useParams();
     const navigator = useNavigate();
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigator('/');
+        } 
+    }, [navigator]);
 
     useEffect(() => {
         if (id) {

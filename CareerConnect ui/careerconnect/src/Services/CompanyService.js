@@ -178,13 +178,9 @@ class CompanyService{
       }
       
     static logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
         sessionStorage.clear();
         window.history.pushState(null, '', '/');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('tokenExpiry');
-        localStorage.removeItem('id');
+        localStorage.clear();
     }
     
     static isAuthenticated(){

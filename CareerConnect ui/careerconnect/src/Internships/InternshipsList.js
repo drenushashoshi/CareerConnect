@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Spinner } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar';
 import InterService from '../Services/InterService';
 import backgroundImage from './background.jpg';
@@ -26,6 +26,13 @@ function InternshipListing() {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigator = useNavigate();
+    const isAuthenticated = CompanyService.isAuthenticated();
+    useEffect(() => {
+        if (!isAuthenticated || !isEmployee) {
+            navigator('/');
+        } 
+    }, [navigator]);
 
     useEffect(() => {
         fetchInternships();

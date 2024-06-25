@@ -27,10 +27,16 @@ const CompanyPage = () => {
   const [fetchError, setFetchError] = useState(false); 
 
   const isCompany = CompanyService.isCompany();
+  const isAuthenticated=CompanyService.isAuthenticated();
   const navigator = useNavigate();
   const { id } = useParams();
   const storedCompanyId = sessionStorage.getItem('companyId');
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+        navigator('/');
+    } 
+}, [navigator]);
   useEffect(() => {
     const fetchProfileInfo = async () => {
       setLoading(true); 

@@ -18,6 +18,14 @@ const JobDetails = () => {
     const isCompany = CompanyService.isCompany();
     const isEmployee = EmployeeService.isEmployee();
     const storedCompanyId = sessionStorage.getItem('companyId');
+    
+    const isAuthenticated = CompanyService.isAuthenticated();
+    
+    useEffect(() => {
+        if (!isAuthenticated ) {
+            navigate('/');
+        } 
+    }, [navigate]);
 
     useEffect(() => {
         const fetchJobAndCompanyDetails = async () => {
