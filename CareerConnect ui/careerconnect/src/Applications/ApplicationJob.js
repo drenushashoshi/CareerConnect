@@ -16,7 +16,7 @@ const ApplicationJob = () => {
 
     const fetchedApplicationsByJob = async () => {
         try {
-            const applicationResponse = await ApplicationService.getApplicationByInternshipId(id);
+            const applicationResponse = await ApplicationService.getApplicationByJobId(id);
             setApplications(applicationResponse);
         } catch (err) {
             console.error(err);

@@ -11,6 +11,7 @@ function AllJobs({ companyId }) {
     const [jobs, setJobs] = useState([]);
     const isCompany = CompanyService.isCompany();
     const isEmployee = EmployeeService.isEmployee();
+    const storedCompanyId = sessionStorage.getItem('companyId');
 
     useEffect(() => {
         fetchJobs();
@@ -43,7 +44,7 @@ function AllJobs({ companyId }) {
                                         <Link to={`/JobApplication/${job.id}`} className="btn btn-primary me-2">Apliko</Link>
                                     )}
                                     <Link to={`/Job/${job.id}`} className="btn btn-secondary me-2">Shiko detajet</Link>
-                                    {isCompany && (
+                                    {isCompany && companyId === parseInt(storedCompanyId) && (
                                         <Link to={`/ApplicationsJob/${job.id}`} className="btn btn-secondary">Shiko aplikimet</Link>
                                     )}
                                 </div>
